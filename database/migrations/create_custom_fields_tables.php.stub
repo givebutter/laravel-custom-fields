@@ -1,0 +1,25 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateCustomFieldsTables extends Migration
+{
+    public function up()
+    {
+        Schema::create(config('custom_fields.tables.fields', 'fields'), function (Blueprint $table) {
+            $table->increments('id');
+        });
+
+        Schema::create(config('custom_fields.tables.field_responses', 'field_responses'), function (Blueprint $table) {
+            $table->increments('id');
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists(config('custom_fields.tables.fields', 'fields'));
+        Schema::dropIfExists(config('custom_fields.tables.field_responses', 'field_responses'));
+    }
+}
