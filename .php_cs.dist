@@ -22,7 +22,5 @@ return PhpCsFixer\Config::create()
         'single_blank_line_before_namespace' => true,
         'no_unused_imports' => true,
         'no_useless_else' => true,
-        // This is for phpunit functions with no visibility (attr: Adam Wathan)
-        'visibility_required' => false,
     ])
     ->setFinder($finder);
