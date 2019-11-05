@@ -17,7 +17,7 @@ class ScaffoldingTest extends TestCase
             function ($table) {
                 return $table->name;
             },
-            DB::select("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;")
+            DB::select("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;") // sqlite only for now
         );
 
         $this->assertContains('fields', $tables);
