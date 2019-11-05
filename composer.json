@@ -1,6 +1,6 @@
 {
     "name": "givebutter/laravel-custom-fields",
-    "description": "Laravel Custom Fields is a package that allows you to add custom fields to any Laravel model and store responses to theose fields on any Laravel model.",
+    "description": "Laravel Custom Fields is a package that allows you to add custom fields to any Laravel model and store responses to those fields on any Laravel model.",
     "type": "library",
     "require": {
         "laravel/framework": "^6.0"
