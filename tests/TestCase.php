@@ -2,7 +2,7 @@
 
 namespace Givebutter\Tests;
 
-use CreateHasCustomFieldsModelTable;
+use CreateHasCustomFieldsModelAndCustomFieldResponsesModelTables;
 use Givebutter\LaravelCustomFields\LaravelCustomFieldsServiceProvider;
 use Givebutter\Tests\Support\HasCustomFieldsModel;
 use Illuminate\Database\Schema\Blueprint;
@@ -55,8 +55,8 @@ class TestCase extends OrchestraTestCase
 
     protected function prepareDatabaseForHasCustomFieldsModel()
     {
-        include_once __DIR__ . '/../tests/support/migrations/create_has_custom_fields_model_table.php';
-        (new CreateHasCustomFieldsModelTable())->up();
+        include_once __DIR__ . '/../tests/support/migrations/create_has_custom_fields_model_and_custom_field_responses_model_tables.php';
+        (new CreateHasCustomFieldsModelAndCustomFieldResponsesModelTables())->up();
     }
 
     protected function resetDatabase()
