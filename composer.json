@@ -3,11 +3,11 @@
     "description": "Laravel Custom Fields is a package that allows you to add custom fields to any Laravel model and store responses to those fields on any Laravel model.",
     "type": "library",
     "require": {
-        "laravel/framework": "^6.0",
-        "friendsofphp/php-cs-fixer": "^2.16"
+        "laravel/framework": "^6.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^4.0"
+        "orchestra/testbench": "^4.0",
+        "friendsofphp/php-cs-fixer": "^2.16"
     },
     "autoload": {
         "psr-4": {
