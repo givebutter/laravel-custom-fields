@@ -19,7 +19,7 @@ class CreateCustomFieldsTables extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('order');
-            $table->timestamp('deleted_at');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
 

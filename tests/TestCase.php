@@ -2,8 +2,9 @@
 
 namespace Givebutter\Tests;
 
+use CreateHasCustomFieldsModelTable;
 use Givebutter\LaravelCustomFields\LaravelCustomFieldsServiceProvider;
-use Givebutter\Tests\Support\TestModel;
+use Givebutter\Tests\Support\HasCustomFieldsModel;
 use Illuminate\Database\Schema\Blueprint;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
@@ -40,14 +41,22 @@ class TestCase extends OrchestraTestCase
             $table->timestamps();
         });
 
-        TestModel::create();
+        $this->prepareDatabaseForHasCustomFieldsModel();
+        HasCustomFieldsModel::create();
+
         $this->runMigrationStub();
     }
 
     protected function runMigrationStub()
     {
         include_once __DIR__ . '/../database/migrations/create_custom_fields_tables.php.stub';
-        (new CreateCustomFieldsTables())->up();
+        (new \CreateCustomFieldsTables())->up();
+    }
+
+    protected function prepareDatabaseForHasCustomFieldsModel()
+    {
+        include_once __DIR__ . '/../tests/support/migrations/create_has_custom_fields_model_table.php';
+        (new CreateHasCustomFieldsModelTable())->up();
     }
 
     protected function resetDatabase()
