@@ -47,7 +47,7 @@ class TestCase extends OrchestraTestCase
     protected function runMigrationStub()
     {
         include_once __DIR__ . '/../database/migrations/create_custom_fields_tables.php.stub';
-        (new \CreateCustomFieldsTables())->up();
+        (new CreateCustomFieldsTables())->up();
     }
 
     protected function resetDatabase()
