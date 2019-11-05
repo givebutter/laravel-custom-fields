@@ -11,7 +11,7 @@ class LaravelCustomFieldsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/config/laravel-custom-fields.php' => config_path('laravel-custom-fields.php'),
+            __DIR__ . '/../config/laravel-custom-fields.php' => config_path('laravel-custom-fields.php'),
         ]);
 
         if (!class_exists('CreateCustomFieldsTables')) {

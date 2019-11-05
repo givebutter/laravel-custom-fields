@@ -39,8 +39,20 @@ class TestCase extends OrchestraTestCase
             $table->increments('id');
             $table->timestamps();
         });
+
         TestModel::create();
+        $this->runMigrationStub();
+    }
+
+    protected function runMigrationStub()
+    {
         include_once __DIR__ . '/../database/migrations/create_custom_fields_tables.php.stub';
         (new \CreateCustomFieldsTables())->up();
+    }
+
+    protected function resetDatabase()
+    {
+        $this->artisan('migrate:fresh');
+        $this->runMigrationStub();
     }
 }

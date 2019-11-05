@@ -8,7 +8,7 @@ class CreateCustomFieldsTables extends Migration
 {
     public function up()
     {
-        Schema::create(config('custom_fields.tables.fields', 'fields'), function (Blueprint $table) {
+        Schema::create(config('laravel-custom-fields.tables.fields', 'fields'), function (Blueprint $table) {
             $table->increments('id');
             $table->integer('model_id')->unsigned();
             $table->string('model_type');
@@ -23,7 +23,7 @@ class CreateCustomFieldsTables extends Migration
             $table->timestamps();
         });
 
-        Schema::create(config('custom_fields.tables.field_responses', 'field_responses'), function (Blueprint $table) {
+        Schema::create(config('laravel-custom-fields.tables.field_responses', 'field_responses'), function (Blueprint $table) {
             $table->increments('id');
             $table->integer('field_id');
             $table->integer('model_id');
@@ -37,7 +37,7 @@ class CreateCustomFieldsTables extends Migration
 
     public function down()
     {
-        Schema::dropIfExists(config('custom_fields.tables.fields', 'fields'));
-        Schema::dropIfExists(config('custom_fields.tables.field_responses', 'field_responses'));
+        Schema::dropIfExists(config('laravel-custom-fields.tables.fields', 'fields'));
+        Schema::dropIfExists(config('laravel-custom-fields.tables.field_responses', 'field_responses'));
     }
 }
