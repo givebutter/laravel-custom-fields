@@ -3,8 +3,6 @@
 namespace Givebutter\Tests\Feature;
 
 use Givebutter\LaravelCustomFields\Models\CustomField;
-use Givebutter\Tests\Support\Contact;
-use Givebutter\Tests\Support\HasCustomFieldsModel;
 use Givebutter\Tests\Support\Survey;
 use Givebutter\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -35,8 +33,8 @@ class CustomFieldControllerTest extends TestCase
         $this
             ->post("/surveys/{$survey->id}/responses", [
                 'custom_fields' => [
-                    'email' => 'daniel@tighten.co'
-                ]
+                    'email' => 'daniel@tighten.co',
+                ],
             ])->assertOk();
     }
 
@@ -65,8 +63,8 @@ class CustomFieldControllerTest extends TestCase
         $this
             ->post("/surveys/{$survey->id}/responses", [
                 'custom_fields' => [
-                    'phone' => 4438259274
-                ]
+                    'phone' => 4438259274,
+                ],
             ])->assertJsonFragment(['email' => ['The email field is required.']]);
     }
 }

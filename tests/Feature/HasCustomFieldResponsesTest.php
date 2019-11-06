@@ -4,8 +4,8 @@ namespace Givebutter\Tests\Feature;
 
 use Givebutter\LaravelCustomFields\Models\CustomField;
 use Givebutter\LaravelCustomFields\Models\CustomFieldResponse;
-use Givebutter\Tests\Support\SurveyResponse;
 use Givebutter\Tests\Support\Survey;
+use Givebutter\Tests\Support\SurveyResponse;
 use Givebutter\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

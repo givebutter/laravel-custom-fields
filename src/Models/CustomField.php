@@ -3,8 +3,6 @@
 namespace Givebutter\LaravelCustomFields\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class CustomField extends Model
 {
@@ -19,7 +17,7 @@ class CustomField extends Model
         'select' => 'string|max:255',
         'number' => 'integer',
         'checkbox' => 'boolean',
-        'radio' => 'string:max:255'
+        'radio' => 'string:max:255',
     ];
 
     public function __construct(array $attributes = [])

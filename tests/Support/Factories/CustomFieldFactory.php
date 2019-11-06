@@ -6,7 +6,7 @@ use Givebutter\LaravelCustomFields\Models\CustomField;
 $factory->define(CustomField::class, function (Generator $faker) {
     return [
         'type' => $faker->randomElement([
-            'text', 'textarea', 'radio', 'select', 'checkbox', 'number'
+            'text', 'textarea', 'radio', 'select', 'checkbox', 'number',
         ]),
         'required' => $faker->boolean,
         'answers' => $faker->words(rand(1, 4)),

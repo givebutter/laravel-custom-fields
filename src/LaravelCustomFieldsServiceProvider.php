@@ -2,8 +2,6 @@
 
 namespace Givebutter\LaravelCustomFields;
 
-use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelCustomFieldsServiceProvider extends ServiceProvider
