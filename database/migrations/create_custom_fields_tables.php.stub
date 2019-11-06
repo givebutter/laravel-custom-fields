@@ -13,7 +13,6 @@ class CreateCustomFieldsTables extends Migration
             $table->unsignedInteger('model_id');
             $table->string('model_type');
             $table->string('type');
-            $table->string('subtype');
             $table->boolean('required');
             $table->json('answers');
             $table->string('title');

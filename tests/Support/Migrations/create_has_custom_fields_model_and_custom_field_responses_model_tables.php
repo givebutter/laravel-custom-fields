@@ -8,12 +8,12 @@ class CreateHasCustomFieldsModelAndCustomFieldResponsesModelTables extends Migra
 {
     public function up()
     {
-        Schema::create('has_custom_fields_models', function (Blueprint $table) {
+        Schema::create('surveys', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
         });
 
-        Schema::create('has_custom_field_responses_models', function (Blueprint $table) {
+        Schema::create('survey_responses', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
         });
@@ -21,7 +21,7 @@ class CreateHasCustomFieldsModelAndCustomFieldResponsesModelTables extends Migra
 
     public function down()
     {
-        Schema::dropIfExists('has_custom_fields_models');
-        Schema::dropIfExists('has_custom_field_responses_models');
+        Schema::dropIfExists('surveys');
+        Schema::dropIfExists('survey_responses');
     }
 }

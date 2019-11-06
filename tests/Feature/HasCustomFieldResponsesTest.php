@@ -4,8 +4,8 @@ namespace Givebutter\Tests\Feature;
 
 use Givebutter\LaravelCustomFields\Models\CustomField;
 use Givebutter\LaravelCustomFields\Models\CustomFieldResponse;
-use Givebutter\Tests\Support\HasCustomFieldResponsesModel;
-use Givebutter\Tests\Support\HasCustomFieldsModel;
+use Givebutter\Tests\Support\SurveyResponse;
+use Givebutter\Tests\Support\Survey;
 use Givebutter\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -16,14 +16,13 @@ class HasCustomFieldResponsesTest extends TestCase
     /** @test */
     public function custom_fields_responses_can_be_created_and_accessed_on_models_with_trait()
     {
-        $customFieldModel = HasCustomFieldsModel::create();
-        $customFieldResponseModel = HasCustomFieldResponsesModel::create();
+        $customFieldModel = Survey::create();
+        $customFieldResponseModel = SurveyResponse::create();
 
         $customField = CustomField::make([
             'model_id' => $customFieldModel->id,
             'model_type' => get_class($customFieldModel),
             'type' => 'text',
-            'subtype' => 'email',
             'required' => false,
             'answers' => json_encode(['Boom', 'Bap']),
             'title' => 'Tha Carter II',
@@ -49,15 +48,14 @@ class HasCustomFieldResponsesTest extends TestCase
     /** @test */
     public function whereField_method_allows_filtering_responses()
     {
-        $customFieldModel = HasCustomFieldsModel::create();
-        $firstResponseModel = HasCustomFieldResponsesModel::create();
-        $secondResponseModel = HasCustomFieldResponsesModel::create();
+        $customFieldModel = Survey::create();
+        $firstResponseModel = SurveyResponse::create();
+        $secondResponseModel = SurveyResponse::create();
 
         $firstField = CustomField::create([
             'model_id' => $customFieldModel->id,
             'model_type' => get_class($customFieldModel),
             'type' => 'text',
-            'subtype' => 'email',
             'required' => false,
             'answers' => json_encode(['Boom', 'Bap']),
             'title' => 'Tha Carter II',
@@ -82,10 +80,10 @@ class HasCustomFieldResponsesTest extends TestCase
         $firstResponseModel->customFieldResponses()->save($firstResponse);
         $secondResponseModel->customFieldResponses()->save($secondResponse);
 
-        $this->assertCount(1, HasCustomFieldResponsesModel::whereField($firstField, 'Hit Em Up')->get());
-        $this->assertEquals($firstResponse->id, HasCustomFieldResponsesModel::whereField($firstField, 'Hit Em Up')->first()->id);
+        $this->assertCount(1, SurveyResponse::whereField($firstField, 'Hit Em Up')->get());
+        $this->assertEquals($firstResponse->id, SurveyResponse::whereField($firstField, 'Hit Em Up')->first()->id);
 
-        $this->assertCount(1, HasCustomFieldResponsesModel::whereField($firstField, 'Best Rapper Alive')->get());
-        $this->assertEquals($secondResponse->id, HasCustomFieldResponsesModel::whereField($firstField, 'Best Rapper Alive')->first()->id);
+        $this->assertCount(1, SurveyResponse::whereField($firstField, 'Best Rapper Alive')->get());
+        $this->assertEquals($secondResponse->id, SurveyResponse::whereField($firstField, 'Best Rapper Alive')->first()->id);
     }
 }

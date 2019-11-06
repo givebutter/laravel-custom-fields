@@ -3,7 +3,7 @@
 namespace Givebutter\Tests\Feature;
 
 use Givebutter\LaravelCustomFields\Models\CustomField;
-use Givebutter\Tests\Support\HasCustomFieldsModel;
+use Givebutter\Tests\Support\Survey;
 use Givebutter\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -14,13 +14,12 @@ class HasCustomFieldsTest extends TestCase
     /** @test */
     public function custom_fields_can_be_created_and_accessed_on_models_with_trait()
     {
-        $model = HasCustomFieldsModel::create();
+        $model = Survey::create();
 
         $customField = CustomField::make([
             'model_id' => $model->id,
             'model_type' => get_class($model),
             'type' => 'text',
-            'subtype' => 'email',
             'required' => false,
             'answers' => json_encode(['Boom', 'Bap']),
             'title' => 'Liquid Swords',

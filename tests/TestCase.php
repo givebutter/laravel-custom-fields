@@ -5,6 +5,7 @@ namespace Givebutter\Tests;
 use CreateHasCustomFieldsModelAndCustomFieldResponsesModelTables;
 use Givebutter\LaravelCustomFields\LaravelCustomFieldsServiceProvider;
 use Givebutter\Tests\Support\HasCustomFieldsModel;
+use Givebutter\Tests\Support\Survey;
 use Illuminate\Database\Schema\Blueprint;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
@@ -13,7 +14,10 @@ class TestCase extends OrchestraTestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->withFactories(__DIR__ . '/Support/Factories');
         $this->setUpDatabase($this->app);
+        $this->withoutExceptionHandling();
     }
 
     protected function getPackageProviders($app)
@@ -42,7 +46,7 @@ class TestCase extends OrchestraTestCase
         });
 
         $this->prepareDatabaseForHasCustomFieldsModel();
-        HasCustomFieldsModel::create();
+        Survey::create();
 
         $this->runMigrationStub();
     }
