@@ -14,10 +14,12 @@ trait HasCustomFieldResponses
 
     public function scopeWhereField($query, CustomField $field, $value)
     {
-        return $query->whereHas('responses', function ($subQuery) use ($field, $value) {
+        $q = $query->whereHas('customFieldResponses', function ($subQuery) use ($field, $value) {
             $subQuery
                 ->where('field_id', $field->id)
-                ->whereHasValue($value);
+                ->hasValue($value);
         });
+
+        return $q;
     }
 }

@@ -29,4 +29,12 @@ class CustomFieldResponse extends Model
     {
         return $this->belongsTo(CustomField::class, 'field_id');
     }
+
+    public function scopeHasValue($query, $value)
+    {
+        return $query
+            ->where('value_str', $value)
+            ->orWhere('value_int', $value)
+            ->orWhere('value_text', $value);
+    }
 }
