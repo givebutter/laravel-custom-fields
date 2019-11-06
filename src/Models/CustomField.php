@@ -3,6 +3,7 @@
 namespace Givebutter\LaravelCustomFields\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\Rule;
 
 class CustomField extends Model
 {
@@ -11,25 +12,43 @@ class CustomField extends Model
         'answers' => 'array',
     ];
 
-    const FIELD_VALIDATION_RULES = [
-        'text' => 'string|max:255',
-        'textarea' => 'string',
-        'select' => 'string|max:255',
-        'number' => 'integer',
-        'checkbox' => 'boolean',
-        'radio' => 'string:max:255',
-    ];
-
     public function __construct(array $attributes = [])
     {
         $this->bootIfNotBooted();
-
         $this->initializeTraits();
-
         $this->syncOriginal();
-
         $this->fill($attributes);
+
         $this->table = config('custom-fields.tables.fields', 'custom_fields');
+    }
+
+    public function getFieldValidationRulesAttribute()
+    {
+        return [
+            'text' => [
+                "string",
+                "max:255",
+            ],
+            'textarea' => [
+                "string",
+            ],
+            'select' => [
+                "string",
+                "max:255",
+                Rule::in($this->answers),
+            ],
+            'number' => [
+                "integer",
+            ],
+            'checkbox' => [
+                "boolean",
+            ],
+            'radio' => [
+                "string",
+                "max:255",
+                Rule::in($this->answers),
+            ],
+        ];
     }
 
     public function model()
@@ -44,9 +63,12 @@ class CustomField extends Model
 
     public function getValidationRulesAttribute()
     {
-        $required = $this->required ? 'required|' : '';
-        $typeRules = CustomField::FIELD_VALIDATION_RULES[$this->type];
+        $typeRules = $this->field_validation_rules[$this->type];
 
-        return $required . $typeRules;
+        if ($this->required) {
+            array_push($typeRules, 'required');
+        }
+
+        return $typeRules;
     }
 }

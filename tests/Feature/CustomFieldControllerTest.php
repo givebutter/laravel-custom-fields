@@ -45,8 +45,9 @@ class CustomFieldControllerTest extends TestCase
         $survey = Survey::create();
         $survey->customfields()->save(
             factory(CustomField::class)->make([
-                'title' => 'email',
-                'type' => 'text',
+                'title' => 'favorite_album',
+                'type' => 'select',
+                'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],
             ])
         );
 
@@ -63,8 +64,8 @@ class CustomFieldControllerTest extends TestCase
         $this
             ->post("/surveys/{$survey->id}/responses", [
                 'custom_fields' => [
-                    'phone' => 4438259274,
+                    'favorite_album' => 'Yeezus',
                 ],
-            ])->assertJsonFragment(['email' => ['The email field is required.']]);
+            ])->assertJsonFragment(['favorite_album' => ['The selected favorite album is invalid.']]);
     }
 }

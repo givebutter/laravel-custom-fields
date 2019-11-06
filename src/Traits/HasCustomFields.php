@@ -19,6 +19,6 @@ trait HasCustomFields
             return [$field->title => $field->validationRules];
         })->toArray();
 
-        return Validator::make($request->all(), $validationRules);
+        return Validator::make($request->get('custom_fields'), $validationRules);
     }
 }
