@@ -24,4 +24,9 @@ class CustomField extends Model
     {
         return $this->morphTo();
     }
+
+    public function responses()
+    {
+        return $this->hasMany(CustomFieldResponse::class, 'field_id');
+    }
 }

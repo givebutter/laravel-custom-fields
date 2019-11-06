@@ -82,10 +82,10 @@ class HasCustomFieldResponsesTest extends TestCase
         $firstResponseModel->customFieldResponses()->save($firstResponse);
         $secondResponseModel->customFieldResponses()->save($secondResponse);
 
-        $this->assertCount(1, CustomFieldResponseModel::whereField($firstField, 'Hit Em Up')->get());
-        $this->assertEquals($firstResponse->id, CustomFieldResponseModel::whereField($firstField, 'Hit Em Up')->first()->id);
+        $this->assertCount(1, CustomFieldResponse::whereField($firstField, 'Hit Em Up')->get());
+        $this->assertEquals($firstResponse->id, CustomFieldResponse::whereField($firstField, 'Hit Em Up')->first()->id);
 
-        $this->assertCount(1, CustomFieldResponseModel::whereField($firstField, 'Best Rapper Alive')->get());
-        $this->assertEquals($secondResponse->id, CustomFieldResponseModel::whereField($firstField, 'Best Rapper Alive')->first()->id);
+        $this->assertCount(1, CustomFieldResponse::whereField($firstField, 'Best Rapper Alive')->get());
+        $this->assertEquals($secondResponse->id, CustomFieldResponse::whereField($firstField, 'Best Rapper Alive')->first()->id);
     }
 }
