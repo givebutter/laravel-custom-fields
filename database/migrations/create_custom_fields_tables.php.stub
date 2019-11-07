@@ -14,7 +14,7 @@ class CreateCustomFieldsTables extends Migration
             $table->string('model_type');
             $table->string('type');
             $table->boolean('required');
-            $table->json('answers');
+            $table->json('answers')->nullable();
             $table->string('title');
             $table->string('description');
             $table->string('order');

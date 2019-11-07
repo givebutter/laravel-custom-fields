@@ -58,8 +58,8 @@ class TestCase extends OrchestraTestCase
 
     protected function prepareDatabaseForHasCustomFieldsModel()
     {
-        include_once __DIR__ . '/../tests/support/migrations/create_has_custom_fields_model_and_custom_field_responses_model_tables.php';
-        (new CreateHasCustomFieldsModelAndCustomFieldResponsesModelTables())->up();
+        include_once __DIR__ . '/../tests/support/migrations/create_surveys_and_survey_responses_tables.php';
+        (new \CreateSurveysAndSurveyResponsesTables())->up();
     }
 
     protected function resetDatabase()
