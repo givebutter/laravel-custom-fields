@@ -8,6 +8,15 @@ class CustomFieldResponse extends Model
 {
     protected $guarded = ['id'];
 
+    const VALUE_FIELDS = [
+        'number'   => 'value_int',
+        'checkbox' => 'value_int',
+        'radio'    => 'value_str',
+        'select'   => 'value_str',
+        'text'     => 'value_str',
+        'textarea' => 'value_text',
+    ];
+
     public function __construct(array $attributes = [])
     {
         $this->bootIfNotBooted();
@@ -40,33 +49,11 @@ class CustomFieldResponse extends Model
 
     public function getValueAttribute()
     {
-        return $this->value_int
-            ?? $this->value_str
-            ?? $this->value_text;
+        return $this->attributes[self::VALUE_FIELDS[$this->field->type]];
     }
 
     public function setValueAttribute($value)
     {
-        if (gettype($value) === 'string') {
-            if (strlen($value) > 255) {
-                return $this->update([
-                    'value_text' => $value,
-                    'value_str' => null,
-                    'value_int' => null,
-                ]);
-            }
-
-            return $this->update([
-                'value_text' => null,
-                'value_str' => $value,
-                'value_int' => null,
-            ]);
-        }
-
-        return $this->update([
-            'value_text' => null,
-            'value_str' => null,
-            'value_int' => $value,
-        ]);;
+        $this->attributes[self::VALUE_FIELDS[$this->field->type]] = $value;
     }
 }

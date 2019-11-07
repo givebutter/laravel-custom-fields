@@ -109,12 +109,9 @@ class HasCustomFieldResponsesTest extends TestCase
             'value_str' => 'Best Rapper Alive',
         ]);
 
-        // using a string longer than 255 characters to force switching value fields.
-        $stringLongerThan255Characters = bin2hex(random_bytes(128));
-
         $customFieldResponseModel->customFieldResponses()->save($customFieldResponse);
         $this->assertEquals('Best Rapper Alive', $customFieldResponse->fresh()->value);
-        $customFieldResponse->update(['value' => $stringLongerThan255Characters]);
-        $this->assertEquals($stringLongerThan255Characters, $customFieldResponse->fresh()->value);
+        $customFieldResponse->update(['value' => 'Hit Em Up']);
+        $this->assertEquals('Hit Em Up', $customFieldResponse->fresh()->value);
     }
 }
