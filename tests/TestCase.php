@@ -2,7 +2,6 @@
 
 namespace Givebutter\Tests;
 
-use CreateHasCustomFieldsModelAndCustomFieldResponsesModelTables;
 use Givebutter\LaravelCustomFields\LaravelCustomFieldsServiceProvider;
 use Givebutter\Tests\Support\Survey;
 use Illuminate\Database\Schema\Blueprint;

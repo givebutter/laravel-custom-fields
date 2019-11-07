@@ -51,6 +51,7 @@ class CustomFieldResponse extends Model
     {
         return self::VALUE_FIELDS[$this->field->type];
     }
+
     public function getValueAttribute()
     {
         return $this->attributes[$this->valueField()];
