@@ -22,14 +22,14 @@ class HasCustomFieldsTest extends TestCase
             'type' => 'text',
             'required' => false,
             'answers' => json_encode(['Boom', 'Bap']),
-            'title' => 'Liquid Swords',
-            'description' => 'Wu Tang',
+            'title' => 'Tha Carter II',
+            'description' => 'Lil Wayne',
             'order' => '1',
         ]);
 
         $model->customFields()->save($customField);
 
         $this->assertCount(1, $model->fresh()->customFields);
-        $this->assertEquals('Wu Tang', $model->fresh()->customFields->first()->description);
+        $this->assertEquals('Lil Wayne', $model->fresh()->customFields->first()->description);
     }
 }
