@@ -22,7 +22,7 @@ class CustomField extends Model
         $this->table = config('custom-fields.tables.fields', 'custom_fields');
     }
 
-    public function getFieldValidationRulesAttribute()
+    private function fieldValidationRules()
     {
         return [
             'text' => [
@@ -63,7 +63,7 @@ class CustomField extends Model
 
     public function getValidationRulesAttribute()
     {
-        $typeRules = $this->field_validation_rules[$this->type];
+        $typeRules = $this->fieldValidationRules()[$this->type];
 
         if ($this->required) {
             array_push($typeRules, 'required');
