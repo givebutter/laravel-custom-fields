@@ -61,11 +61,13 @@ class CustomFieldControllerTest extends TestCase
             return response('All good', 200);
         });
 
+        $fieldId = CustomField::where('title', 'favorite_album')->first()->id;
+
         $this
             ->post("/surveys/{$survey->id}/responses", [
                 'custom_fields' => [
-                    'favorite_album' => 'Yeezus',
+                    $fieldId => 'Yeezus',
                 ],
-            ])->assertJsonFragment(['favorite_album' => ['The selected favorite album is invalid.']]);
+            ])->assertJsonFragment(["field_1" => ["The selected field 1 is invalid."]]);
     }
 }

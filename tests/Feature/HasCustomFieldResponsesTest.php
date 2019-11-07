@@ -19,15 +19,9 @@ class HasCustomFieldResponsesTest extends TestCase
         $customFieldModel = Survey::create();
         $customFieldResponseModel = SurveyResponse::create();
 
-        $customField = CustomField::make([
+        $customField = factory(CustomField::class)->make([
             'model_id' => $customFieldModel->id,
             'model_type' => get_class($customFieldModel),
-            'type' => 'text',
-            'required' => false,
-            'answers' => json_encode(['Boom', 'Bap']),
-            'title' => 'Tha Carter II',
-            'description' => 'Lil Wayne',
-            'order' => '1',
         ]);
 
         $customFieldModel->customFields()->save($customField);
@@ -52,15 +46,9 @@ class HasCustomFieldResponsesTest extends TestCase
         $firstResponseModel = SurveyResponse::create();
         $secondResponseModel = SurveyResponse::create();
 
-        $firstField = CustomField::create([
+        $firstField = factory(CustomField::class)->create([
             'model_id' => $customFieldModel->id,
             'model_type' => get_class($customFieldModel),
-            'type' => 'text',
-            'required' => false,
-            'answers' => json_encode(['Boom', 'Bap']),
-            'title' => 'Tha Carter II',
-            'description' => 'Lil Wayne',
-            'order' => '1',
         ]);
 
         $firstResponse = CustomFieldResponse::create([

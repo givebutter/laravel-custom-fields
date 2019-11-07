@@ -16,9 +16,14 @@ trait HasCustomFields
     public function validateCustomFields(Request $request)
     {
         $validationRules = $this->customFields->mapWithKeys(function ($field) {
-            return [$field->title => $field->validationRules];
+            return ['field_' . $field->id => $field->validationRules];
         })->toArray();
 
-        return Validator::make($request->get(config('custom-fields.form_name', 'custom_fields')), $validationRules);
+        $keyAdjustedFields = collect($request->get(config('custom-fields.form_name', 'custom_fields')))
+            ->mapWithKeys(function ($field, $key) {
+                return ["field_{$key}" => $field];
+            })->toArray();
+
+        return Validator::make($keyAdjustedFields, $validationRules);
     }
 }

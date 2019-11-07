@@ -16,15 +16,10 @@ class HasCustomFieldsTest extends TestCase
     {
         $model = Survey::create();
 
-        $customField = CustomField::make([
+        $customField = factory(CustomField::class)->make([
             'model_id' => $model->id,
             'model_type' => get_class($model),
-            'type' => 'text',
-            'required' => false,
-            'answers' => json_encode(['Boom', 'Bap']),
-            'title' => 'Tha Carter II',
             'description' => 'Lil Wayne',
-            'order' => '1',
         ]);
 
         $model->customFields()->save($customField);
