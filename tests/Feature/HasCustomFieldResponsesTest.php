@@ -86,4 +86,35 @@ class HasCustomFieldResponsesTest extends TestCase
         $this->assertCount(1, SurveyResponse::whereField($firstField, 'Best Rapper Alive')->get());
         $this->assertEquals($secondResponse->id, SurveyResponse::whereField($firstField, 'Best Rapper Alive')->first()->id);
     }
+
+
+    /** @test */
+    public function value_getter_and_setter_work_fine()
+    {
+        $customFieldModel = Survey::create();
+        $customFieldResponseModel = SurveyResponse::create();
+
+        $customField = factory(CustomField::class)->make([
+            'model_id' => $customFieldModel->id,
+            'model_type' => get_class($customFieldModel),
+            'type' => 'text',
+        ]);
+
+        $customFieldModel->customFields()->save($customField);
+
+        $customFieldResponse = CustomFieldResponse::make([
+            'model_id' => $customFieldResponseModel->id,
+            'model_type' => get_class($customFieldResponseModel),
+            'field_id' => $customField->fresh()->id,
+            'value_str' => 'Best Rapper Alive',
+        ]);
+
+        // using a string longer than 255 characters to force switching value fields.
+        $stringLongerThan255Characters = bin2hex(random_bytes(128));
+
+        $customFieldResponseModel->customFieldResponses()->save($customFieldResponse);
+        $this->assertEquals('Best Rapper Alive', $customFieldResponse->fresh()->value);
+        $customFieldResponse->update(['value' => $stringLongerThan255Characters]);
+        $this->assertEquals($stringLongerThan255Characters, $customFieldResponse->fresh()->value);
+    }
 }

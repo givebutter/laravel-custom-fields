@@ -37,4 +37,36 @@ class CustomFieldResponse extends Model
             ->orWhere('value_int', $value)
             ->orWhere('value_text', $value);
     }
+
+    public function getValueAttribute()
+    {
+        return $this->value_int
+            ?? $this->value_str
+            ?? $this->value_text;
+    }
+
+    public function setValueAttribute($value)
+    {
+        if (gettype($value) === 'string') {
+            if (strlen($value) > 255) {
+                return $this->update([
+                    'value_text' => $value,
+                    'value_str' => null,
+                    'value_int' => null,
+                ]);
+            }
+
+            return $this->update([
+                'value_text' => null,
+                'value_str' => $value,
+                'value_int' => null,
+            ]);
+        }
+
+        return $this->update([
+            'value_text' => null,
+            'value_str' => null,
+            'value_int' => $value,
+        ]);;
+    }
 }
