@@ -47,13 +47,21 @@ class CustomFieldResponse extends Model
             ->orWhere('value_text', $value);
     }
 
+    private function valueField()
+    {
+        return self::VALUE_FIELDS[$this->field->type];
+    }
     public function getValueAttribute()
     {
-        return $this->attributes[self::VALUE_FIELDS[$this->field->type]];
+        return $this->attributes[$this->valueField()];
     }
 
     public function setValueAttribute($value)
     {
-        $this->attributes[self::VALUE_FIELDS[$this->field->type]] = $value;
+        $this->attributes['value_int'] = null;
+        $this->attributes['value_str'] = null;
+        $this->attributes['value_text'] = null;
+
+        $this->attributes[$this->valueField()] = $value;
     }
 }
