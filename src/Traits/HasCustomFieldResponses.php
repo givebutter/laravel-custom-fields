@@ -14,12 +14,14 @@ trait HasCustomFieldResponses
 
     public function saveCustomFields($fields)
     {
-        $fields->each(function ($value, $key) {
-            $this->customFieldResponses()->create([
+        foreach ($fields as $key => $value) {
+            CustomFieldResponse::create([
                 'value' => $value,
-                'field_id' => CustomField::find((int) $key)->id
+                'field_id' => CustomField::find((int) $key)->id,
+                'model_id' => $this->id,
+                'model_type' => get_class($this),
             ]);
-        });
+        }
     }
 
     public function scopeWhereField($query, CustomField $field, $value)

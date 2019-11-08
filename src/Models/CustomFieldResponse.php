@@ -19,6 +19,7 @@ class CustomFieldResponse extends Model
 
     public function __construct(array $attributes = [])
     {
+        $this->attributes = $attributes;
         $this->bootIfNotBooted();
 
         $this->initializeTraits();
@@ -49,7 +50,9 @@ class CustomFieldResponse extends Model
 
     private function valueField()
     {
-        return self::VALUE_FIELDS[$this->field->type];
+        $fieldType = CustomField::find($this->field_id)->type;
+
+        return self::VALUE_FIELDS[$fieldType];
     }
 
     public function getValueAttribute()
@@ -62,6 +65,7 @@ class CustomFieldResponse extends Model
         $this->attributes['value_int'] = null;
         $this->attributes['value_str'] = null;
         $this->attributes['value_text'] = null;
+        unset($this->attributes['value']);
 
         $this->attributes[$this->valueField()] = $value;
     }
