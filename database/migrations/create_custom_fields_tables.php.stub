@@ -16,7 +16,7 @@ class CreateCustomFieldsTables extends Migration
             $table->boolean('required')->default(false);
             $table->json('answers')->nullable();
             $table->string('title');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('order');
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
