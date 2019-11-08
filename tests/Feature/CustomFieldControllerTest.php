@@ -4,6 +4,7 @@ namespace Givebutter\Tests\Feature;
 
 use Givebutter\LaravelCustomFields\Models\CustomField;
 use Givebutter\Tests\Support\Survey;
+use Givebutter\Tests\Support\SurveyResponse;
 use Givebutter\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
@@ -69,5 +70,36 @@ class CustomFieldControllerTest extends TestCase
                     $fieldId => 'Yeezus',
                 ],
             ])->assertJsonFragment(["field_1" => ["The selected field 1 is invalid."]]);
+    }
+
+    /** @test */
+    public function fields_can_be_saved_from_request_with_convenience_method()
+    {
+        $survey = Survey::create();
+        $surveyResponse = SurveyResponse::create();
+        $survey->customfields()->save(
+            factory(CustomField::class)->make([
+                'title' => 'favorite_album',
+                'type' => 'select',
+                'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],
+            ])
+        );
+
+        Route::post("/surveys/{$survey->id}/responses", function () use ($surveyResponse) {
+            $surveyResponse->saveCustomfields(request('custom_fields'));
+
+            return response('All good', 200);
+        });
+
+        $fieldId = CustomField::where('title', 'favorite_album')->first()->id;
+
+        $this
+            ->post("/surveys/{$survey->id}/responses", [
+                'custom_fields' => [
+                    $fieldId => 'Tha Carter',
+                ],
+            ])->assertOk();
+
+        $this->assertCount(1, $surveyResponse->customFieldResponses);
     }
 }

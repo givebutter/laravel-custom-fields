@@ -12,10 +12,17 @@ trait HasCustomFieldResponses
         return $this->morphMany(CustomFieldResponse::class, 'model');
     }
 
-
-
     public function saveCustomFields($fields)
-    { }
+    {
+        foreach ($fields as $key => $value) {
+            CustomFieldResponse::create([
+                'value' => $value,
+                'field_id' => CustomField::find((int) $key)->id,
+                'model_id' => $this->id,
+                'model_type' => get_class($this),
+            ]);
+        }
+    }
 
     public function scopeWhereField($query, CustomField $field, $value)
     {
