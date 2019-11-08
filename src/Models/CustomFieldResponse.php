@@ -19,14 +19,16 @@ class CustomFieldResponse extends Model
 
     public function __construct(array $attributes = [])
     {
+        // We have to do this because the `value` mutator depends on 
+        // `field_id` being set. If `value` is declared earlie than `field_id`
+        // in a create() array, the mutator will blow up.
         $this->attributes = $attributes;
+
         $this->bootIfNotBooted();
-
         $this->initializeTraits();
-
         $this->syncOriginal();
-
         $this->fill($attributes);
+
         $this->table = config('custom-fields.tables.field-responses', 'custom_field_responses');
     }
 
@@ -50,9 +52,7 @@ class CustomFieldResponse extends Model
 
     private function valueField()
     {
-        $fieldType = CustomField::find($this->field_id)->type;
-
-        return self::VALUE_FIELDS[$fieldType];
+        return self::VALUE_FIELDS[$this->field->type];
     }
 
     public function getValueAttribute()
