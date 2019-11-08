@@ -13,19 +13,18 @@ class CreateCustomFieldsTables extends Migration
             $table->unsignedInteger('model_id');
             $table->string('model_type');
             $table->string('type');
-            $table->string('subtype');
-            $table->boolean('required');
-            $table->json('answers');
+            $table->boolean('required')->default(false);
+            $table->json('answers')->nullable();
             $table->string('title');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('order');
-            $table->timestamp('deleted_at');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
 
         Schema::create(config('custom-fields.tables.field_responses', 'custom_field_responses'), function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('field_id');
+            $table->unsignedInteger('field_id')->references('id')->on(config('custom-fields.tables.fields', 'custom_fields'));
             $table->unsignedInteger('model_id');
             $table->string('model_type');
             $table->string('value_str')->nullable();
