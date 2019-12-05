@@ -71,4 +71,13 @@ class CustomField extends Model
 
         return $typeRules;
     }
+
+    public static function boot()
+    {
+        parent::boot();
+        self::creating(function ($field) {
+            $lastFieldOnCurrentModel = $field->model->customFields()->orderBy('order', 'desc')->first();
+            $field->order = ($lastFieldOnCurrentModel ? $lastFieldOnCurrentModel->order : 0) + 1;
+        });
+    }
 }
