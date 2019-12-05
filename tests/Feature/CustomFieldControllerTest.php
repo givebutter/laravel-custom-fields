@@ -69,7 +69,7 @@ class CustomFieldControllerTest extends TestCase
                 'custom_fields' => [
                     $fieldId => 'Yeezus',
                 ],
-            ])->assertJsonFragment(["field_1" => ["The selected field 1 is invalid."]]);
+            ])->assertJsonFragment(["field_1" => ["The selected `favorite_album` field is invalid."]]);
     }
 
     /** @test */

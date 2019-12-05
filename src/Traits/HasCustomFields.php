@@ -3,6 +3,7 @@
 namespace Givebutter\LaravelCustomFields\Traits;
 
 use Givebutter\LaravelCustomFields\Models\CustomField;
+use Givebutter\LaravelCustomFields\Validators\CustomFieldValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,6 +25,6 @@ trait HasCustomFields
                 return ["field_{$key}" => $field];
             })->toArray();
 
-        return Validator::make($keyAdjustedFields, $validationRules);
+        return new CustomFieldValidator($keyAdjustedFields, $validationRules);
     }
 }
