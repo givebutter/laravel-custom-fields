@@ -44,8 +44,6 @@ class TestCase extends OrchestraTestCase
         });
 
         $this->prepareDatabaseForHasCustomFieldsModel();
-        Survey::create();
-
         $this->runMigrationStub();
     }
 

@@ -71,4 +71,12 @@ class CustomField extends Model
 
         return $typeRules;
     }
+
+    public static function boot()
+    {
+        parent::boot();
+        self::creating(function ($field) {
+            $field->order = $field->model->customFields()->count() + 1;
+        });
+    }
 }
