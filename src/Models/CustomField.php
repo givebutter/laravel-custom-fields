@@ -76,7 +76,8 @@ class CustomField extends Model
     {
         parent::boot();
         self::creating(function ($field) {
-            $field->order = $field->model->customFields()->count() + 1;
+            $lastFieldOnCurrentModel = $field->model->customFields()->orderBy('order', 'desc')->first();
+            $field->order = ($lastFieldOnCurrentModel ? $lastFieldOnCurrentModel->order : 0) + 1;
         });
     }
 }
