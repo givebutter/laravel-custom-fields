@@ -12,7 +12,8 @@ trait HasCustomFields
 {
     public function customFields()
     {
-        return $this->morphMany(CustomField::class, 'model');
+        return $this->morphMany(CustomField::class, 'model')
+            ->orderBy('order', 'asc');
     }
 
     public function validateCustomFields(Request $request)
@@ -44,10 +45,10 @@ trait HasCustomFields
         $fields->each(function ($id, $index) {
             $customField = $this->customFields()->find($id);
 
-            if (! $customField) {
+            if (!$customField) {
                 throw new FieldDoesNotBelongToModelException($id, $this);
-            } 
-            
+            }
+
             $customField->update(['order' => $index + 1]);
         });
     }
