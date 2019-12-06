@@ -26,30 +26,24 @@ class CustomField extends Model
     {
         return [
             'text' => [
-                'nullable',
                 'string',
                 'max:255',
             ],
             'textarea' => [
-                'nullable',
                 'string',
             ],
             'select' => [
-                'nullable',
                 'string',
                 'max:255',
                 Rule::in($this->answers),
             ],
             'number' => [
-                'nullable',
                 'integer',
             ],
             'checkbox' => [
-                'nullable',
                 'boolean',
             ],
             'radio' => [
-                'nullable',
                 'string',
                 'max:255',
                 Rule::in($this->answers),
@@ -70,11 +64,8 @@ class CustomField extends Model
     public function getValidationRulesAttribute()
     {
         $typeRules = $this->fieldValidationRules()[$this->type];
-
-        if ($this->required) {
-            array_push($typeRules, 'required');
-        }
-
+        array_unshift($typeRules, $this->required ? 'required' : 'nullable');
+        dump($typeRules);
         return $typeRules;
     }
 

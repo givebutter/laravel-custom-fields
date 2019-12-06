@@ -106,6 +106,38 @@ class CustomFieldControllerTest extends TestCase
     }
 
     /** @test */
+    public function checkbox_can_pass_validation()
+    {
+        $survey = Survey::create();
+        $survey->customfields()->save(
+            factory(CustomField::class)->make([
+                'title' => 'favorite_album',
+                'type' => 'checkbox',
+                'required' => true
+            ])
+        );
+
+        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
+            $validator = $survey->validateCustomFields($request);
+
+            if ($validator->fails()) {
+                return ['errors' => $validator->errors()];
+            }
+
+            return response('All good', 200);
+        });
+
+        $fieldId = CustomField::where('title', 'favorite_album')->first()->id;
+
+        $this
+            ->post("/surveys/{$survey->id}/responses", [
+                'custom_fields' => [
+                    $fieldId => false,
+                ],
+            ])->assertOk();
+    }
+
+    /** @test */
     public function fields_can_be_saved_from_request_with_convenience_method()
     {
         $survey = Survey::create();
