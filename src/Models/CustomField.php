@@ -26,26 +26,32 @@ class CustomField extends Model
     {
         return [
             'text' => [
-                "string",
-                "max:255",
+                'nullable',
+                'string',
+                'max:255',
             ],
             'textarea' => [
-                "string",
+                'nullable',
+                'string',
             ],
             'select' => [
-                "string",
-                "max:255",
+                'nullable',
+                'string',
+                'max:255',
                 Rule::in($this->answers),
             ],
             'number' => [
-                "integer",
+                'nullable',
+                'integer',
             ],
             'checkbox' => [
-                "boolean",
+                'nullable',
+                'boolean',
             ],
             'radio' => [
-                "string",
-                "max:255",
+                'nullable',
+                'string',
+                'max:255',
                 Rule::in($this->answers),
             ],
         ];
