@@ -41,7 +41,7 @@ class CustomField extends Model
                 'integer',
             ],
             'checkbox' => [
-                'boolean',
+                'in:on',
             ],
             'radio' => [
                 'string',
@@ -65,7 +65,7 @@ class CustomField extends Model
     {
         $typeRules = $this->fieldValidationRules()[$this->type];
         array_unshift($typeRules, $this->required ? 'required' : 'nullable');
-        dump($typeRules);
+ 
         return $typeRules;
     }
 

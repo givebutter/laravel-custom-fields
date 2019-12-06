@@ -102,27 +102,29 @@ class CustomFieldControllerTest extends TestCase
                 'custom_fields' => [
                     $fieldId => null,
                 ],
-            ])->assertOk();
+            ])->assertSee('All good');
     }
 
     /** @test */
     public function checkbox_can_pass_validation()
     {
         $survey = Survey::create();
+        $surveyResponse = SurveyResponse::create();
         $survey->customfields()->save(
             factory(CustomField::class)->make([
                 'title' => 'favorite_album',
                 'type' => 'checkbox',
-                'required' => true
             ])
         );
 
-        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
+        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey, $surveyResponse) {
             $validator = $survey->validateCustomFields($request);
 
             if ($validator->fails()) {
                 return ['errors' => $validator->errors()];
             }
+
+            $surveyResponse->saveCustomfields($request->get('custom_fields'));
 
             return response('All good', 200);
         });
@@ -132,9 +134,11 @@ class CustomFieldControllerTest extends TestCase
         $this
             ->post("/surveys/{$survey->id}/responses", [
                 'custom_fields' => [
-                    $fieldId => false,
+                    $fieldId => 'on',
                 ],
-            ])->assertOk();
+            ])->assertSee('All good');
+
+        $this->assertTrue($surveyResponse->customFieldResponses()->first()->value);
     }
 
     /** @test */
