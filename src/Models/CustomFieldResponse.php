@@ -57,7 +57,19 @@ class CustomFieldResponse extends Model
 
     public function getValueAttribute()
     {
-        return $this->attributes[$this->valueField()];
+        return $this->formatValue(
+            $this->attributes[$this->valueField()]
+        );
+    }
+
+    public function formatValue($value)
+    {
+        // checkboxes send a default value of `on` so we need to booleanize it.
+        if ($this->field->type === 'checkbox') {
+            $value = !!$value;
+        }
+
+        return $value;
     }
 
     public function setValueAttribute($value)
@@ -67,6 +79,6 @@ class CustomFieldResponse extends Model
         $this->attributes['value_text'] = null;
         unset($this->attributes['value']);
 
-        $this->attributes[$this->valueField()] = $value;
+        $this->attributes[$this->valueField()] = $this->formatValue($value);
     }
 }
