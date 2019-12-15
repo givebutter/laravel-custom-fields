@@ -62,6 +62,15 @@ class CustomFieldResponse extends Model
         );
     }
 
+    public function getValueFriendlyAttribute()
+    {
+        if ($this->field->type === 'checkbox') {
+            return $this->value ? 'Checked' : 'Unchecked';
+        }
+
+        return $this->value;
+    }
+
     public function formatValue($value)
     {
         // checkboxes send a default value of `on` so we need to booleanize it.
