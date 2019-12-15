@@ -17,18 +17,23 @@ trait HasCustomFields
             ->orderBy('order', 'asc');
     }
 
-    public function validateCustomFields(Request $request)
+    public function validateCustomFields($fields)
     {
         $validationRules = $this->customFields->mapWithKeys(function ($field) {
             return ['field_' . $field->id => $field->validationRules];
         })->toArray();
 
-        $keyAdjustedFields = collect($request->get(config('custom-fields.form_name', 'custom_fields')))
+        $keyAdjustedFields = collect($fields)
             ->mapWithKeys(function ($field, $key) {
                 return ["field_{$key}" => $field];
             })->toArray();
 
         return new CustomFieldValidator($keyAdjustedFields, $validationRules);
+    }
+    
+    public function validateCustomFieldsRequest(Request $request)
+    {
+	    return $this->validateCustomFields($request->get(config('custom-fields.form_name', 'custom_fields')));
     }
 
     public function order($fields)
