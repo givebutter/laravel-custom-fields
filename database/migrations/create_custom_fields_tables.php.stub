@@ -24,7 +24,8 @@ class CreateCustomFieldsTables extends Migration
 
         Schema::create(config('custom-fields.tables.field_responses', 'custom_field_responses'), function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('field_id')->references('id')->on(config('custom-fields.tables.fields', 'custom_fields'));
+            $table->unsignedInteger('field_id');
+            $table->foreign('field_id')->references('id')->on(config('custom-fields.tables.fields', 'custom_fields'));
             $table->unsignedInteger('model_id');
             $table->string('model_type');
             $table->string('value_str')->nullable();
