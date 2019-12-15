@@ -41,7 +41,7 @@ class CustomField extends Model
                 'integer',
             ],
             'checkbox' => [
-                'in:on',
+                'in:0,1',
             ],
             'radio' => [
                 'string',
