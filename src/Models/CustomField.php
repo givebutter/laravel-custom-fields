@@ -26,7 +26,7 @@ class CustomField extends Model
         $this->table = config('custom-fields.tables.fields', 'custom_fields');
     }
 
-    private function fieldValidationRules()
+    private function fieldValidationRules($required)
     {
         return [
             'text' => [
@@ -44,9 +44,7 @@ class CustomField extends Model
             'number' => [
                 'integer',
             ],
-            'checkbox' => [
-                'in:0,1',
-            ],
+            'checkbox' => $required ? ['accepted','in:0,1'] : ['in:0,1'],
             'radio' => [
                 'string',
                 'max:255',
@@ -67,7 +65,7 @@ class CustomField extends Model
 
     public function getValidationRulesAttribute()
     {
-        $typeRules = $this->fieldValidationRules()[$this->type];
+        $typeRules = $this->fieldValidationRules($this->required)[$this->type];
         array_unshift($typeRules, $this->required ? 'required' : 'nullable');
  
         return $typeRules;
