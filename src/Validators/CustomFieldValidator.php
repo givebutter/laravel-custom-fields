@@ -13,7 +13,7 @@ class CustomFieldValidator extends Validator
         parent::__construct(
             app('translator'),
             $data,
-            $rules,
+            $rules
         );
     }
 
