@@ -17,9 +17,10 @@ class CreateCustomFieldsTables extends Migration
             $table->json('answers')->nullable();
             $table->string('title');
             $table->string('description')->nullable();
+            $table->string('default_value')->nullable();
             $table->string('order');
-            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
 
         Schema::create(config('custom-fields.tables.field_responses', 'custom_field_responses'), function (Blueprint $table) {
