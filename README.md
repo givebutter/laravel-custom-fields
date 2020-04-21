@@ -1,5 +1,7 @@
 # Laravel Custom Fields
 
+> ⚠️ Warning: these docs are incomplete and may reference unsupported functions. This is a pre-release version that is not yet ready for production use.
+
 Laravel Custom Fields is a package that allows you to add custom fields to any Laravel model and associate responses to those fields with other models.
 
 [![Latest Stable Version](https://poser.pugx.org/givebutter/laravel-custom-fields/v/stable)](https://packagist.org/packages/givebutter/laravel-custom-fields) [![Total Downloads](https://poser.pugx.org/givebutter/laravel-custom-fields/downloads)](https://packagist.org/packages/givebutter/laravel-custom-fields) [![License](https://poser.pugx.org/givebutter/laravel-custom-fields/license)](https://packagist.org/packages/givebutter/laravel-custom-fields)
