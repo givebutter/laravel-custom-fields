@@ -7,18 +7,35 @@ use Givebutter\LaravelCustomFields\Models\CustomFieldResponse;
 
 trait HasCustomFieldResponses
 {
+
+    protected function getCustomFieldResponseModel()
+    {
+        return config(
+            'custom-fields.models.CustomFieldResponse',
+            CustomFieldResponse::class
+        );
+    }
+
+    protected function getCustomFieldModel()
+    {
+        return config(
+            'custom-fields.models.CustomField',
+            CustomField::class
+        );
+    }
+
     public function customFieldResponses()
     {
-        return $this->morphMany(CustomFieldResponse::class, 'model');
+        return $this->morphMany($this->getCustomFieldResponseModel(), 'model');
     }
 
     public function saveCustomFields($fields)
     {
         foreach ($fields as $key => $value) {
-            CustomFieldResponse::create([
-                'value' => $value,
-                'field_id' => CustomField::find((int) $key)->id,
-                'model_id' => $this->id,
+            $this->getCustomFieldResponseModel()::create([
+                'value'      => $value,
+                'field_id'   => $this->getCustomFieldModel()::find((int) $key)->id,
+                'model_id'   => $this->id,
                 'model_type' => get_class($this),
             ]);
         }

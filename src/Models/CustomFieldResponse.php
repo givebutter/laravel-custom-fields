@@ -37,9 +37,18 @@ class CustomFieldResponse extends Model
         return $this->morphTo();
     }
 
+    protected function getCustomFieldModel()
+    {
+        return config(
+            'custom-fields.models.CustomField',
+            CustomField::class
+        );
+    }
+
+
     public function field()
     {
-        return $this->belongsTo(CustomField::class, 'field_id');
+        return $this->belongsTo($this->getCustomFieldModel(), 'field_id');
     }
 
     public function scopeHasValue($query, $value)
@@ -75,7 +84,7 @@ class CustomFieldResponse extends Model
     {
         // checkboxes send a default value of `on` so we need to booleanize it.
         if ($this->field->type === 'checkbox') {
-            $value = !!$value;
+            $value = ! ! $value;
         }
 
         return $value;

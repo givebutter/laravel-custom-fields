@@ -8,9 +8,9 @@ use Illuminate\Validation\Rule;
 
 class CustomField extends Model
 {
-	
-	use SoftDeletes;
-	
+
+    use SoftDeletes;
+
     protected $guarded = ['id'];
     protected $casts = [
         'answers' => 'array',
@@ -29,23 +29,23 @@ class CustomField extends Model
     private function fieldValidationRules($required)
     {
         return [
-            'text' => [
+            'text'     => [
                 'string',
                 'max:255',
             ],
             'textarea' => [
                 'string',
             ],
-            'select' => [
+            'select'   => [
                 'string',
                 'max:255',
                 Rule::in($this->answers),
             ],
-            'number' => [
+            'number'   => [
                 'integer',
             ],
             'checkbox' => $required ? ['accepted','in:0,1'] : ['in:0,1'],
-            'radio' => [
+            'radio'    => [
                 'string',
                 'max:255',
                 Rule::in($this->answers),
@@ -58,16 +58,24 @@ class CustomField extends Model
         return $this->morphTo();
     }
 
+    protected function getCustomFieldResponseModel()
+    {
+        return config(
+            'custom-fields.models.CustomFieldResponse',
+            CustomFieldResponse::class
+        );
+    }
+
     public function responses()
     {
-        return $this->hasMany(CustomFieldResponse::class, 'field_id');
+        return $this->hasMany($this->getCustomFieldResponseModel(), 'field_id');
     }
 
     public function getValidationRulesAttribute()
     {
         $typeRules = $this->fieldValidationRules($this->required)[$this->type];
         array_unshift($typeRules, $this->required ? 'required' : 'nullable');
- 
+
         return $typeRules;
     }
 

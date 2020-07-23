@@ -11,9 +11,18 @@ use Illuminate\Support\Facades\Validator;
 
 trait HasCustomFields
 {
+
+    protected function getCustomFieldModel()
+    {
+        return config(
+            'custom-fields.models.CustomField',
+            CustomField::class
+        );
+    }
+
     public function customFields()
     {
-        return $this->morphMany(CustomField::class, 'model')
+        return $this->morphMany($this->getCustomFieldModel(), 'model')
             ->orderBy('order', 'asc');
     }
 
@@ -30,10 +39,10 @@ trait HasCustomFields
 
         return new CustomFieldValidator($keyAdjustedFields, $validationRules);
     }
-    
+
     public function validateCustomFieldsRequest(Request $request)
     {
-	    return $this->validateCustomFields($request->get(config('custom-fields.form_name', 'custom_fields')));
+        return $this->validateCustomFields($request->get(config('custom-fields.form_name', 'custom_fields')));
     }
 
     public function order($fields)
@@ -51,7 +60,7 @@ trait HasCustomFields
         $fields->each(function ($id, $index) {
             $customField = $this->customFields()->find($id);
 
-            if (!$customField) {
+            if (! $customField) {
                 throw new FieldDoesNotBelongToModelException($id, $this);
             }
 
