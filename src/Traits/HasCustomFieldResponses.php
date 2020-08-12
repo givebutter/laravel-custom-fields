@@ -15,9 +15,15 @@ trait HasCustomFieldResponses
     public function saveCustomFields($fields)
     {
         foreach ($fields as $key => $value) {
+            $customField = CustomField::find((int) $key);
+
+            if (!$customField) {
+                continue;
+            }
+
             CustomFieldResponse::create([
                 'value' => $value,
-                'field_id' => CustomField::find((int) $key)->id,
+                'field_id' => $customField->id,
                 'model_id' => $this->id,
                 'model_type' => get_class($this),
             ]);
