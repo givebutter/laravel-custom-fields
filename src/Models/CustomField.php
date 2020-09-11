@@ -14,7 +14,7 @@ class CustomField extends Model
     protected $guarded = ['id'];
 
     protected $fillable = [
-        'value'
+        'value', 'type', 'title', 'description', 'answers'
     ];
 
     protected $casts = [
