@@ -14,7 +14,14 @@ class CustomField extends Model
     protected $guarded = ['id'];
 
     protected $fillable = [
-        'value', 'type', 'title', 'description', 'answers'
+        'value', 
+        'type', 
+        'title', 
+        'description', 
+        'answers', 
+        'required', 
+        'default_value', 
+        'order',
     ];
 
     protected $casts = [
