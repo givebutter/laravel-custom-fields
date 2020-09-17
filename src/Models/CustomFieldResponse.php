@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class CustomFieldResponse extends Model
 {
     protected $guarded = ['id'];
+    
+    protected $fillable = [
+        'value',
+    ];
 
     const VALUE_FIELDS = [
         'number'   => 'value_int',
