@@ -41,7 +41,7 @@ use Givebutter\LaravelCustomFields\Traits\HasCusomFields;
 
 class Survey extends Model
 {
-    use HasCusomFields;
+    use HasCustomFields;
 
     // ...
 }
@@ -57,7 +57,7 @@ use Givebutter\LaravelCustomFields\Traits\HasCusomFieldResponses;
 
 class SurveyResponse extends Model
 {
-    use HasCusomFieldResponses;
+    use HasCustomFieldResponses;
 
     // ...
 }
