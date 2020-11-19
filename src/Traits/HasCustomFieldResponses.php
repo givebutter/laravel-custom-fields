@@ -2,26 +2,23 @@
 
 namespace Givebutter\LaravelCustomFields\Traits;
 
-use Givebutter\LaravelCustomFields\Models\CustomField;
-use Givebutter\LaravelCustomFields\Models\CustomFieldResponse;
-
 trait HasCustomFieldResponses
 {
     public function customFieldResponses()
     {
-        return $this->morphMany(CustomFieldResponse::class, 'model');
+        return $this->morphMany(config('custom-fields.models.custom_field_response'), 'model');
     }
 
     public function saveCustomFields($fields)
     {
         foreach ($fields as $key => $value) {
-            $customField = CustomField::find((int) $key);
+            $customField = config('custom-fields.models.custom_field')::find((int) $key);
 
-            if (!$customField) {
+            if (! $customField) {
                 continue;
             }
 
-            CustomFieldResponse::create([
+            config('custom-fields.models.custom_field_response')::create([
                 'value' => $value,
                 'field_id' => $customField->id,
                 'model_id' => $this->id,
@@ -30,7 +27,7 @@ trait HasCustomFieldResponses
         }
     }
 
-    public function scopeWhereField($query, CustomField $field, $value)
+    public function scopeWhereField($query, $field, $value)
     {
         $query->whereHas('customFieldResponses', function ($subQuery) use ($field, $value) {
             $subQuery

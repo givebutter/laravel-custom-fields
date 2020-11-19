@@ -43,7 +43,7 @@ class CustomFieldResponse extends Model
 
     public function field()
     {
-        return $this->belongsTo(CustomField::class, 'field_id');
+        return $this->belongsTo(config('custom-fields.models.custom_field'), 'field_id');
     }
 
     public function scopeHasValue($query, $value)

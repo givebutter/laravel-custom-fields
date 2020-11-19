@@ -71,7 +71,7 @@ class CustomField extends Model
 
     public function responses()
     {
-        return $this->hasMany(CustomFieldResponse::class, 'field_id');
+        return $this->hasMany(config('custom-fields.models.custom_field_response'), 'field_id');
     }
 
     public function getValidationRulesAttribute()

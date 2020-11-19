@@ -4,7 +4,6 @@ namespace Givebutter\LaravelCustomFields\Traits;
 
 use Givebutter\LaravelCustomFields\Exceptions\FieldDoesNotBelongToModelException;
 use Givebutter\LaravelCustomFields\Exceptions\WrongNumberOfFieldsForOrderingException;
-use Givebutter\LaravelCustomFields\Models\CustomField;
 use Givebutter\LaravelCustomFields\Validators\CustomFieldValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,7 +12,7 @@ trait HasCustomFields
 {
     public function customFields()
     {
-        return $this->morphMany(CustomField::class, 'model')
+        return $this->morphMany(config('custom-fields.models.custom_field'), 'model')
             ->orderBy('order', 'asc');
     }
 
@@ -33,7 +32,7 @@ trait HasCustomFields
     
     public function validateCustomFieldsRequest(Request $request)
     {
-	    return $this->validateCustomFields($request->get(config('custom-fields.form_name', 'custom_fields')));
+        return $this->validateCustomFields($request->get(config('custom-fields.form_name', 'custom_fields')));
     }
 
     public function order($fields)

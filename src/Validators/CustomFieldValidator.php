@@ -2,7 +2,6 @@
 
 namespace Givebutter\LaravelCustomFields\Validators;
 
-use Givebutter\LaravelCustomFields\Models\CustomField;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Validator;
 
@@ -20,7 +19,7 @@ class CustomFieldValidator extends Validator
     protected function replaceAttributePlaceholder($message, $value)
     {
         $fieldId = (int) Str::after($value, 'field ');
-        $fieldTitle = CustomField::find($fieldId)->title;
+        $fieldTitle = config('custom-fields.models.custom_field')::find($fieldId)->title;
         $replacementString = "`{$fieldTitle}` field";
         
         return str_replace(
