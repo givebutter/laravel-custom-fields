@@ -2,14 +2,21 @@
 
 namespace Givebutter\LaravelCustomFields\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rule;
 
 class CustomField extends Model
 {
-	
-	use SoftDeletes;
+    const TYPE_CHECKBOX = 'checkbox';
+    const TYPE_NUMBER = 'number';
+    const TYPE_RADIO = 'radio';
+    const TYPE_SELECT = 'select';
+    const TYPE_TEXT = 'text';
+    const TYPE_TEXTAREA = 'textarea';
+
+	use SoftDeletes, HasFactory;
 	
     protected $guarded = ['id'];
 
@@ -29,10 +36,7 @@ class CustomField extends Model
 
     public function __construct(array $attributes = [])
     {
-        $this->bootIfNotBooted();
-        $this->initializeTraits();
-        $this->syncOriginal();
-        $this->fill($attributes);
+        parent::__construct($attributes);
 
         $this->table = config('custom-fields.tables.fields', 'custom_fields');
     }
@@ -40,26 +44,26 @@ class CustomField extends Model
     private function fieldValidationRules($required)
     {
         return [
-            'text' => [
-                'string',
-                'max:255',
-            ],
-            'textarea' => [
-                'string',
-            ],
-            'select' => [
-                'string',
-                'max:255',
-                Rule::in($this->answers),
-            ],
-            'number' => [
+            self::TYPE_CHECKBOX => $required ? ['accepted','in:0,1'] : ['in:0,1'],
+            self::TYPE_NUMBER => [
                 'integer',
             ],
-            'checkbox' => $required ? ['accepted','in:0,1'] : ['in:0,1'],
-            'radio' => [
+            self::TYPE_SELECT => [
                 'string',
                 'max:255',
                 Rule::in($this->answers),
+            ],
+            self::TYPE_RADIO => [
+                'string',
+                'max:255',
+                Rule::in($this->answers),
+            ],
+            self::TYPE_TEXT => [
+                'string',
+                'max:255',
+            ],
+            self::TYPE_TEXTAREA => [
+                'string',
             ],
         ];
     }
