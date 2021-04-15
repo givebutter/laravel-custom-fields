@@ -13,12 +13,12 @@ class CustomFieldResponse extends Model
     ];
 
     const VALUE_FIELDS = [
-        'number'   => 'value_int',
-        'checkbox' => 'value_int',
-        'radio'    => 'value_str',
-        'select'   => 'value_str',
-        'text'     => 'value_str',
-        'textarea' => 'value_text',
+        CustomField::TYPE_NUMBER   => 'value_int',
+        CustomField::TYPE_CHECKBOX => 'value_int',
+        CustomField::TYPE_RADIO    => 'value_str',
+        CustomField::TYPE_SELECT   => 'value_str',
+        CustomField::TYPE_TEXT     => 'value_str',
+        CustomField::TYPE_TEXTAREA => 'value_text',
     ];
 
     public function __construct(array $attributes = [])
