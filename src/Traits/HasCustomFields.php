@@ -7,16 +7,25 @@ use Givebutter\LaravelCustomFields\Exceptions\WrongNumberOfFieldsForOrderingExce
 use Givebutter\LaravelCustomFields\Models\CustomField;
 use Givebutter\LaravelCustomFields\Validators\CustomFieldValidator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 trait HasCustomFields
 {
+    /**
+     * Get the custom fields belonging to this model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function customFields()
     {
-        return $this->morphMany(CustomField::class, 'model')
-            ->orderBy('order', 'asc');
+        return $this->morphMany(CustomField::class, 'model')->orderBy('order');
     }
 
+    /**
+     * Validate the given custom fields.
+     *
+     * @param $fields
+     * @return CustomFieldValidator
+     */
     public function validateCustomFields($fields)
     {
         $validationRules = $this->customFields->mapWithKeys(function ($field) {
@@ -30,15 +39,27 @@ trait HasCustomFields
 
         return new CustomFieldValidator($keyAdjustedFields, $validationRules);
     }
-    
+
+    /**
+     * Validate the given custom field request.
+     *
+     * @param Request $request
+     * @return CustomFieldValidator
+     */
     public function validateCustomFieldsRequest(Request $request)
     {
-	    return $this->validateCustomFields($request->get(config('custom-fields.form_name', 'custom_fields')));
+        return $this->validateCustomFields($request->get(config('custom-fields.form_name', 'custom_fields')));
     }
 
+    /**
+     * Handle a request to order the fields.
+     *
+     * @param $fields
+     * @throws FieldDoesNotBelongToModelException
+     * @throws WrongNumberOfFieldsForOrderingException
+     */
     public function order($fields)
     {
-        // Allows us to pass in either an array or collection
         $fields = collect($fields);
 
         if ($fields->count() !== $this->customFields()->count()) {
@@ -51,7 +72,7 @@ trait HasCustomFields
         $fields->each(function ($id, $index) {
             $customField = $this->customFields()->find($id);
 
-            if (!$customField) {
+            if (! $customField) {
                 throw new FieldDoesNotBelongToModelException($id, $this);
             }
 
