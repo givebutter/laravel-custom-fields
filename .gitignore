@@ -1,3 +1,5 @@
 /vendor/
 .phpunit.result.cache
 composer.lock
+/.idea
+.DS_Store
