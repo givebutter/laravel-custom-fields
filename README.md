@@ -71,12 +71,12 @@ You can add a field to a model like this:
 
 ```php
 $survey->customFields()->create([
-    'title' => `What is your name?`,
-    `type` => `text`
+    'title' => 'What is your name?',
+    'type' => 'text'
 ]);
 ```
 
-Each field can contain the following. More on these later:
+Each field can contain the following: (More on these later)
 
 `title` : The title / question of your custom field.
 `description` :  The description of your field. Useful for providing more context to user filling out fields.
