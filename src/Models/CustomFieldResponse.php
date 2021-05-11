@@ -6,21 +6,39 @@ use Illuminate\Database\Eloquent\Model;
 
 class CustomFieldResponse extends Model
 {
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var string[]|bool
+     */
     protected $guarded = ['id'];
-    
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
     protected $fillable = [
         'value',
     ];
 
+    /**
+     * @var string[]
+     */
     const VALUE_FIELDS = [
-        CustomField::TYPE_NUMBER   => 'value_int',
+        CustomField::TYPE_NUMBER => 'value_int',
         CustomField::TYPE_CHECKBOX => 'value_int',
-        CustomField::TYPE_RADIO    => 'value_str',
-        CustomField::TYPE_SELECT   => 'value_str',
-        CustomField::TYPE_TEXT     => 'value_str',
+        CustomField::TYPE_RADIO => 'value_str',
+        CustomField::TYPE_SELECT => 'value_str',
+        CustomField::TYPE_TEXT => 'value_str',
         CustomField::TYPE_TEXTAREA => 'value_text',
     ];
 
+    /**
+     * CustomFieldResponse constructor.
+     *
+     * @param array $attributes
+     */
     public function __construct(array $attributes = [])
     {
         // We have to do this because the `value` mutator depends on
@@ -36,16 +54,33 @@ class CustomFieldResponse extends Model
         $this->table = config('custom-fields.tables.field-responses', 'custom_field_responses');
     }
 
+    /**
+     * Get the morphable model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public function model()
     {
         return $this->morphTo();
     }
 
+    /**
+     * Get the field belonging to the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function field()
     {
         return $this->belongsTo(CustomField::class, 'field_id');
     }
 
+    /**
+     * Add a scope to return models that match the given value.
+     *
+     * @param $query
+     * @param $value
+     * @return mixed
+     */
     public function scopeHasValue($query, $value)
     {
         return $query
@@ -54,11 +89,23 @@ class CustomFieldResponse extends Model
             ->orWhere('value_text', $value);
     }
 
-    private function valueField()
+    /**
+     * @param $value
+     * @return bool|mixed
+     */
+    public function formatValue($value)
     {
-        return self::VALUE_FIELDS[$this->field->type];
+        // checkboxes send a default value of `on` so we need to booleanize it.
+        if ($this->field->type === 'checkbox') {
+            $value = ! ! $value;
+        }
+
+        return $value;
     }
 
+    /**
+     * @return bool|mixed
+     */
     public function getValueAttribute()
     {
         return $this->formatValue(
@@ -66,6 +113,9 @@ class CustomFieldResponse extends Model
         );
     }
 
+    /**
+     * @return mixed|string
+     */
     public function getValueFriendlyAttribute()
     {
         if ($this->field->type === 'checkbox') {
@@ -75,16 +125,9 @@ class CustomFieldResponse extends Model
         return $this->value;
     }
 
-    public function formatValue($value)
-    {
-        // checkboxes send a default value of `on` so we need to booleanize it.
-        if ($this->field->type === 'checkbox') {
-            $value = !!$value;
-        }
-
-        return $value;
-    }
-
+    /**
+     * @param $value
+     */
     public function setValueAttribute($value)
     {
         $this->attributes['value_int'] = null;
@@ -93,5 +136,13 @@ class CustomFieldResponse extends Model
         unset($this->attributes['value']);
 
         $this->attributes[$this->valueField()] = $this->formatValue($value);
+    }
+
+    /**
+     * @return string
+     */
+    protected function valueField()
+    {
+        return self::VALUE_FIELDS[$this->field->type];
     }
 }

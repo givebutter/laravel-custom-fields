@@ -6,6 +6,11 @@ use Illuminate\Support\ServiceProvider;
 
 class LaravelCustomFieldsServiceProvider extends ServiceProvider
 {
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
     public function boot()
     {
         $this->publishes([
