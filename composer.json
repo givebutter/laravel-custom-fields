@@ -1,47 +1,58 @@
 {
-  "name": "givebutter/laravel-custom-fields",
-  "description": "Laravel Custom Fields is a package that allows you to add custom fields to any Laravel model and store responses to those fields on any Laravel model.",
-  "type": "library",
-  "require": {
-    "laravel/framework": "^6.0|^7.0|^8.0"
-  },
-  "require-dev": {
-    "orchestra/testbench": "^6.0",
-    "friendsofphp/php-cs-fixer": "^2.16"
-  },
-  "autoload": {
-    "psr-4": {
-      "Givebutter\\LaravelCustomFields\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Givebutter\\Tests\\": "tests/"
-    }
-  },
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Daniel Coulbourne",
-      "email": "daniel@tighten.co"
-    }
-  ],
-  "scripts": {
-    "test": [
-      "vendor/bin/phpunit"
-    ],
-    "lint": [
-      "vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no"
-    ],
-    "lint-fix": [
-      "vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --using-cache=no"
-    ]
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Givebutter\\LaravelCustomFields\\LaravelCustomFieldsServiceProvider"
-      ]
-    }
-  }
+	"name": "givebutter/laravel-custom-fields",
+	"description": "Laravel Custom Fields is a package that allows you to add custom fields to any Laravel model and store responses to those fields on any Laravel model.",
+	"keywords": [
+		"custom fields",
+		"laravel"
+	],
+	"homepage": "https://github.com/givebutter/laravel-custom-fields",
+	"license": "MIT",
+	"type": "library",
+	"authors": [
+		{
+			"name": "Daniel Coulbourne",
+			"email": "daniel@tighten.co"
+		},
+		{
+			"name": "Liran Cohen",
+			"email": "liran@givebutter.com"
+		}
+	],
+	"require": {
+		"php": "^7.4|^8.0",
+		"illuminate/support": "^8.0"
+	},
+	"require-dev": {
+		"orchestra/testbench": "^6.0",
+		"phpunit/phpunit": "^9.0",
+		"friendsofphp/php-cs-fixer": "^2.16"
+	},
+	"autoload": {
+		"psr-4": {
+			"Givebutter\\LaravelCustomFields\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Givebutter\\Tests\\": "tests/"
+		}
+	},
+	"scripts": {
+		"test": [
+			"vendor/bin/phpunit"
+		],
+		"lint": [
+			"vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no"
+		],
+		"lint-fix": [
+			"vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --using-cache=no"
+		]
+	},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Givebutter\\LaravelCustomFields\\LaravelCustomFieldsServiceProvider"
+			]
+		}
+	}
 }
