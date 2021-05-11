@@ -33,11 +33,11 @@ For the purposes of the documentation, lets use the example of a Survey building
 
 ### Adding custom fields
 
-To add basic custom field support, simply add the `HasCusomFields` trait at the top of your model:
+To add basic custom field support, simply add the `HasCustomFields` trait at the top of your model:
 
 ```php
 use Illuminate\Database\Eloquent\Model;
-use Givebutter\LaravelCustomFields\Traits\HasCusomFields;
+use Givebutter\LaravelCustomFields\Traits\HasCustomFields;
 
 class Survey extends Model
 {
@@ -49,11 +49,11 @@ class Survey extends Model
 
 ### Adding custom field responses
 
-Next, we add support to store custom field responses. We'll simply pull in the `HasCusomFieldResponses` trait at the top of our `SurveyResponse` model.
+Next, we add support to store custom field responses. We'll simply pull in the `HasCustomFieldResponses` trait at the top of our `SurveyResponse` model.
 
 ```php
 use Illuminate\Database\Eloquent\Model;
-use Givebutter\LaravelCustomFields\Traits\HasCusomFieldResponses;
+use Givebutter\LaravelCustomFields\Traits\HasCustomFieldResponses;
 
 class SurveyResponse extends Model
 {
