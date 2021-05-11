@@ -1,15 +1,10 @@
 <?php
 
-
 namespace Database\Factories;
 
-
 use Faker\Provider\Lorem;
-use Faker\Provider\Text;
 use Givebutter\LaravelCustomFields\Models\CustomField;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 class CustomFieldFactory extends Factory
 {
@@ -22,7 +17,6 @@ class CustomFieldFactory extends Factory
 
     public function definition()
     {
-
         $typesRequireAnswers = [
             CustomField::TYPE_CHECKBOX => false,
             CustomField::TYPE_NUMBER => false,
@@ -111,6 +105,5 @@ class CustomFieldFactory extends Factory
         }
 
         throw new \Exception("withAnswers only accepts a number or an array");
-
     }
 }

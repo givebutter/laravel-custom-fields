@@ -3,7 +3,6 @@
 namespace Givebutter\Tests;
 
 use Givebutter\LaravelCustomFields\LaravelCustomFieldsServiceProvider;
-use Givebutter\Tests\Support\Survey;
 use Illuminate\Database\Schema\Blueprint;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
