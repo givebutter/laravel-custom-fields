@@ -32,7 +32,7 @@ class CustomFieldFactory extends Factory
             CustomField::TYPE_TEXTAREA => false,
         ];
 
-        $type = array_keys($typesRequireAnswers)[rand(0, count($typesRequireAnswers))]; // Pick a random type
+        $type = array_keys($typesRequireAnswers)[rand(0, count($typesRequireAnswers) - 1)]; // Pick a random type
 
         return [
             'type' => $type,
