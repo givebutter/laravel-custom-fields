@@ -24,11 +24,11 @@ class CustomFieldFactory extends Factory
     public function definition()
     {
         $typesRequireAnswers = [
-            CustomField::TYPE_CHECKBOX => false,
-            CustomField::TYPE_NUMBER => false,
+            CustomField::TYPE_TEXT => false,
             CustomField::TYPE_RADIO => true,
             CustomField::TYPE_SELECT => true,
-            CustomField::TYPE_TEXT => false,
+            CustomField::TYPE_NUMBER => false,
+            CustomField::TYPE_CHECKBOX => false,
             CustomField::TYPE_TEXTAREA => false,
         ];
 
