@@ -46,7 +46,9 @@ class CustomField extends Model
      *
      * @var string[]|bool
      */
-    protected $guarded = ['id'];
+    protected $guarded = [
+        'id',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -142,24 +144,31 @@ class CustomField extends Model
     protected function getFieldValidationRules($required)
     {
         return [
-            self::TYPE_CHECKBOX => $required ? ['accepted', 'in:0,1'] : ['in:0,1'],
+            self::TYPE_CHECKBOX => $required
+                ? ['accepted', 'in:0,1']
+                : ['in:0,1'],
+
             self::TYPE_NUMBER => [
                 'integer',
             ],
+
             self::TYPE_SELECT => [
                 'string',
                 'max:255',
                 Rule::in($this->answers),
             ],
+
             self::TYPE_RADIO => [
                 'string',
                 'max:255',
                 Rule::in($this->answers),
             ],
+
             self::TYPE_TEXT => [
                 'string',
                 'max:255',
             ],
+
             self::TYPE_TEXTAREA => [
                 'string',
             ],

@@ -63,10 +63,7 @@ trait HasCustomFields
         $fields = collect($fields);
 
         if ($fields->count() !== $this->customFields()->count()) {
-            throw new WrongNumberOfFieldsForOrderingException(
-                $fields->count(),
-                $this->customFields()->count()
-            );
+            throw new WrongNumberOfFieldsForOrderingException($fields->count(), $this->customFields()->count());
         }
 
         $fields->each(function ($id, $index) {
