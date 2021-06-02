@@ -11,7 +11,9 @@ class CustomFieldResponse extends Model
      *
      * @var string[]|bool
      */
-    protected $guarded = ['id'];
+    protected $guarded = [
+        'id',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -26,11 +28,11 @@ class CustomFieldResponse extends Model
      * @var string[]
      */
     const VALUE_FIELDS = [
-        CustomField::TYPE_NUMBER => 'value_int',
-        CustomField::TYPE_CHECKBOX => 'value_int',
+        CustomField::TYPE_TEXT => 'value_str',
         CustomField::TYPE_RADIO => 'value_str',
         CustomField::TYPE_SELECT => 'value_str',
-        CustomField::TYPE_TEXT => 'value_str',
+        CustomField::TYPE_NUMBER => 'value_int',
+        CustomField::TYPE_CHECKBOX => 'value_int',
         CustomField::TYPE_TEXTAREA => 'value_text',
     ];
 
@@ -95,7 +97,7 @@ class CustomFieldResponse extends Model
      */
     public function formatValue($value)
     {
-        // checkboxes send a default value of `on` so we need to booleanize it.
+        // Checkboxes send a default value of "on", so we need to booleanize the value
         if ($this->field->type === 'checkbox') {
             $value = ! ! $value;
         }

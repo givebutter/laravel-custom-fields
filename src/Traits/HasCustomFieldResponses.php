@@ -33,8 +33,8 @@ trait HasCustomFieldResponses
 
             CustomFieldResponse::create([
                 'value' => $value,
-                'field_id' => $customField->id,
                 'model_id' => $this->id,
+                'field_id' => $customField->id,
                 'model_type' => get_class($this),
             ]);
         }
@@ -52,7 +52,9 @@ trait HasCustomFieldResponses
         $query->whereHas('customFieldResponses', function ($subQuery) use ($field, $value) {
             $subQuery
                 ->where('field_id', $field->id)
-                ->hasValue($value);
+                ->where(function ($query) use ($value) {
+                    $query->hasValue($value);
+                });
         });
     }
 }
