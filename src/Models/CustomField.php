@@ -127,6 +127,7 @@ class CustomField extends Model
     public function getValidationRulesAttribute()
     {
         $typeRules = $this->getFieldValidationRules($this->required)[$this->type];
+
         array_unshift($typeRules, $this->required ? 'required' : 'nullable');
 
         return $typeRules;
