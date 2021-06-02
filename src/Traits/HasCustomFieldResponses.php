@@ -52,7 +52,9 @@ trait HasCustomFieldResponses
         $query->whereHas('customFieldResponses', function ($subQuery) use ($field, $value) {
             $subQuery
                 ->where('field_id', $field->id)
-                ->hasValue($value);
+                ->where(function ($query) use ($value) {
+                    $query->hasValue($value);
+                });
         });
     }
 }
