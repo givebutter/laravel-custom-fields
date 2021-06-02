@@ -18,11 +18,11 @@ class OrderingTest extends TestCase
     {
         $survey = Survey::create();
         $survey->customfields()->saveMany([
-            factory(CustomField::class)->make([
+            CustomField::factory()->make([
                 'title' => 'email',
                 'type' => 'text',
             ]),
-            factory(CustomField::class)->make([
+            CustomField::factory()->make([
                 'title' => 'phone',
                 'type' => 'text',
             ]),
@@ -37,11 +37,11 @@ class OrderingTest extends TestCase
     {
         $survey = Survey::create();
         $survey->customfields()->saveMany([
-            factory(CustomField::class)->make([
+            CustomField::factory()->make([
                 'title' => 'email',
                 'type' => 'text',
             ]),
-            factory(CustomField::class)->make([
+            CustomField::factory()->make([
                 'title' => 'phone',
                 'type' => 'text',
             ]),
@@ -58,11 +58,11 @@ class OrderingTest extends TestCase
     {
         $survey = Survey::create();
         $survey->customfields()->saveMany([
-            factory(CustomField::class)->make([
+            CustomField::factory()->make([
                 'title' => 'email',
                 'type' => 'text',
             ]),
-            factory(CustomField::class)->make([
+            CustomField::factory()->make([
                 'title' => 'phone',
                 'type' => 'text',
             ]),
@@ -79,11 +79,11 @@ class OrderingTest extends TestCase
     {
         $survey1 = Survey::create();
         $survey1->customfields()->saveMany([
-            factory(CustomField::class)->make([
+            CustomField::factory()->make([
                 'title' => 'email',
                 'type' => 'text',
             ]),
-            factory(CustomField::class)->make([
+            CustomField::factory()->make([
                 'title' => 'phone',
                 'type' => 'text',
             ]),
@@ -91,11 +91,11 @@ class OrderingTest extends TestCase
 
         $survey2 = Survey::create();
         $survey2->customfields()->saveMany([
-            factory(CustomField::class)->make([
+            CustomField::factory()->make([
                 'title' => 'fax',
                 'type' => 'text',
             ]),
-            factory(CustomField::class)->make([
+            CustomField::factory()->make([
                 'title' => 'telegraph',
                 'type' => 'text',
             ]),

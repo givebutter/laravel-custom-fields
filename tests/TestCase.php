@@ -3,7 +3,9 @@
 namespace Givebutter\Tests;
 
 use Givebutter\LaravelCustomFields\LaravelCustomFieldsServiceProvider;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Str;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase
@@ -12,7 +14,14 @@ class TestCase extends OrchestraTestCase
     {
         parent::setUp();
 
-        $this->withFactories(__DIR__ . '/Support/Factories');
+        Factory::guessFactoryNamesUsing(function (string $modelName) {
+            $namespace = 'Database\\Factories\\';
+
+            $modelName = Str::afterLast($modelName, '\\');
+
+            return $namespace.$modelName.'Factory';
+        });
+
         $this->setUpDatabase($this->app);
         $this->withoutExceptionHandling();
     }
