@@ -16,7 +16,7 @@ class HasCustomFieldsTest extends TestCase
     {
         $model = Survey::create();
 
-        $customField = factory(CustomField::class)->make([
+        $customField = CustomField::factory()->make([
             'model_id' => $model->id,
             'model_type' => get_class($model),
             'description' => 'Lil Wayne',

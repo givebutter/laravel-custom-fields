@@ -19,7 +19,7 @@ class CustomFieldControllerTest extends TestCase
     {
         $survey = Survey::create();
         $survey->customfields()->save(
-            factory(CustomField::class)->make([
+            CustomField::factory()->make([
                 'title' => 'email',
                 'type' => 'text',
             ])
@@ -45,7 +45,7 @@ class CustomFieldControllerTest extends TestCase
     {
         $survey = Survey::create();
         $survey->customfields()->save(
-            factory(CustomField::class)->make([
+            CustomField::factory()->make([
                 'title' => 'favorite_album',
                 'type' => 'select',
                 'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],
@@ -53,7 +53,7 @@ class CustomFieldControllerTest extends TestCase
         );
 
         Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
-            $validator = $survey->validateCustomFields($request);
+            $validator = $survey->validateCustomFields($request->custom_fields);
 
             if ($validator->fails()) {
                 return ['errors' => $validator->errors()];
@@ -77,7 +77,7 @@ class CustomFieldControllerTest extends TestCase
     {
         $survey = Survey::create();
         $survey->customfields()->save(
-            factory(CustomField::class)->make([
+            CustomField::factory()->make([
                 'title' => 'favorite_album',
                 'type' => 'select',
                 'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],
@@ -111,7 +111,7 @@ class CustomFieldControllerTest extends TestCase
         $survey = Survey::create();
         $surveyResponse = SurveyResponse::create();
         $survey->customfields()->save(
-            factory(CustomField::class)->make([
+            CustomField::factory()->make([
                 'title' => 'favorite_album',
                 'type' => 'checkbox',
             ])
@@ -147,7 +147,7 @@ class CustomFieldControllerTest extends TestCase
         $survey = Survey::create();
         $surveyResponse = SurveyResponse::create();
         $survey->customfields()->save(
-            factory(CustomField::class)->make([
+            CustomField::factory()->make([
                 'title' => 'favorite_album',
                 'type' => 'select',
                 'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],

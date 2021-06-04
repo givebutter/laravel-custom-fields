@@ -19,7 +19,7 @@ class HasCustomFieldResponsesTest extends TestCase
         $customFieldModel = Survey::create();
         $customFieldResponseModel = SurveyResponse::create();
 
-        $customField = factory(CustomField::class)->make([
+        $customField = CustomField::factory()->make([
             'model_id' => $customFieldModel->id,
             'model_type' => get_class($customFieldModel),
         ]);
@@ -46,7 +46,7 @@ class HasCustomFieldResponsesTest extends TestCase
         $firstResponseModel = SurveyResponse::create();
         $secondResponseModel = SurveyResponse::create();
 
-        $firstField = factory(CustomField::class)->create([
+        $firstField = CustomField::factory()->create([
             'model_id' => $customFieldModel->id,
             'model_type' => get_class($customFieldModel),
         ]);
@@ -82,7 +82,7 @@ class HasCustomFieldResponsesTest extends TestCase
         $customFieldModel = Survey::create();
         $customFieldResponseModel = SurveyResponse::create();
 
-        $customField = factory(CustomField::class)->make([
+        $customField = CustomField::factory()->make([
             'model_id' => $customFieldModel->id,
             'model_type' => get_class($customFieldModel),
             'type' => 'text',

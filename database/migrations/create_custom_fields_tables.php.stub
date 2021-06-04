@@ -6,6 +6,11 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateCustomFieldsTables extends Migration
 {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create(config('custom-fields.tables.fields', 'custom_fields'), function (Blueprint $table) {
@@ -36,6 +41,11 @@ class CreateCustomFieldsTables extends Migration
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::dropIfExists(config('custom-fields.tables.fields', 'custom_fields'));

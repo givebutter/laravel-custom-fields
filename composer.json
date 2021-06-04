@@ -34,7 +34,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Givebutter\\Tests\\": "tests/"
+            "Givebutter\\Tests\\": "tests/",
+            "Database\\": "database/"
         }
     },
     "scripts": {
