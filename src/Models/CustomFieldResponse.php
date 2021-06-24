@@ -43,9 +43,13 @@ class CustomFieldResponse extends Model
      */
     public function __construct(array $attributes = [])
     {
-        // We have to do this because the `value` mutator depends on
-        // `field_id` being set. If `value` is declared earlie than `field_id`
-        // in a create() array, the mutator will blow up.
+        /*
+         * We have to do this because the `value` mutator
+         * depends on `field_id` being set. If `value`
+         * is declared earlier than `field_id` in a
+         * create() array, the mutator will fail.
+         */
+
         $this->attributes = $attributes;
 
         $this->bootIfNotBooted();

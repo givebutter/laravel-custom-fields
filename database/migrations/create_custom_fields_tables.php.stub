@@ -25,7 +25,8 @@ class CreateCustomFieldsTables extends Migration
             $table->string('default_value')->nullable();
             $table->string('order');
             $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->timestamp('archived_at')->nullable();
+            $table->softDeletes();
         });
 
         Schema::create(config('custom-fields.tables.field_responses', 'custom_field_responses'), function (Blueprint $table) {
