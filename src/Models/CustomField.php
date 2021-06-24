@@ -2,6 +2,7 @@
 
 namespace Givebutter\LaravelCustomFields\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -121,6 +122,34 @@ class CustomField extends Model
     public function responses()
     {
         return $this->hasMany(CustomFieldResponse::class, 'field_id');
+    }
+
+    /**
+     * Archive the model.
+     *
+     * @return $this
+     */
+    public function archive()
+    {
+        $this->forceFill([
+            'archived_at' => now(),
+        ])->save();
+
+        return $this;
+    }
+
+    /**
+     * Unarchive the model.
+     *
+     * @return $this
+     */
+    public function unarchive()
+    {
+        $this->forceFill([
+            'archived_at' => null,
+        ])->save();
+
+        return $this;
     }
 
     /**
