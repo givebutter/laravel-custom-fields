@@ -28,7 +28,7 @@ trait HasCustomFields
      */
     public function validateCustomFields($fields)
     {
-        $validationRules = $this->customFields->mapWithKeys(function ($field) {
+        $validationRules = $this->customFields()->whereNull('archived_at')->get()->mapWithKeys(function ($field) {
             return ['field_' . $field->id => $field->validationRules];
         })->toArray();
 
