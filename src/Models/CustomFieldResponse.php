@@ -3,6 +3,7 @@
 namespace Givebutter\LaravelCustomFields\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class CustomFieldResponse extends Model
 {
@@ -110,38 +111,44 @@ class CustomFieldResponse extends Model
     }
 
     /**
-     * @return bool|mixed
+     * Get/Set the `value` attribute.
+     *
+     * @return Attribute
      */
-    public function getValueAttribute()
+    public function value(): Attribute
     {
-        return $this->formatValue(
-            $this->attributes[$this->valueField()]
+        return new Attribute(
+            get: function ($value, $attributes) {
+                return $this->formatValue(
+                    $attributes[$this->valueField()]
+                );
+            },
+            set: function ($value) {
+                unset($this->attributes['value']);
+
+                return [
+                    'value_int' =>  $this->valueField() === 'value_int'  ? $this->formatValue($value) : null,
+                    'value_str' =>  $this->valueField() === 'value_str'  ? $this->formatValue($value) : null,
+                    'value_text' => $this->valueField() === 'value_text' ? $this->formatValue($value) : null,
+                ];
+            },
         );
     }
 
     /**
-     * @return mixed|string
+     * Get the `value_friendly` attribute.
+     *
+     * @return Attribute
      */
-    public function getValueFriendlyAttribute()
+    public function valueFriendly(): Attribute
     {
-        if ($this->field->type === 'checkbox') {
-            return $this->value ? 'Checked' : 'Unchecked';
-        }
+        return Attribute::get(function () {
+            if ($this->field->type === 'checkbox') {
+                return $this->value ? 'Checked' : 'Unchecked';
+            }
 
-        return $this->value;
-    }
-
-    /**
-     * @param $value
-     */
-    public function setValueAttribute($value)
-    {
-        $this->attributes['value_int'] = null;
-        $this->attributes['value_str'] = null;
-        $this->attributes['value_text'] = null;
-        unset($this->attributes['value']);
-
-        $this->attributes[$this->valueField()] = $this->formatValue($value);
+            return $this->value;
+        });
     }
 
     /**
