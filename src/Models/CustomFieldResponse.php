@@ -111,28 +111,26 @@ class CustomFieldResponse extends Model
     }
 
     /**
-     * Get/Set the `value` attribute.
-     *
-     * @return Attribute
+     * @return bool|mixed
      */
-    public function value(): Attribute
+    public function getValueAttribute()
     {
-        return new Attribute(
-            get: function ($value, $attributes) {
-                return $this->formatValue(
-                    $attributes[$this->valueField()]
-                );
-            },
-            set: function ($value) {
-                unset($this->attributes['value']);
-
-                return [
-                    'value_int' =>  $this->valueField() === 'value_int'  ? $this->formatValue($value) : null,
-                    'value_str' =>  $this->valueField() === 'value_str'  ? $this->formatValue($value) : null,
-                    'value_text' => $this->valueField() === 'value_text' ? $this->formatValue($value) : null,
-                ];
-            },
+        return $this->formatValue(
+            $this->attributes[$this->valueField()]
         );
+    }
+
+    /**
+     * @param $value
+     */
+    public function setValueAttribute($value)
+    {
+        $this->attributes['value_int'] = null;
+        $this->attributes['value_str'] = null;
+        $this->attributes['value_text'] = null;
+        unset($this->attributes['value']);
+
+        $this->attributes[$this->valueField()] = $this->formatValue($value);
     }
 
     /**
