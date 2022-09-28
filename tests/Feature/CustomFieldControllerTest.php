@@ -124,7 +124,7 @@ class CustomFieldControllerTest extends TestCase
                 return ['errors' => $validator->errors()];
             }
 
-            $surveyResponse->saveCustomfields($request->get('custom_fields'));
+            $surveyResponse->saveCustomFields($request->get('custom_fields'));
 
             return response('All good', 200);
         });
@@ -155,7 +155,7 @@ class CustomFieldControllerTest extends TestCase
         );
 
         Route::post("/surveys/{$survey->id}/responses", function () use ($surveyResponse) {
-            $surveyResponse->saveCustomfields(request('custom_fields'));
+            $surveyResponse->saveCustomFields(request('custom_fields'));
 
             return response('All good', 200);
         });

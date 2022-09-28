@@ -31,12 +31,14 @@ trait HasCustomFieldResponses
                 continue;
             }
 
-            CustomFieldResponse::create([
+            $customFieldResponse = new CustomFieldResponse([
                 'value' => $value,
                 'model_id' => $this->id,
                 'field_id' => $customField->id,
                 'model_type' => get_class($this),
             ]);
+
+            $customFieldResponse->save();
         }
     }
 
