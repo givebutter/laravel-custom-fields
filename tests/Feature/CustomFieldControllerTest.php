@@ -2,13 +2,13 @@
 
 namespace Givebutter\Tests\Feature;
 
-use Givebutter\LaravelCustomFields\Models\CustomField;
-use Givebutter\Tests\Support\Survey;
-use Givebutter\Tests\Support\SurveyResponse;
-use Givebutter\Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
+use Givebutter\Tests\TestCase;
+use Givebutter\Tests\Support\Survey;
 use Illuminate\Support\Facades\Route;
+use Givebutter\Tests\Support\SurveyResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Givebutter\LaravelCustomFields\Models\CustomField;
 
 class CustomFieldControllerTest extends TestCase
 {
@@ -124,7 +124,7 @@ class CustomFieldControllerTest extends TestCase
                 return ['errors' => $validator->errors()];
             }
 
-            $surveyResponse->saveCustomfields($request->get('custom_fields'));
+            $surveyResponse->saveCustomFields($request->get('custom_fields'));
 
             return response('All good', 200);
         });
@@ -155,7 +155,7 @@ class CustomFieldControllerTest extends TestCase
         );
 
         Route::post("/surveys/{$survey->id}/responses", function () use ($surveyResponse) {
-            $surveyResponse->saveCustomfields(request('custom_fields'));
+            $surveyResponse->saveCustomFields(request('custom_fields'));
 
             return response('All good', 200);
         });

@@ -120,18 +120,6 @@ class CustomFieldResponse extends Model
     }
 
     /**
-     * @return mixed|string
-     */
-    public function getValueFriendlyAttribute()
-    {
-        if ($this->field->type === 'checkbox') {
-            return $this->value ? 'Checked' : 'Unchecked';
-        }
-
-        return $this->value;
-    }
-
-    /**
      * @param $value
      */
     public function setValueAttribute($value)
@@ -143,6 +131,22 @@ class CustomFieldResponse extends Model
 
         $this->attributes[$this->valueField()] = $this->formatValue($value);
     }
+
+    /**
+     * Get the `value_friendly` attribute.
+     *
+     * @param $query
+     * @param $value
+     * @return mixed|string
+     */
+     public function getValueFriendlyAttribute()
+     {
+         if ($this->field->type === 'checkbox') {
+             return $this->value ? 'Checked' : 'Unchecked';
+         }
+
+         return $this->value;
+     }
 
     /**
      * @return string

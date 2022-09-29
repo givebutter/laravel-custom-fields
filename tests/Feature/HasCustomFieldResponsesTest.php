@@ -26,7 +26,7 @@ class HasCustomFieldResponsesTest extends TestCase
 
         $customFieldModel->customFields()->save($customField);
 
-        $customFieldResponse = CustomFieldResponse::make([
+        $customFieldResponse = new CustomFieldResponse([
             'model_id' => $customFieldResponseModel->id,
             'model_type' => get_class($customFieldResponseModel),
             'field_id' => $customField->fresh()->id,
@@ -51,14 +51,14 @@ class HasCustomFieldResponsesTest extends TestCase
             'model_type' => get_class($customFieldModel),
         ]);
 
-        $firstResponse = CustomFieldResponse::create([
+        $firstResponse = new CustomFieldResponse([
             'model_id' => $firstResponseModel->id,
             'model_type' => get_class($firstResponseModel),
             'field_id' => $firstField->id,
             'value_str' => 'Hit Em Up',
         ]);
 
-        $secondResponse = CustomFieldResponse::create([
+        $secondResponse = new CustomFieldResponse([
             'model_id' => $secondResponseModel->id,
             'model_type' => get_class($secondResponseModel),
             'field_id' => $firstField->id,
@@ -90,7 +90,7 @@ class HasCustomFieldResponsesTest extends TestCase
 
         $customFieldModel->customFields()->save($customField);
 
-        $customFieldResponse = CustomFieldResponse::make([
+        $customFieldResponse = new CustomFieldResponse([
             'model_id' => $customFieldResponseModel->id,
             'model_type' => get_class($customFieldResponseModel),
             'field_id' => $customField->fresh()->id,

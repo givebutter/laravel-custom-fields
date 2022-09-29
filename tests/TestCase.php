@@ -57,14 +57,14 @@ class TestCase extends OrchestraTestCase
 
     protected function runMigrationStub()
     {
-        include_once __DIR__ . '/../database/migrations/create_custom_fields_tables.php.stub';
-        (new \CreateCustomFieldsTables())->up();
+        (include __DIR__ . '/../database/migrations/create_custom_fields_tables.php.stub')
+            ->up();
     }
 
     protected function prepareDatabaseForHasCustomFieldsModel()
     {
-        include_once __DIR__ . '/../tests/support/migrations/create_surveys_and_survey_responses_tables.php';
-        (new \CreateSurveysAndSurveyResponsesTables())->up();
+        (include __DIR__ . '/../tests/support/migrations/create_surveys_and_survey_responses_tables.php')
+            ->up();
     }
 
     protected function resetDatabase()

@@ -2,7 +2,7 @@
 
 namespace Givebutter\LaravelCustomFields\Models;
 
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -155,15 +155,16 @@ class CustomField extends Model
     /**
      * Get the validation rules attribute.
      *
-     * @return mixed
+     * @return Attribute
      */
-    public function getValidationRulesAttribute()
+    public function validationRules(): Attribute
     {
-        $typeRules = $this->getFieldValidationRules($this->required)[$this->type];
-
-        array_unshift($typeRules, $this->required ? 'required' : 'nullable');
-
-        return $typeRules;
+        return new Attribute(
+            get: fn ($value, $attributes) => [
+                $attributes['required'] ? 'required' : 'nullable',
+                ...$this->getFieldValidationRules($attributes['required'])[$attributes['type']]
+            ],
+        );
     }
 
     /**
