@@ -3,7 +3,6 @@
 namespace Givebutter\LaravelCustomFields\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class CustomFieldResponse extends Model
 {
@@ -136,18 +135,18 @@ class CustomFieldResponse extends Model
     /**
      * Get the `value_friendly` attribute.
      *
-     * @return Attribute
+     * @param $query
+     * @param $value
+     * @return mixed|string
      */
-    public function valueFriendly(): Attribute
-    {
-        return Attribute::get(function () {
-            if ($this->field->type === 'checkbox') {
-                return $this->value ? 'Checked' : 'Unchecked';
-            }
+     public function getValueFriendlyAttribute()
+     {
+         if ($this->field->type === 'checkbox') {
+             return $this->value ? 'Checked' : 'Unchecked';
+         }
 
-            return $this->value;
-        });
-    }
+         return $this->value;
+     }
 
     /**
      * @return string
