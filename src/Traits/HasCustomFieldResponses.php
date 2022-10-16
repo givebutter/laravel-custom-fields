@@ -18,11 +18,29 @@ trait HasCustomFieldResponses
     }
 
     /**
-     * Save the given custom fields to the model.
+     * Save the custom fields to the model.
+     *   This parameter accepts a list of fields for immediate saving & backwards compatibility.
      *
      * @param $fields
      */
-    public function saveCustomFields($fields)
+    public function saveCustomFields($fields = [])
+    {
+        if (!empty($fields)) {
+            $this->makeCustomFields($fields);
+        }
+
+        $this->customFieldResponses->each(function(CustomFieldResponse $field) {
+            $field->model_id ??= $this->id; // set the ID now, if model did not exist when makeCustomFields() was called
+            $field->save();
+        });
+    }
+
+    /**
+     * Make the given custom fields but do not save.
+     *
+     * @param $fields
+     */
+    public function makeCustomFields($fields)
     {
         foreach ($fields as $key => $value) {
             $customField = CustomField::find((int) $key);
@@ -38,7 +56,7 @@ trait HasCustomFieldResponses
                 'model_type' => get_class($this),
             ]);
 
-            $customFieldResponse->save();
+            $this->customFieldResponses->push($customFieldResponse);
         }
     }
 
