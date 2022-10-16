@@ -224,9 +224,9 @@ To store responses to custom fields, just call `saveCustomFields()` and pass in 
 The `saveCustomFields` function can take in a Request or array.
 
 ```php
-$surveyResponse->saveCustomFields(['
-   
-']);
+$surveyResponse->saveCustomFields([
+   'Key' => 'Value'
+]);
 ```
 
 If you're submitting a form request, you can easily:
@@ -235,6 +235,21 @@ If you're submitting a form request, you can easily:
 Use App\...
 $surveyResponse->saveCustomFields($request->input);
 ```
+
+### Making then saving
+If you would like to make the custom fields without saving them immediately, you can call
+```php
+$surveyResponse->makeCustomFields([
+   'Key' => 'Value'
+]);
+```
+
+and then to save you need to call
+```php
+$surveyResponse->saveCustomFields();
+```
+
+This will set the `model_id` for you before saving the CustomField.
 
 ## Querying responses
 
