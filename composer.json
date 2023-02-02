@@ -19,13 +19,13 @@
         }
     ],
     "require": {
-        "php": "^8.0",
-        "illuminate/support": "^9.0"
+        "php": "^8.1",
+        "illuminate/support": "^10.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^7.0",
-        "phpunit/phpunit": "^9.0",
-        "friendsofphp/php-cs-fixer": "^3.6"
+        "orchestra/testbench": "^8.0",
+        "phpunit/phpunit": "^9.5.10",
+        "friendsofphp/php-cs-fixer": "^3.14"
     },
     "autoload": {
         "psr-4": {
