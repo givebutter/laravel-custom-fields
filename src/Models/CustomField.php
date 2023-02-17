@@ -57,6 +57,7 @@ class CustomField extends Model
      * @var string[]
      */
     protected $fillable = [
+        'group',
         'type',
         'title',
         'description',
