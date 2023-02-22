@@ -58,7 +58,7 @@ class CustomFieldResponse extends Model
         return $this->belongsTo(CustomField::class, 'field_id');
     }
 
-    public function scopeHasValue(Builder $query, mixed $value): mixed
+    public function scopeHasValue(Builder $query, mixed $value): Builder
     {
         return $query
             ->where('value_str', $value)
