@@ -19,11 +19,11 @@
         }
     ],
     "require": {
-        "php": "^8.0",
-        "illuminate/support": "^9.0"
+        "php": "^8.1",
+        "illuminate/support": "^10.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^7.0",
+        "orchestra/testbench": "^8.0",
         "phpunit/phpunit": "^9.0",
         "friendsofphp/php-cs-fixer": "^3.6"
     },
@@ -43,10 +43,10 @@
             "vendor/bin/phpunit"
         ],
         "lint": [
-            "vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no"
+            "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --dry-run --stop-on-violation --using-cache=no"
         ],
         "lint-fix": [
-            "vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --using-cache=no"
+            "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --using-cache=no"
         ]
     },
     "extra": {

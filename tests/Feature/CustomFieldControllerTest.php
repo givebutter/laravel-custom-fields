@@ -2,13 +2,13 @@
 
 namespace Givebutter\Tests\Feature;
 
-use Illuminate\Http\Request;
-use Givebutter\Tests\TestCase;
-use Givebutter\Tests\Support\Survey;
-use Illuminate\Support\Facades\Route;
-use Givebutter\Tests\Support\SurveyResponse;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Givebutter\LaravelCustomFields\Models\CustomField;
+use Givebutter\Tests\Support\Survey;
+use Givebutter\Tests\Support\SurveyResponse;
+use Givebutter\Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class CustomFieldControllerTest extends TestCase
 {

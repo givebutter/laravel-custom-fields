@@ -3,12 +3,9 @@
 namespace Givebutter\Tests\Feature;
 
 use Givebutter\LaravelCustomFields\Models\CustomField;
-use Givebutter\LaravelCustomFields\Models\CustomFieldResponse;
-use Givebutter\Tests\Support\Account;
-use Givebutter\Tests\Support\Contact;
 use Givebutter\Tests\Support\Survey;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Givebutter\Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CustomFieldTest extends TestCase
 {

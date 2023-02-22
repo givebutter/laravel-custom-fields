@@ -2,45 +2,15 @@
 
 namespace Givebutter\LaravelCustomFields\Models;
 
+use Givebutter\LaravelCustomFields\Enums\CustomFieldTypes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Validation\Rule;
 
 class CustomField extends Model
 {
     use SoftDeletes, HasFactory;
-
-    /**
-     * @var string
-     */
-    const TYPE_CHECKBOX = 'checkbox';
-
-    /**
-     * @var string
-     */
-    const TYPE_NUMBER = 'number';
-
-    /**
-     * @var string
-     */
-    const TYPE_RADIO = 'radio';
-
-    /**
-     * @var string
-     */
-    const TYPE_SELECT = 'select';
-
-    /**
-     * @var string
-     */
-    const TYPE_TEXT = 'text';
-
-    /**
-     * @var string
-     */
-    const TYPE_TEXTAREA = 'textarea';
 
     /**
      * The attributes that aren't mass assignable.
@@ -153,58 +123,20 @@ class CustomField extends Model
         return $this;
     }
 
-    /**
-     * Get the validation rules attribute.
-     *
-     * @return Attribute
-     */
     public function validationRules(): Attribute
     {
         return new Attribute(
             get: fn ($value, $attributes) => [
                 $attributes['required'] ? 'required' : 'nullable',
-                ...$this->getFieldValidationRules($attributes['required'])[$attributes['type']]
+                ...$this->fieldType->validationRules($attributes),
             ],
         );
     }
 
-    /**
-     * Get the field validation rules.
-     *
-     * @param $required
-     * @return array
-     */
-    protected function getFieldValidationRules($required)
+    public function fieldType(): Attribute
     {
-        return [
-            self::TYPE_CHECKBOX => $required
-                ? ['accepted', 'in:0,1']
-                : ['in:0,1'],
-
-            self::TYPE_NUMBER => [
-                'integer',
-            ],
-
-            self::TYPE_SELECT => [
-                'string',
-                'max:255',
-                Rule::in($this->answers),
-            ],
-
-            self::TYPE_RADIO => [
-                'string',
-                'max:255',
-                Rule::in($this->answers),
-            ],
-
-            self::TYPE_TEXT => [
-                'string',
-                'max:255',
-            ],
-
-            self::TYPE_TEXTAREA => [
-                'string',
-            ],
-        ];
+        return Attribute::get(
+            fn ($value, $attributes) => CustomFieldTypes::from($attributes['type'])->createFieldType($this),
+        );
     }
 }

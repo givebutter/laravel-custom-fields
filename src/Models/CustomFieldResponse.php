@@ -2,7 +2,12 @@
 
 namespace Givebutter\LaravelCustomFields\Models;
 
+use Givebutter\LaravelCustomFields\Enums\CustomFieldTypes;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class CustomFieldResponse extends Model
 {
@@ -24,23 +29,6 @@ class CustomFieldResponse extends Model
         'value',
     ];
 
-    /**
-     * @var string[]
-     */
-    const VALUE_FIELDS = [
-        CustomField::TYPE_TEXT => 'value_str',
-        CustomField::TYPE_RADIO => 'value_str',
-        CustomField::TYPE_SELECT => 'value_str',
-        CustomField::TYPE_NUMBER => 'value_int',
-        CustomField::TYPE_CHECKBOX => 'value_int',
-        CustomField::TYPE_TEXTAREA => 'value_text',
-    ];
-
-    /**
-     * CustomFieldResponse constructor.
-     *
-     * @param array $attributes
-     */
     public function __construct(array $attributes = [])
     {
         /*
@@ -60,34 +48,17 @@ class CustomFieldResponse extends Model
         $this->table = config('custom-fields.tables.field-responses', 'custom_field_responses');
     }
 
-    /**
-     * Get the morphable model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-     */
-    public function model()
+    public function model(): MorphTo
     {
         return $this->morphTo();
     }
 
-    /**
-     * Get the field belonging to the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function field()
+    public function field(): BelongsTo
     {
         return $this->belongsTo(CustomField::class, 'field_id');
     }
 
-    /**
-     * Add a scope to return models that match the given value.
-     *
-     * @param $query
-     * @param $value
-     * @return mixed
-     */
-    public function scopeHasValue($query, $value)
+    public function scopeHasValue(Builder $query, mixed $value): mixed
     {
         return $query
             ->where('value_str', $value)
@@ -95,64 +66,38 @@ class CustomFieldResponse extends Model
             ->orWhere('value_text', $value);
     }
 
-    /**
-     * @param $value
-     * @return bool|mixed
-     */
-    public function formatValue($value)
+    public function formatValue($value): mixed
     {
-        // Checkboxes send a default value of "on", so we need to booleanize the value
-        if ($this->field->type === 'checkbox') {
-            $value = ! ! $value;
-        }
-
-        return $value;
+        return $this->responseType->getFormattedValue($value);
     }
 
-    /**
-     * @return bool|mixed
-     */
-    public function getValueAttribute()
+    public function getValueAttribute(): mixed
     {
         return $this->formatValue(
             $this->attributes[$this->valueField()]
         );
     }
 
-    /**
-     * @param $value
-     */
-    public function setValueAttribute($value)
+    public function setValueAttribute(mixed $value): void
     {
-        $this->attributes['value_int'] = null;
-        $this->attributes['value_str'] = null;
-        $this->attributes['value_text'] = null;
-        unset($this->attributes['value']);
-
-        $this->attributes[$this->valueField()] = $this->formatValue($value);
+        $this->responseType->setValue($value);
     }
 
-    /**
-     * Get the `value_friendly` attribute.
-     *
-     * @param $query
-     * @param $value
-     * @return mixed|string
-     */
-     public function getValueFriendlyAttribute()
+     public function getValueFriendlyAttribute(): mixed
      {
-         if ($this->field->type === 'checkbox') {
-             return $this->value ? 'Checked' : 'Unchecked';
-         }
-
-         return $this->value;
+         return $this->responseType->getValueFriendly();
      }
 
-    /**
-     * @return string
-     */
-    protected function valueField()
+    public function responseType(): Attribute
     {
-        return self::VALUE_FIELDS[$this->field->type];
+        return Attribute::get(
+            fn (mixed $value, array $attributes) => CustomFieldTypes::from($this->field->type)
+                ->createResponseType($this),
+        );
+    }
+
+    public function valueField(): string
+    {
+        return CustomFieldTypes::from($this->field->type)->valueField();
     }
 }
