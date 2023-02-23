@@ -66,16 +66,14 @@ class CustomFieldResponse extends Model
             ->orWhere('value_text', $value);
     }
 
-    public function formatValue($value): mixed
+    public function formatValue(mixed $value): mixed
     {
-        return $this->responseType->getFormattedValue($value);
+        return $this->responseType->formatValue($value);
     }
 
     public function getValueAttribute(): mixed
     {
-        return $this->formatValue(
-            $this->attributes[$this->valueField()]
-        );
+        return $this->responseType->getValue();
     }
 
     public function setValueAttribute(mixed $value): void
@@ -94,10 +92,5 @@ class CustomFieldResponse extends Model
             fn (mixed $value, array $attributes) => CustomFieldTypes::from($this->field->type)
                 ->createResponseType($this),
         );
-    }
-
-    public function valueField(): string
-    {
-        return CustomFieldTypes::from($this->field->type)->valueField();
     }
 }

@@ -18,4 +18,16 @@ abstract class FieldType
         return CustomFieldTypes::from($attributes['type'])
             ->getFieldValidationRules($this->field, $attributes['required']);
     }
+
+    public function validationAttributes(): array
+    {
+        return [
+            'field_' . $this->field->id => $this->field->title,
+        ];
+    }
+
+    protected function requiredRule(bool $required): string
+    {
+        return $required ? 'required' : 'nullable';
+    }
 }

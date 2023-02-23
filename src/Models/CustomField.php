@@ -6,6 +6,8 @@ use Givebutter\LaravelCustomFields\Enums\CustomFieldTypes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CustomField extends Model
@@ -75,32 +77,17 @@ class CustomField extends Model
         });
     }
 
-    /**
-     * Get the morphable model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-     */
-    public function model()
+    public function model(): MorphTo
     {
         return $this->morphTo();
     }
 
-    /**
-     * Get the responses belonging to the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function responses()
+    public function responses(): HasMany
     {
         return $this->hasMany(CustomFieldResponse::class, 'field_id');
     }
 
-    /**
-     * Archive the model.
-     *
-     * @return $this
-     */
-    public function archive()
+    public function archive(): self
     {
         $this->forceFill([
             'archived_at' => now(),
@@ -109,12 +96,7 @@ class CustomField extends Model
         return $this;
     }
 
-    /**
-     * Unarchive the model.
-     *
-     * @return $this
-     */
-    public function unarchive()
+    public function unarchive(): self
     {
         $this->forceFill([
             'archived_at' => null,
@@ -126,10 +108,14 @@ class CustomField extends Model
     public function validationRules(): Attribute
     {
         return new Attribute(
-            get: fn ($value, $attributes) => [
-                $attributes['required'] ? 'required' : 'nullable',
-                ...$this->fieldType->validationRules($attributes),
-            ],
+            get: fn ($value, $attributes) => $this->fieldType->validationRules($attributes),
+        );
+    }
+
+    public function validationAttributes(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value, $attributes) => $this->fieldType->validationAttributes(),
         );
     }
 

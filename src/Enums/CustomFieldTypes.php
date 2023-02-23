@@ -16,6 +16,7 @@ enum CustomFieldTypes: string
     case SELECT = 'select';
     case TEXT = 'text';
     case TEXTAREA = 'textarea';
+    case DATE_RANGE = 'daterange';
 
     public function valueField(): string
     {
@@ -30,6 +31,7 @@ enum CustomFieldTypes: string
     {
         return match ($this) {
             self::CHECKBOX => new FieldType\CheckboxFieldType($field),
+            self::DATE_RANGE => new FieldType\DateRangeFieldType($field),
             self::NUMBER => new FieldType\NumberFieldType($field),
             self::RADIO => new FieldType\RadioFieldType($field),
             self::SELECT => new FieldType\SelectFieldType($field),
@@ -42,6 +44,7 @@ enum CustomFieldTypes: string
     {
         return match ($this) {
             self::CHECKBOX => new ResponseType\CheckboxResponseType($response),
+            self::DATE_RANGE => new ResponseType\DateRangeResponseType($response),
             self::NUMBER => new ResponseType\NumberResponseType($response),
             self::RADIO => new ResponseType\RadioResponseType($response),
             self::SELECT => new ResponseType\SelectResponseType($response),

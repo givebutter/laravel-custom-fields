@@ -28,16 +28,32 @@ trait HasCustomFields
      */
     public function validateCustomFields($fields)
     {
-        $validationRules = $this->customFields()->whereNull('archived_at')->get()->mapWithKeys(function ($field) {
-            return ['field_' . $field->id => $field->validationRules];
-        })->toArray();
+        if ($fields instanceof Request) {
+            return $this->validateCustomFieldsRequest($fields);
+        }
+
+        $customFields = $this->customFields()
+            ->whereNull('archived_at')
+            ->get();
+
+        $validationRules = $customFields
+            ->map(fn ($field) => $field->validation_rules)
+            ->flatMap(fn ($rules) => $rules)
+            ->toArray();
+
+        $validationAttributes = $customFields
+            ->map(fn ($field) => $field->validation_attributes)
+            ->flatMap(fn ($rules) => $rules)
+            ->toArray();
 
         $keyAdjustedFields = collect($fields)
-            ->mapWithKeys(function ($field, $key) {
-                return ["field_{$key}" => $field];
+            ->mapWithKeys(function ($field, $key) use ($customFields) {
+                $id = $customFields->firstOrFail('id', $key)->id;
+
+                return ["field_{$id}" => $field];
             })->toArray();
 
-        return new CustomFieldValidator($keyAdjustedFields, $validationRules);
+        return new CustomFieldValidator($keyAdjustedFields, $validationRules, $validationAttributes);
     }
 
     /**
