@@ -4,7 +4,6 @@ namespace Givebutter\Tests\Feature;
 
 use Carbon\CarbonImmutable;
 use Givebutter\LaravelCustomFields\Models\CustomField;
-use Givebutter\LaravelCustomFields\Models\CustomFieldResponse;
 use Givebutter\LaravelCustomFields\ValueObjects\DateRange;
 use Givebutter\Tests\Support\Survey;
 use Givebutter\Tests\Support\SurveyResponse;

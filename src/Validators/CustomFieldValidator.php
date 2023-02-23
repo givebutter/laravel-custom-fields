@@ -2,8 +2,6 @@
 
 namespace Givebutter\LaravelCustomFields\Validators;
 
-use Givebutter\LaravelCustomFields\Models\CustomField;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Validator;
 
 class CustomFieldValidator extends Validator
