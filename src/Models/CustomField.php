@@ -2,13 +2,14 @@
 
 namespace Givebutter\LaravelCustomFields\Models;
 
-use Givebutter\LaravelCustomFields\Enums\CustomFieldTypes;
+use Givebutter\LaravelCustomFields\States\FieldType\FieldType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\App;
 
 class CustomField extends Model
 {
@@ -122,7 +123,10 @@ class CustomField extends Model
     public function fieldType(): Attribute
     {
         return Attribute::get(
-            fn ($value, $attributes) => CustomFieldTypes::from($attributes['type'])->createFieldType($this),
+            fn ($value, array $attributes) => App::makeWith(FieldType::class, [
+                'type' => $attributes['type'],
+                'field' => $this,
+            ]),
         );
     }
 }

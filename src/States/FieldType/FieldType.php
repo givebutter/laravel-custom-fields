@@ -2,7 +2,6 @@
 
 namespace Givebutter\LaravelCustomFields\States\FieldType;
 
-use Givebutter\LaravelCustomFields\Enums\CustomFieldTypes;
 use Givebutter\LaravelCustomFields\Models\CustomField;
 
 abstract class FieldType
@@ -15,8 +14,9 @@ abstract class FieldType
 
     public function validationRules(array $attributes): array
     {
-        return CustomFieldTypes::from($attributes['type'])
-            ->getFieldValidationRules($this->field, $attributes['required']);
+        return [
+            'field_' . $this->field->id => ['required'],
+        ];
     }
 
     public function validationAttributes(): array

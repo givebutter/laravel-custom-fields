@@ -24,23 +24,15 @@ class CustomFieldFactory extends Factory
      */
     public function definition()
     {
-        $typesRequireAnswers = [
-            CustomFieldTypes::TEXT->value => false,
-            CustomFieldTypes::RADIO->value => true,
-            CustomFieldTypes::SELECT->value => true,
-            CustomFieldTypes::NUMBER->value => false,
-            CustomFieldTypes::CHECKBOX->value => false,
-            CustomFieldTypes::TEXTAREA->value => false,
-        ];
-
-        $type = array_keys($typesRequireAnswers)[rand(0, count($typesRequireAnswers) - 1)]; // Pick a random type
+        /** @var CustomFieldTypes $type */
+        $type = $this->faker->randomElement(CustomFieldTypes::cases());
 
         return [
-            'type' => $type,
+            'type' => $type->value,
             'required' => false,
             'title' => Lorem::sentence(3),
             'description' => Lorem::sentence(3),
-            'answers' => $typesRequireAnswers ? Lorem::words() : [],
+            'answers' => $type->requiresAnswers() ? Lorem::words() : [],
         ];
     }
 

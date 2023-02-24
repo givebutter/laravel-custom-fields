@@ -2,12 +2,12 @@
 
 namespace Givebutter\LaravelCustomFields\States\ResponseType;
 
-use Givebutter\LaravelCustomFields\Enums\CustomFieldTypes;
-use Givebutter\LaravelCustomFields\Enums\ValueFields;
 use Givebutter\LaravelCustomFields\Models\CustomFieldResponse;
 
 abstract class ResponseType
 {
+    const VALUE_FIELD = 'value_str';
+
     public function __construct(
         protected CustomFieldResponse $response,
     ) {
@@ -22,7 +22,7 @@ abstract class ResponseType
     public function getValue(): mixed
     {
         return $this->formatValue(
-            $this->response->getAttribute($this->valueField())
+            $this->response->getAttribute($this::VALUE_FIELD)
         );
     }
 
@@ -35,24 +35,19 @@ abstract class ResponseType
     {
         $this->clearValues();
 
-        $this->response->{$this->valueField()} = $this->formatValue($value);
+        $this->response->{$this::VALUE_FIELD} = $this->formatValue($value);
     }
 
     protected function clearValues(): void
     {
         $attributes = $this->response->getAttributes();
 
-        foreach (ValueFields::cases() as $valueField) {
-            $attributes[$valueField->value] = null;
+        foreach (config('custom-fields.value-fields') as $valueField) {
+            $attributes[$valueField] = null;
         }
 
         unset($attributes['value']);
 
         $this->response->setRawAttributes($attributes);
-    }
-
-    protected function valueField(): string
-    {
-        return CustomFieldTypes::from($this->response->field->type)->valueField();
     }
 }

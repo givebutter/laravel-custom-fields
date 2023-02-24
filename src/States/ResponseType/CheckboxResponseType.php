@@ -4,6 +4,8 @@ namespace Givebutter\LaravelCustomFields\States\ResponseType;
 
 class CheckboxResponseType extends ResponseType
 {
+    const VALUE_FIELD = 'value_int';
+
     public function formatValue(mixed $value): mixed
     {
         return filter_var($value, FILTER_VALIDATE_BOOLEAN);

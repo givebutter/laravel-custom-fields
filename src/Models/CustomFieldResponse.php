@@ -2,12 +2,13 @@
 
 namespace Givebutter\LaravelCustomFields\Models;
 
-use Givebutter\LaravelCustomFields\Enums\CustomFieldTypes;
+use Givebutter\LaravelCustomFields\States\ResponseType\ResponseType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\App;
 
 class CustomFieldResponse extends Model
 {
@@ -60,10 +61,12 @@ class CustomFieldResponse extends Model
 
     public function scopeHasValue(Builder $query, mixed $value): Builder
     {
-        return $query
-            ->where('value_str', $value)
-            ->orWhere('value_int', $value)
-            ->orWhere('value_text', $value);
+        return $query->where(function (Builder $query) use ($value) {
+            array_map(
+                fn (string $field) => $query->orWhere($field, $value),
+                config('custom-fields.value-fields'),
+            );
+        });
     }
 
     public function formatValue(mixed $value): mixed
@@ -89,8 +92,10 @@ class CustomFieldResponse extends Model
     public function responseType(): Attribute
     {
         return Attribute::get(
-            fn (mixed $value, array $attributes) => CustomFieldTypes::from($this->field->type)
-                ->createResponseType($this),
+            fn (mixed $value, array $attributes) => App::makeWith(ResponseType::class, [
+                'type' => $this->field->type,
+                'response' => $this,
+            ]),
         );
     }
 }
