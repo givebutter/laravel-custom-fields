@@ -2,16 +2,13 @@
 
 namespace Givebutter\Tests\Feature;
 
-use Carbon\CarbonImmutable;
 use Givebutter\LaravelCustomFields\Models\CustomField;
-use Givebutter\LaravelCustomFields\ValueObjects\DateRange;
 use Givebutter\Tests\Support\Survey;
 use Givebutter\Tests\Support\SurveyResponse;
 use Givebutter\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Testing\TestResponse;
 
 class CustomFieldControllerTest extends TestCase
 {
@@ -272,112 +269,5 @@ class CustomFieldControllerTest extends TestCase
             ])->assertOk();
 
         $this->assertCount(1, $surveyResponse->customFieldResponses);
-    }
-
-    /** @test */
-    public function can_save_date_range_fields()
-    {
-        $survey = Survey::create();
-        $surveyResponse = SurveyResponse::create();
-        $survey->customfields()->save(
-            CustomField::factory()->make([
-                'title' => 'My Date Range',
-                'type' => 'daterange',
-            ])
-        );
-
-        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey, $surveyResponse) {
-            $validator = $survey->validateCustomFields($request);
-
-            if ($validator->fails()) {
-                return ['errors' => $validator->errors()];
-            }
-
-            $surveyResponse->saveCustomFields($request->get('custom_fields'));
-
-            return response('All good', 200);
-        });
-
-        $fieldId = CustomField::where('title', 'My Date Range')->first()->id;
-
-        $this->post("/surveys/{$survey->id}/responses", [
-            'custom_fields' => [
-                $fieldId => ['2021-01-01', '2021-01-31'],
-            ],
-        ])->assertOk();
-
-        $this->assertCount(1, $surveyResponse->customFieldResponses);
-        $this->assertTrue(
-            DateRange::make(
-                CarbonImmutable::parse('2021-01-01'),
-                CarbonImmutable::parse('2021-01-31'),
-            )->equals($surveyResponse->customFieldResponses->first()->value)
-        );
-    }
-
-    /**
-     * @test
-     * @dataProvider daterangeChoices
-     * @param array $value
-     * @param callable $assert
-     */
-    public function daterange_can_pass_validation(array $value, callable $assert)
-    {
-        $survey = Survey::create();
-        $surveyResponse = SurveyResponse::create();
-        $survey->customfields()->save(
-            CustomField::factory()->make([
-                'title' => 'My Date Range',
-                'type' => 'daterange',
-            ])
-        );
-
-        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey, $surveyResponse) {
-            $validator = $survey->validateCustomFields($request);
-
-            if ($validator->fails()) {
-                return ['errors' => $validator->errors()];
-            }
-
-            $surveyResponse->saveCustomFields($request->get('custom_fields'));
-
-            return response('All good', 200);
-        });
-
-        $fieldId = CustomField::where('title', 'My Date Range')->first()->id;
-
-        $response = $this
-            ->post("/surveys/{$survey->id}/responses", [
-                'custom_fields' => [
-                    $fieldId => $value,
-                ],
-            ])->assertOk();
-
-        $assert($this, $response, $surveyResponse);
-    }
-
-    public function daterangeChoices()
-    {
-        yield 'standard valid' => [
-            ['2021-01-01', '2021-01-31'],
-            function (TestCase $test, TestResponse $response, SurveyResponse $surveyResponse) {
-                $response->assertOk();
-                $test->assertCount(1, $surveyResponse->customFieldResponses);
-                $test->assertTrue(
-                    DateRange::make(
-                        CarbonImmutable::parse('2021-01-01'),
-                        CarbonImmutable::parse('2021-01-31'),
-                    )->equals($surveyResponse->customFieldResponses->first()->value)
-                );
-            },
-        ];
-
-        yield '[INVALID] start date is after end date' => [
-            ['2021-01-31', '2021-01-01'],
-            function (TestCase $test, TestResponse $response, SurveyResponse $surveyResponse) {
-                $response->assertJsonValidationErrors('field_1.0');
-                $test->assertCount(0, $surveyResponse->customFieldResponses);
-            },
-        ];
     }
 }

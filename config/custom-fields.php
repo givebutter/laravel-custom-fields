@@ -19,7 +19,6 @@ return [
     */
     'fields' => [
         'checkbox' => \Givebutter\LaravelCustomFields\FieldTypes\CheckboxFieldType::class,
-        'daterange' => \Givebutter\LaravelCustomFields\FieldTypes\DateRangeFieldType::class,
         'number' => \Givebutter\LaravelCustomFields\FieldTypes\NumberFieldType::class,
         'radio' => \Givebutter\LaravelCustomFields\FieldTypes\RadioFieldType::class,
         'select' => \Givebutter\LaravelCustomFields\FieldTypes\SelectFieldType::class,
@@ -38,7 +37,6 @@ return [
     */
     'responses' => [
         'checkbox' => \Givebutter\LaravelCustomFields\ResponseTypes\CheckboxResponseType::class,
-        'daterange' => \Givebutter\LaravelCustomFields\ResponseTypes\DateRangeResponseType::class,
         'number' => \Givebutter\LaravelCustomFields\ResponseTypes\NumberResponseType::class,
         'radio' => \Givebutter\LaravelCustomFields\ResponseTypes\RadioResponseType::class,
         'select' => \Givebutter\LaravelCustomFields\ResponseTypes\SelectResponseType::class,
@@ -58,6 +56,7 @@ return [
         'value_int',
         'value_str',
         'value_text',
+        'value_json',
     ],
 
 ];

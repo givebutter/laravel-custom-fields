@@ -39,8 +39,7 @@ return new class extends Migration
             $table->string('value_str')->nullable();
             $table->text('value_text')->nullable();
             $table->integer('value_int')->nullable();
-            $table->datetime('value_datetime_start')->nullable();
-            $table->datetime('value_datetime_end')->nullable();
+            $table->json('value_json')->nullable();
             $table->timestamps();
         });
     }

@@ -30,6 +30,10 @@ class CustomFieldResponse extends Model
         'value',
     ];
 
+    protected $casts = [
+        'value_json' => 'array',
+    ];
+
     public function __construct(array $attributes = [])
     {
         /*
