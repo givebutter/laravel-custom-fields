@@ -5,28 +5,19 @@ namespace Givebutter\LaravelCustomFields\Traits;
 use Givebutter\LaravelCustomFields\Exceptions\FieldDoesNotBelongToModelException;
 use Givebutter\LaravelCustomFields\Exceptions\WrongNumberOfFieldsForOrderingException;
 use Givebutter\LaravelCustomFields\Models\CustomField;
-use Givebutter\LaravelCustomFields\Validators\CustomFieldValidator;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Validator;
 
 trait HasCustomFields
 {
-    /**
-     * Get the custom fields belonging to this model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function customFields()
+    public function customFields(): MorphMany
     {
         return $this->morphMany(CustomField::class, 'model')->orderBy('order');
     }
 
-    /**
-     * Validate the given custom fields.
-     *
-     * @param $fields
-     * @return CustomFieldValidator
-     */
-    public function validateCustomFields($fields)
+    public function validateCustomFields(Request|array $fields): Validator
     {
         if ($fields instanceof Request) {
             return $this->validateCustomFieldsRequest($fields);
@@ -36,33 +27,15 @@ trait HasCustomFields
             ->whereNull('archived_at')
             ->get();
 
-        $validationRules = $customFields
-            ->map(fn ($field) => $field->validation_rules)
-            ->flatMap(fn ($rules) => $rules)
-            ->toArray();
-
-        $validationAttributes = $customFields
-            ->map(fn ($field) => $field->validation_attributes)
-            ->flatMap(fn ($rules) => $rules)
-            ->toArray();
-
-        $keyAdjustedFields = collect($fields)
-            ->mapWithKeys(function ($field, $key) use ($customFields) {
-                $id = $customFields->firstOrFail('id', $key)->id;
-
-                return ["field_{$id}" => $field];
-            })->toArray();
-
-        return new CustomFieldValidator($keyAdjustedFields, $validationRules, $validationAttributes);
+        return new Validator(
+            translator: app('translator'),
+            data: $this->validationData($fields, $customFields),
+            rules: $this->validationRules($customFields),
+            attributes: $this->validationAttributes($customFields),
+        );
     }
 
-    /**
-     * Validate the given custom field request.
-     *
-     * @param Request $request
-     * @return CustomFieldValidator
-     */
-    public function validateCustomFieldsRequest(Request $request)
+    public function validateCustomFieldsRequest(Request $request): Validator
     {
         return $this->validateCustomFields($request->get(config('custom-fields.form_name', 'custom_fields')));
     }
@@ -92,4 +65,29 @@ trait HasCustomFields
             $customField->update(['order' => $index + 1]);
         });
     }
+
+    protected function validationData(array $fields, Collection $customFields): array
+    {
+        return collect($fields)
+            ->mapWithKeys(function (mixed $field, int $key) use ($customFields) {
+                $id = $customFields->firstOrFail('id', $key)->id;
+
+                return ["field_{$id}" => $field];
+            })->toArray();
+    }
+
+    protected function validationRules(Collection $fields): array
+    {
+        return $fields
+            ->map(fn (CustomField $field): array => $field->validation_rules)
+            ->flatMap(fn (array $rules): array => $rules)
+            ->toArray();
+    }
+     protected function validationAttributes(Collection $fields): array
+     {
+         return $fields
+             ->map(fn (CustomField $field): array => $field->validation_attributes)
+             ->flatMap(fn (array $rules): array => $rules)
+             ->toArray();
+     }
 }
