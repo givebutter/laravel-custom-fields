@@ -1,6 +1,6 @@
 <?php
 
-namespace Givebutter\LaravelCustomFields\States\ResponseType;
+namespace Givebutter\LaravelCustomFields\ResponseTypes;
 
 use Carbon\CarbonImmutable;
 use Givebutter\LaravelCustomFields\ValueObjects\DateRange;

@@ -2,8 +2,8 @@
 
 namespace Givebutter\LaravelCustomFields;
 
-use Givebutter\LaravelCustomFields\States\FieldType\FieldType;
-use Givebutter\LaravelCustomFields\States\ResponseType\ResponseType;
+use Givebutter\LaravelCustomFields\FieldTypes\FieldType;
+use Givebutter\LaravelCustomFields\ResponseTypes\ResponseType;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelCustomFieldsServiceProvider extends ServiceProvider

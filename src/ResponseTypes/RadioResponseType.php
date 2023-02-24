@@ -1,6 +1,6 @@
 <?php
 
-namespace Givebutter\LaravelCustomFields\States\ResponseType;
+namespace Givebutter\LaravelCustomFields\ResponseTypes;
 
 class RadioResponseType extends ResponseType
 {

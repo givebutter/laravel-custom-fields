@@ -28,10 +28,11 @@ trait HasCustomFields
             ->get();
 
         return new Validator(
-            translator: app('translator'),
-            data: $this->validationData($fields, $customFields),
-            rules: $this->validationRules($customFields),
-            attributes: $this->validationAttributes($customFields),
+            app('translator'),
+            $this->validationData($fields, $customFields),
+            $this->validationRules($customFields),
+            [],
+            $this->validationAttributes($customFields),
         );
     }
 

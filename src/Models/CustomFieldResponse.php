@@ -2,7 +2,7 @@
 
 namespace Givebutter\LaravelCustomFields\Models;
 
-use Givebutter\LaravelCustomFields\States\ResponseType\ResponseType;
+use Givebutter\LaravelCustomFields\ResponseTypes\ResponseType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;

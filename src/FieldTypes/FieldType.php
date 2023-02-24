@@ -1,6 +1,6 @@
 <?php
 
-namespace Givebutter\LaravelCustomFields\States\FieldType;
+namespace Givebutter\LaravelCustomFields\FieldTypes;
 
 use Givebutter\LaravelCustomFields\Models\CustomField;
 

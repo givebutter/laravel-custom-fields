@@ -1,8 +1,10 @@
 <?php
 
-namespace Givebutter\LaravelCustomFields\States\FieldType;
+namespace Givebutter\LaravelCustomFields\FieldTypes;
 
-class TextFieldType extends FieldType
+use Illuminate\Validation\Rule;
+
+class RadioFieldType extends FieldType
 {
     public function validationRules(array $attributes): array
     {
@@ -11,6 +13,7 @@ class TextFieldType extends FieldType
                 $this->requiredRule($attributes['required']),
                 'string',
                 'max:255',
+                Rule::in($this->field->answers),
             ],
         ];
     }

@@ -18,13 +18,13 @@ return [
     | register the corresponding response type below.
     */
     'fields' => [
-        'checkbox' => Givebutter\LaravelCustomFields\States\FieldType\CheckboxFieldType::class,
-        'daterange' => Givebutter\LaravelCustomFields\States\FieldType\DateRangeFieldType::class,
-        'number' => Givebutter\LaravelCustomFields\States\FieldType\NumberFieldType::class,
-        'radio' => Givebutter\LaravelCustomFields\States\FieldType\RadioFieldType::class,
-        'select' => Givebutter\LaravelCustomFields\States\FieldType\SelectFieldType::class,
-        'textarea' => Givebutter\LaravelCustomFields\States\FieldType\TextareaFieldType::class,
-        'text' => Givebutter\LaravelCustomFields\States\FieldType\TextFieldType::class,
+        'checkbox' => \Givebutter\LaravelCustomFields\FieldTypes\CheckboxFieldType::class,
+        'daterange' => \Givebutter\LaravelCustomFields\FieldTypes\DateRangeFieldType::class,
+        'number' => \Givebutter\LaravelCustomFields\FieldTypes\NumberFieldType::class,
+        'radio' => \Givebutter\LaravelCustomFields\FieldTypes\RadioFieldType::class,
+        'select' => \Givebutter\LaravelCustomFields\FieldTypes\SelectFieldType::class,
+        'textarea' => \Givebutter\LaravelCustomFields\FieldTypes\TextareaFieldType::class,
+        'text' => \Givebutter\LaravelCustomFields\FieldTypes\TextFieldType::class,
     ],
 
     /*
@@ -37,13 +37,13 @@ return [
     | register the corresponding field type above.
     */
     'responses' => [
-        'checkbox' => Givebutter\LaravelCustomFields\States\ResponseType\CheckboxResponseType::class,
-        'daterange' => Givebutter\LaravelCustomFields\States\ResponseType\DateRangeResponseType::class,
-        'number' => Givebutter\LaravelCustomFields\States\ResponseType\NumberResponseType::class,
-        'radio' => Givebutter\LaravelCustomFields\States\ResponseType\RadioResponseType::class,
-        'select' => Givebutter\LaravelCustomFields\States\ResponseType\SelectResponseType::class,
-        'textarea' => Givebutter\LaravelCustomFields\States\ResponseType\TextareaResponseType::class,
-        'text' => Givebutter\LaravelCustomFields\States\ResponseType\TextResponseType::class,
+        'checkbox' => \Givebutter\LaravelCustomFields\ResponseTypes\CheckboxResponseType::class,
+        'daterange' => \Givebutter\LaravelCustomFields\ResponseTypes\DateRangeResponseType::class,
+        'number' => \Givebutter\LaravelCustomFields\ResponseTypes\NumberResponseType::class,
+        'radio' => \Givebutter\LaravelCustomFields\ResponseTypes\RadioResponseType::class,
+        'select' => \Givebutter\LaravelCustomFields\ResponseTypes\SelectResponseType::class,
+        'textarea' => \Givebutter\LaravelCustomFields\ResponseTypes\TextareaResponseType::class,
+        'text' => \Givebutter\LaravelCustomFields\ResponseTypes\TextResponseType::class,
     ],
 
     /*
