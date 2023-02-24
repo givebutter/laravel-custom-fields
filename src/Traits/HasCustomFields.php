@@ -83,6 +83,7 @@ trait HasCustomFields
             ->flatMap(fn (array $rules): array => $rules)
             ->toArray();
     }
+
      protected function validationAttributes(Collection $fields): array
      {
          return $fields
