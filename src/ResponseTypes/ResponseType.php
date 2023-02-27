@@ -22,7 +22,7 @@ abstract class ResponseType
     public function getValue(): mixed
     {
         return $this->formatValue(
-            $this->response->getAttribute(self::VALUE_FIELD)
+            $this->response->getAttribute($this::VALUE_FIELD)
         );
     }
 
@@ -35,7 +35,7 @@ abstract class ResponseType
     {
         $this->clearValues();
 
-        $this->response->{self::VALUE_FIELD} = $this->formatValue($value);
+        $this->response->{$this::VALUE_FIELD} = $this->formatValue($value);
     }
 
     protected function clearValues(): void
