@@ -24,22 +24,16 @@ trait HasCustomFieldResponses
      */
     public function saveCustomFields($fields)
     {
-        foreach ($fields as $key => $value) {
-            $customField = CustomField::find((int) $key);
+        $customFields = CustomField::findMany(array_keys($fields));
 
-            if (! $customField) {
-                continue;
-            }
-
-            $customFieldResponse = new CustomFieldResponse([
+        $responses = collect($fields)
+            ->filter(fn ($value, $key) => $customFields->contains('id', $key))
+            ->map(fn ($value, $key) => new CustomFieldResponse([
                 'value' => $value,
-                'model_id' => $this->id,
-                'field_id' => $customField->id,
-                'model_type' => get_class($this),
-            ]);
+                'field_id' => $key,
+            ]));
 
-            $customFieldResponse->save();
-        }
+        $this->customFieldResponses()->saveMany($responses);
     }
 
     /**

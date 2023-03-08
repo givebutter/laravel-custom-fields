@@ -6,24 +6,38 @@ use Givebutter\LaravelCustomFields\Models\CustomField;
 
 abstract class FieldType
 {
+    protected string $validationPrefix = 'custom_fields.field_';
+
     public function __construct(
         protected CustomField $field,
     ) {
         //
     }
 
+    public function setValidationPrefix(string $prefix): self
+    {
+        $this->validationPrefix = $prefix;
+
+        return $this;
+    }
+
     public function validationRules(array $attributes): array
     {
         return [
-            'field_' . $this->field->id => ['required'],
+            $this->validationPrefix . $this->field->id => ['required'],
         ];
     }
 
     public function validationAttributes(): array
     {
         return [
-            'field_' . $this->field->id => $this->field->title,
+            $this->validationPrefix . $this->field->id => $this->field->title,
         ];
+    }
+
+    public function validationMessages(): array
+    {
+        return [];
     }
 
     protected function requiredRule(bool $required): string

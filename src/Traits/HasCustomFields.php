@@ -8,6 +8,7 @@ use Givebutter\LaravelCustomFields\Models\CustomField;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Validator;
 
 trait HasCustomFields
@@ -80,15 +81,23 @@ trait HasCustomFields
     protected function validationRules(Collection $fields): array
     {
         return $fields
-            ->map(fn (CustomField $field): array => $field->validation_rules)
-            ->flatMap(fn (array $rules): array => $rules)
+            ->map(function (CustomField $field): array {
+                $field->field_type->setValidationPrefix('field_');
+
+                return $field->validation_rules;
+            })
+            ->flatMap(fn (array $ruleset): array => $ruleset)
             ->toArray();
     }
 
      protected function validationAttributes(Collection $fields): array
      {
          return $fields
-             ->map(fn (CustomField $field): array => $field->validation_attributes)
+             ->map(function (CustomField $field): array {
+                 $field->field_type->setValidationPrefix('field_');
+
+                 return $field->validation_attributes;
+             })
              ->flatMap(fn (array $rules): array => $rules)
              ->toArray();
      }

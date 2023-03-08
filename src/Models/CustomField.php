@@ -2,6 +2,7 @@
 
 namespace Givebutter\LaravelCustomFields\Models;
 
+use Givebutter\LaravelCustomFields\Collections\CustomFieldCollection;
 use Givebutter\LaravelCustomFields\FieldTypes\FieldType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -113,14 +114,21 @@ class CustomField extends Model
     public function validationRules(): Attribute
     {
         return new Attribute(
-            get: fn ($value, $attributes) => $this->fieldType->validationRules($attributes),
+            get: fn ($value, $attributes) => $this->field_type->validationRules($attributes),
         );
     }
 
     public function validationAttributes(): Attribute
     {
         return new Attribute(
-            get: fn ($value, $attributes) => $this->fieldType->validationAttributes(),
+            get: fn ($value, $attributes) => $this->field_type->validationAttributes(),
+        );
+    }
+
+    public function validationMessages(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value, $attributes) => $this->field_type->validationMessages(),
         );
     }
 
@@ -132,5 +140,16 @@ class CustomField extends Model
                 'field' => $this,
             ]),
         );
+    }
+
+    /**
+     * Create a new Eloquent Collection instance.
+     *
+     * @param  array  $models
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function newCollection(array $models = [])
+    {
+        return new CustomFieldCollection($models);
     }
 }
