@@ -28,10 +28,22 @@ trait HasCustomFieldResponses
 
         $responses = collect($fields)
             ->filter(fn ($value, $key) => $customFields->contains('id', $key))
-            ->map(fn ($value, $key) => new CustomFieldResponse([
-                'value' => $value,
-                'field_id' => $key,
-            ]));
+            ->map(function ($value, $key) {
+                $response = CustomFieldResponse::firstOrNew([
+                    'field_id' => $key,
+                    'model_id' => $this->id,
+                    'model_type' => $this->getMorphClass(),
+                ]);
+
+                if (! $response->id) {
+                    $response->field()->associate($key);
+                    $response->model()->associate($this);
+                }
+
+                $response->value = $value;
+
+                return $response;
+            });
 
         $this->customFieldResponses()->saveMany($responses);
     }

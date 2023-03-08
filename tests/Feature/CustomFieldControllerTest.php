@@ -41,6 +41,53 @@ class CustomFieldControllerTest extends TestCase
             ])->assertOk();
     }
 
+    /** @test */
+    public function can_overwrite_response_values()
+    {
+        /** @var Survey $survey */
+        $survey = Survey::create();
+
+        /** @var SurveyResponse $surveyResponse */
+        $surveyResponse = SurveyResponse::create();
+
+        $field = $survey->customfields()->save(
+            CustomField::factory()->make([
+                'title' => 'email',
+                'type' => 'text',
+            ])
+        );
+
+        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey, $surveyResponse) {
+            $survey->validateCustomFields($request)->validate();
+
+            $surveyResponse->saveCustomFields($request->custom_fields);
+
+            return response('All good', 200);
+        });
+
+        // first time
+        $this
+            ->post("/surveys/{$survey->id}/responses", [
+                'custom_fields' => [
+                    $field->id => 'daniel@tighten.co',
+                ],
+            ])->assertOk();
+
+        $this->assertSame(1, $field->responses()->count());
+        $this->assertSame('daniel@tighten.co', $field->responses()->first()->value);
+
+        // second time
+        $this
+            ->post("/surveys/{$survey->id}/responses", [
+                'custom_fields' => [
+                    $field->id => 'clint@givebutter.com',
+                ],
+            ])->assertOk();
+
+        $this->assertSame(1, $field->responses()->count());
+        $this->assertSame('clint@givebutter.com', $field->responses()->first()->value);
+    }
+
 
     /** @test */
     public function invalid_data_throws_validation_exception()

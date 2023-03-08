@@ -34,6 +34,7 @@ class CustomFieldResponse extends Model
         'value_json' => 'array',
     ];
 
+    // TODO: find a better way to do this. This breaks all other forms of creating the model.
     public function __construct(array $attributes = [])
     {
         /*
@@ -75,22 +76,22 @@ class CustomFieldResponse extends Model
 
     public function formatValue(mixed $value): mixed
     {
-        return $this->responseType->formatValue($value);
+        return $this->response_type->formatValue($value);
     }
 
     public function getValueAttribute(): mixed
     {
-        return $this->responseType->getValue();
+        return $this->response_type->getValue();
     }
 
     public function setValueAttribute(mixed $value): void
     {
-        $this->responseType->setValue($value);
+        $this->response_type->setValue($value);
     }
 
      public function getValueFriendlyAttribute(): mixed
      {
-         return $this->responseType->getValueFriendly();
+         return $this->response_type->getValueFriendly();
      }
 
     public function responseType(): Attribute
