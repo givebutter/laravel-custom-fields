@@ -90,7 +90,7 @@ class CustomField extends Model
 
     public function responses(): HasMany
     {
-        return $this->hasMany(CustomFieldResponse::class, 'field_id');
+        return $this->hasMany(config('custom-fields.models.custom-field-response'), 'field_id');
     }
 
     public function archive(): self

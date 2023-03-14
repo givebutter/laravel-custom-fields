@@ -2,8 +2,7 @@
 
 namespace Givebutter\LaravelCustomFields\Traits;
 
-use Givebutter\LaravelCustomFields\Models\CustomField;
-use Givebutter\LaravelCustomFields\Models\CustomFieldResponse;
+use Illuminate\Database\Eloquent\Model;
 
 trait HasCustomFieldResponses
 {
@@ -14,7 +13,7 @@ trait HasCustomFieldResponses
      */
     public function customFieldResponses()
     {
-        return $this->morphMany(CustomFieldResponse::class, 'model');
+        return $this->morphMany(config('custom-fields.models.custom-field-response'), 'model');
     }
 
     /**
@@ -24,12 +23,15 @@ trait HasCustomFieldResponses
      */
     public function saveCustomFields($fields)
     {
-        $customFields = CustomField::findMany(array_keys($fields));
+        $customFieldClass = config('custom-fields.models.custom-field');
+        $customFieldResponseClass = config('custom-fields.models.custom-field-response');
+
+        $customFields = $customFieldClass::findMany(array_keys($fields));
 
         $responses = collect($fields)
             ->filter(fn ($value, $key) => $customFields->contains('id', $key))
-            ->map(function ($value, $key) {
-                $response = CustomFieldResponse::firstOrNew([
+            ->map(function ($value, $key) use ($customFieldResponseClass) {
+                $response = $customFieldResponseClass::firstOrNew([
                     'field_id' => $key,
                     'model_id' => $this->id,
                     'model_type' => $this->getMorphClass(),
@@ -52,10 +54,10 @@ trait HasCustomFieldResponses
      * Add a scope to return only models which match the given field and value.
      *
      * @param $query
-     * @param CustomField $field
-     * @param $value
+     * @param Model $field
+     * @param mixed $value
      */
-    public function scopeWhereField($query, CustomField $field, $value)
+    public function scopeWhereField($query, Model $field, mixed $value)
     {
         $query->whereHas('customFieldResponses', function ($query) use ($field, $value) {
             $query

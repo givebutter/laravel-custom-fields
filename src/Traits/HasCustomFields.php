@@ -4,18 +4,16 @@ namespace Givebutter\LaravelCustomFields\Traits;
 
 use Givebutter\LaravelCustomFields\Exceptions\FieldDoesNotBelongToModelException;
 use Givebutter\LaravelCustomFields\Exceptions\WrongNumberOfFieldsForOrderingException;
-use Givebutter\LaravelCustomFields\Models\CustomField;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Validator;
 
 trait HasCustomFields
 {
     public function customFields(): MorphMany
     {
-        return $this->morphMany(CustomField::class, 'model')->orderBy('order');
+        return $this->morphMany(config('custom-fields.models.custom-field'), 'model')->orderBy('order');
     }
 
     public function validateCustomFields(Request|array $fields): Validator
@@ -39,7 +37,7 @@ trait HasCustomFields
 
     public function validateCustomFieldsRequest(Request $request): Validator
     {
-        return $this->validateCustomFields($request->get(config('custom-fields.form_name', 'custom_fields')));
+        return $this->validateCustomFields($request->get(config('custom-fields.form-name', 'custom_fields')));
     }
 
     /**
@@ -81,7 +79,7 @@ trait HasCustomFields
     protected function validationRules(Collection $fields): array
     {
         return $fields
-            ->map(function (CustomField $field): array {
+            ->map(function ($field): array {
                 $field->field_type->setValidationPrefix('field_');
 
                 return $field->validation_rules;
@@ -93,7 +91,7 @@ trait HasCustomFields
      protected function validationAttributes(Collection $fields): array
      {
          return $fields
-             ->map(function (CustomField $field): array {
+             ->map(function ($field): array {
                  $field->field_type->setValidationPrefix('field_');
 
                  return $field->validation_attributes;
