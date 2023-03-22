@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Exception;
 use Faker\Provider\Lorem;
-use Givebutter\LaravelCustomFields\Enums\CustomFieldTypes;
+use Givebutter\LaravelCustomFields\Enums\CustomFieldType;
 use Givebutter\LaravelCustomFields\Models\CustomField;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,8 +24,8 @@ class CustomFieldFactory extends Factory
      */
     public function definition()
     {
-        /** @var CustomFieldTypes $type */
-        $type = $this->faker->randomElement(CustomFieldTypes::cases());
+        /** @var CustomFieldType $type */
+        $type = $this->faker->randomElement(CustomFieldType::cases());
 
         return [
             'type' => $type->value,
@@ -41,7 +41,7 @@ class CustomFieldFactory extends Factory
      */
     public function withTypeCheckbox()
     {
-        $this->model->type = CustomFieldTypes::CHECKBOX;
+        $this->model->type = CustomFieldType::CHECKBOX;
 
         return $this;
     }
@@ -51,7 +51,7 @@ class CustomFieldFactory extends Factory
      */
     public function withTypeNumber()
     {
-        $this->model->type = CustomFieldTypes::NUMBER;
+        $this->model->type = CustomFieldType::NUMBER;
 
         return $this;
     }
@@ -63,7 +63,7 @@ class CustomFieldFactory extends Factory
      */
     public function withTypeRadio($answerCount = 3)
     {
-        $this->model->type = CustomFieldTypes::RADIO;
+        $this->model->type = CustomFieldType::RADIO;
 
         return $this->withAnswers($answerCount);
     }
@@ -75,7 +75,7 @@ class CustomFieldFactory extends Factory
      */
     public function withTypeSelect($optionCount = 3)
     {
-        $this->model->type = CustomFieldTypes::SELECT;
+        $this->model->type = CustomFieldType::SELECT;
 
         return $this->withAnswers($optionCount);
     }
@@ -85,7 +85,7 @@ class CustomFieldFactory extends Factory
      */
     public function withTypeText()
     {
-        $this->model->type = CustomFieldTypes::TEXT;
+        $this->model->type = CustomFieldType::TEXT;
 
         return $this;
     }
@@ -95,7 +95,7 @@ class CustomFieldFactory extends Factory
      */
     public function withTypeTextArea()
     {
-        $this->model->type = CustomFieldTypes::TEXTAREA;
+        $this->model->type = CustomFieldType::TEXTAREA;
 
         return $this;
     }

@@ -2,7 +2,7 @@
 
 namespace Givebutter\LaravelCustomFields\Enums;
 
-enum CustomFieldTypes: string
+enum CustomFieldType: string
 {
     case CHECKBOX = 'checkbox';
     case NUMBER = 'number';
