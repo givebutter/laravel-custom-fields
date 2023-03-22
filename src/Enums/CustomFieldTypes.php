@@ -10,7 +10,6 @@ enum CustomFieldTypes: string
     case SELECT = 'select';
     case TEXT = 'text';
     case TEXTAREA = 'textarea';
-    case DATE_RANGE = 'daterange';
 
     public function requiresAnswers(): bool
     {
