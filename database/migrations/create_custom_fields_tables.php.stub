@@ -17,13 +17,14 @@ return new class extends Migration
             $table->increments('id');
             $table->unsignedInteger('model_id');
             $table->string('model_type');
+            $table->string('group')->nullable();
             $table->string('type');
             $table->boolean('required')->default(false);
             $table->json('answers')->nullable();
             $table->string('title');
             $table->string('description')->nullable();
             $table->string('default_value')->nullable();
-            $table->string('order');
+            $table->integer('order');
             $table->timestamps();
             $table->timestamp('archived_at')->nullable();
             $table->softDeletes();
@@ -38,6 +39,7 @@ return new class extends Migration
             $table->string('value_str')->nullable();
             $table->text('value_text')->nullable();
             $table->integer('value_int')->nullable();
+            $table->json('value_json')->nullable();
             $table->timestamps();
         });
     }

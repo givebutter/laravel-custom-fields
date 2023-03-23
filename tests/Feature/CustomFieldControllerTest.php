@@ -2,13 +2,13 @@
 
 namespace Givebutter\Tests\Feature;
 
-use Illuminate\Http\Request;
-use Givebutter\Tests\TestCase;
-use Givebutter\Tests\Support\Survey;
-use Illuminate\Support\Facades\Route;
-use Givebutter\Tests\Support\SurveyResponse;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Givebutter\LaravelCustomFields\Models\CustomField;
+use Givebutter\Tests\Support\Survey;
+use Givebutter\Tests\Support\SurveyResponse;
+use Givebutter\Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class CustomFieldControllerTest extends TestCase
 {
@@ -25,6 +25,8 @@ class CustomFieldControllerTest extends TestCase
             ])
         );
 
+        $field = $survey->customFields()->first();
+
         Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
             $survey->validateCustomFields($request);
 
@@ -34,9 +36,56 @@ class CustomFieldControllerTest extends TestCase
         $this
             ->post("/surveys/{$survey->id}/responses", [
                 'custom_fields' => [
-                    'email' => 'daniel@tighten.co',
+                    $field->id => 'daniel@tighten.co',
                 ],
             ])->assertOk();
+    }
+
+    /** @test */
+    public function can_overwrite_response_values()
+    {
+        /** @var Survey $survey */
+        $survey = Survey::create();
+
+        /** @var SurveyResponse $surveyResponse */
+        $surveyResponse = SurveyResponse::create();
+
+        $field = $survey->customfields()->save(
+            CustomField::factory()->make([
+                'title' => 'email',
+                'type' => 'text',
+            ])
+        );
+
+        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey, $surveyResponse) {
+            $survey->validateCustomFields($request)->validate();
+
+            $surveyResponse->saveCustomFields($request->custom_fields);
+
+            return response('All good', 200);
+        });
+
+        // first time
+        $this
+            ->post("/surveys/{$survey->id}/responses", [
+                'custom_fields' => [
+                    $field->id => 'daniel@tighten.co',
+                ],
+            ])->assertOk();
+
+        $this->assertSame(1, $field->responses()->count());
+        $this->assertSame('daniel@tighten.co', $field->responses()->first()->value);
+
+        // second time
+        $this
+            ->post("/surveys/{$survey->id}/responses", [
+                'custom_fields' => [
+                    $field->id => 'clint@givebutter.com',
+                ],
+            ])->assertOk();
+
+        $this->assertSame(1, $field->responses()->count());
+        $this->assertSame('clint@givebutter.com', $field->responses()->first()->value);
     }
 
 
@@ -69,7 +118,7 @@ class CustomFieldControllerTest extends TestCase
                 'custom_fields' => [
                     $fieldId => 'Yeezus',
                 ],
-            ])->assertJsonFragment(["field_1" => ["The selected `favorite_album` field is invalid."]]);
+            ])->assertJsonFragment(["field_1" => ["The selected favorite_album is invalid."]]);
     }
 
     /** @test */
@@ -105,14 +154,17 @@ class CustomFieldControllerTest extends TestCase
             ])->assertSee('All good');
     }
 
-    /** @test */
-    public function checkbox_can_pass_validation()
+    /**
+     * @test
+     * @dataProvider checkboxChoices
+     */
+    public function checkbox_can_pass_validation(mixed $value, callable $assert)
     {
         $survey = Survey::create();
         $surveyResponse = SurveyResponse::create();
         $survey->customfields()->save(
             CustomField::factory()->make([
-                'title' => 'favorite_album',
+                'title' => 'Favorite Album',
                 'type' => 'checkbox',
             ])
         );
@@ -129,16 +181,110 @@ class CustomFieldControllerTest extends TestCase
             return response('All good', 200);
         });
 
-        $fieldId = CustomField::where('title', 'favorite_album')->first()->id;
+        $fieldId = CustomField::where('title', 'Favorite Album')->value('id');
 
         $this
             ->post("/surveys/{$survey->id}/responses", [
                 'custom_fields' => [
-                    $fieldId => 'on',
+                    $fieldId => $value,
                 ],
             ])->assertSee('All good');
 
-        $this->assertTrue($surveyResponse->customFieldResponses()->first()->value);
+        $assert($this, $surveyResponse);
+    }
+
+    public function checkboxChoices(): iterable
+    {
+        yield 'true' => [
+            true,
+            function (TestCase $test, SurveyResponse $surveyResponse) {
+                $test->assertTrue($surveyResponse->customFieldResponses()->first()->value);
+            },
+        ];
+
+        yield '"true"' => [
+            "true",
+            function (TestCase $test, SurveyResponse $surveyResponse) {
+                $test->assertTrue($surveyResponse->customFieldResponses()->first()->value);
+            },
+        ];
+
+        yield 'false' => [
+            false,
+            function (TestCase $test, SurveyResponse $surveyResponse) {
+                $test->assertFalse($surveyResponse->customFieldResponses()->first()->value);
+            },
+        ];
+
+        yield '"false"' => [
+            "false",
+            function (TestCase $test, SurveyResponse $surveyResponse) {
+                $test->assertFalse($surveyResponse->customFieldResponses()->first()->value);
+            },
+        ];
+
+        yield '1' => [
+            1,
+            function (TestCase $test, SurveyResponse $surveyResponse) {
+                $test->assertTrue($surveyResponse->customFieldResponses()->first()->value);
+            },
+        ];
+
+        yield '"1"' => [
+            "1",
+            function (TestCase $test, SurveyResponse $surveyResponse) {
+                $test->assertTrue($surveyResponse->customFieldResponses()->first()->value);
+            },
+        ];
+
+        yield '0' => [
+            0,
+            function (TestCase $test, SurveyResponse $surveyResponse) {
+                $test->assertFalse($surveyResponse->customFieldResponses()->first()->value);
+            },
+        ];
+
+        yield '"0"' => [
+            "0",
+            function (TestCase $test, SurveyResponse $surveyResponse) {
+                $test->assertFalse($surveyResponse->customFieldResponses()->first()->value);
+            },
+        ];
+
+        yield '"on"' => [
+            "on",
+            function (TestCase $test, SurveyResponse $surveyResponse) {
+                $test->assertTrue($surveyResponse->customFieldResponses()->first()->value);
+            },
+        ];
+
+        yield '"off"' => [
+            "off",
+            function (TestCase $test, SurveyResponse $surveyResponse) {
+                $test->assertFalse($surveyResponse->customFieldResponses()->first()->value);
+            },
+        ];
+
+        yield '"yes"' => [
+            "yes",
+            function (TestCase $test, SurveyResponse $surveyResponse) {
+                $test->assertTrue($surveyResponse->customFieldResponses()->first()->value);
+            },
+        ];
+
+        yield '"no"' => [
+            "no",
+            function (TestCase $test, SurveyResponse $surveyResponse) {
+                $test->assertFalse($surveyResponse->customFieldResponses()->first()->value);
+            },
+        ];
+
+        yield 'null' => [
+            null,
+            function (TestCase $test, SurveyResponse $surveyResponse) {
+                $test->assertFalse($surveyResponse->customFieldResponses()->first()->value);
+            },
+        ];
     }
 
     /** @test */

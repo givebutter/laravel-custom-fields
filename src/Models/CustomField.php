@@ -2,45 +2,19 @@
 
 namespace Givebutter\LaravelCustomFields\Models;
 
+use Givebutter\LaravelCustomFields\Collections\CustomFieldCollection;
+use Givebutter\LaravelCustomFields\FieldTypes\FieldType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\App;
 
 class CustomField extends Model
 {
     use SoftDeletes, HasFactory;
-
-    /**
-     * @var string
-     */
-    const TYPE_CHECKBOX = 'checkbox';
-
-    /**
-     * @var string
-     */
-    const TYPE_NUMBER = 'number';
-
-    /**
-     * @var string
-     */
-    const TYPE_RADIO = 'radio';
-
-    /**
-     * @var string
-     */
-    const TYPE_SELECT = 'select';
-
-    /**
-     * @var string
-     */
-    const TYPE_TEXT = 'text';
-
-    /**
-     * @var string
-     */
-    const TYPE_TEXTAREA = 'textarea';
 
     /**
      * The attributes that aren't mass assignable.
@@ -57,6 +31,7 @@ class CustomField extends Model
      * @var string[]
      */
     protected $fillable = [
+        'group',
         'type',
         'title',
         'description',
@@ -98,38 +73,27 @@ class CustomField extends Model
         parent::boot();
 
         self::creating(function ($field) {
-            $lastFieldOnCurrentModel = $field->model->customFields()->orderByDesc('order')->first();
+            $lastFieldOnCurrentModel = $field->model
+                ->customFields()
+                ->reorder()
+                ->orderByDesc('order')
+                ->first();
 
             $field->order = ($lastFieldOnCurrentModel ? $lastFieldOnCurrentModel->order : 0) + 1;
         });
     }
 
-    /**
-     * Get the morphable model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-     */
-    public function model()
+    public function model(): MorphTo
     {
         return $this->morphTo();
     }
 
-    /**
-     * Get the responses belonging to the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function responses()
+    public function responses(): HasMany
     {
-        return $this->hasMany(CustomFieldResponse::class, 'field_id');
+        return $this->hasMany(config('custom-fields.models.custom-field-response'), 'field_id');
     }
 
-    /**
-     * Archive the model.
-     *
-     * @return $this
-     */
-    public function archive()
+    public function archive(): self
     {
         $this->forceFill([
             'archived_at' => now(),
@@ -138,12 +102,7 @@ class CustomField extends Model
         return $this;
     }
 
-    /**
-     * Unarchive the model.
-     *
-     * @return $this
-     */
-    public function unarchive()
+    public function unarchive(): self
     {
         $this->forceFill([
             'archived_at' => null,
@@ -152,58 +111,45 @@ class CustomField extends Model
         return $this;
     }
 
-    /**
-     * Get the validation rules attribute.
-     *
-     * @return Attribute
-     */
     public function validationRules(): Attribute
     {
         return new Attribute(
-            get: fn ($value, $attributes) => [
-                $attributes['required'] ? 'required' : 'nullable',
-                ...$this->getFieldValidationRules($attributes['required'])[$attributes['type']]
-            ],
+            get: fn ($value, $attributes) => $this->field_type->validationRules($attributes),
+        );
+    }
+
+    public function validationAttributes(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value, $attributes) => $this->field_type->validationAttributes(),
+        );
+    }
+
+    public function validationMessages(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value, $attributes) => $this->field_type->validationMessages(),
+        );
+    }
+
+    public function fieldType(): Attribute
+    {
+        return Attribute::get(
+            fn ($value, array $attributes) => App::makeWith(FieldType::class, [
+                'type' => $attributes['type'],
+                'field' => $this,
+            ]),
         );
     }
 
     /**
-     * Get the field validation rules.
+     * Create a new Eloquent Collection instance.
      *
-     * @param $required
-     * @return array
+     * @param  array  $models
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    protected function getFieldValidationRules($required)
+    public function newCollection(array $models = [])
     {
-        return [
-            self::TYPE_CHECKBOX => $required
-                ? ['accepted', 'in:0,1']
-                : ['in:0,1'],
-
-            self::TYPE_NUMBER => [
-                'integer',
-            ],
-
-            self::TYPE_SELECT => [
-                'string',
-                'max:255',
-                Rule::in($this->answers),
-            ],
-
-            self::TYPE_RADIO => [
-                'string',
-                'max:255',
-                Rule::in($this->answers),
-            ],
-
-            self::TYPE_TEXT => [
-                'string',
-                'max:255',
-            ],
-
-            self::TYPE_TEXTAREA => [
-                'string',
-            ],
-        ];
+        return new CustomFieldCollection($models);
     }
 }
