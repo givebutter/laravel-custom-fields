@@ -9,6 +9,7 @@ use Givebutter\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\ValidationException;
 
 class CustomFieldControllerTest extends TestCase
 {
@@ -28,7 +29,7 @@ class CustomFieldControllerTest extends TestCase
         $field = $survey->customFields()->first();
 
         Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
-            $survey->validateCustomFields($request);
+            $survey->validateCustomFields($request)->validate();
 
             return response('All good', 200);
         });
@@ -316,5 +317,57 @@ class CustomFieldControllerTest extends TestCase
             ])->assertOk();
 
         $this->assertCount(1, $surveyResponse->customFieldResponses);
+    }
+
+    /** @test */
+    public function can_validate_request_with_no_custom_fields()
+    {
+        $survey = Survey::create();
+        $survey->customfields()->save(
+            CustomField::factory()->make([
+                'title' => 'favorite_album',
+                'type' => 'select',
+                'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],
+            ])
+        );
+
+        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
+            $survey->validateCustomFields($request)->validate();
+
+            return response('All good', 200);
+        });
+
+        $this->post("/surveys/{$survey->id}/responses")
+            ->assertOk();
+    }
+
+    /** @test */
+    public function fails_validation_on_request_with_no_custom_fields_but_is_required()
+    {
+        $survey = Survey::create();
+        $survey->customfields()->save(
+            CustomField::factory()->make([
+                'title' => 'favorite_album',
+                'type' => 'select',
+                'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],
+                'required' => true,
+            ])
+        );
+
+        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
+            $validator = $survey->validateCustomFields($request)->validate();
+
+            return response('All good', 200);
+        });
+
+        $fieldId = $survey->customFields()->value('id');
+
+        try {
+            $response = $this->post("/surveys/{$survey->id}/responses");
+
+            $this->fail('ValidationException was not thrown');
+        } catch (ValidationException $e) {
+           $this->assertArrayHasKey('field_'. $fieldId, $e->errors());
+        }
     }
 }

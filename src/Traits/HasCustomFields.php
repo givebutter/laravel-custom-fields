@@ -16,7 +16,7 @@ trait HasCustomFields
         return $this->morphMany(config('custom-fields.models.custom-field'), 'model')->orderBy('order');
     }
 
-    public function validateCustomFields(Request|array $fields): Validator
+    public function validateCustomFields(Request|array|null $fields): Validator
     {
         if ($fields instanceof Request) {
             return $this->validateCustomFieldsRequest($fields);
@@ -66,7 +66,7 @@ trait HasCustomFields
         });
     }
 
-    protected function validationData(array $fields, Collection $customFields): array
+    protected function validationData(array|null $fields, Collection $customFields): array
     {
         return collect($fields)
             ->mapWithKeys(function (mixed $field, int $key) use ($customFields) {
