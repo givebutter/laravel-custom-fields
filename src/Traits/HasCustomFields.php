@@ -69,11 +69,9 @@ trait HasCustomFields
     protected function validationData(array|null $fields, Collection $customFields): array
     {
         return collect($fields)
-            ->mapWithKeys(function (mixed $field, int $key) use ($customFields) {
-                $id = $customFields->firstOrFail('id', $key)->id;
-
-                return ["field_{$id}" => $field];
-            })->toArray();
+            ->intersectByKeys($customFields->modelKeys())
+            ->mapWithKeys(fn ($v, $k) => ["field_$k" => $v])
+            ->toArray();
     }
 
     protected function validationRules(Collection $fields): array
