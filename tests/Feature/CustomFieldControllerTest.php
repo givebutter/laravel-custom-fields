@@ -93,6 +93,7 @@ class CustomFieldControllerTest extends TestCase
     /** @test */
     public function invalid_data_throws_validation_exception()
     {
+        /** @var Survey $survey */
         $survey = Survey::create();
         $survey->customfields()->save(
             CustomField::factory()->make([
@@ -119,7 +120,7 @@ class CustomFieldControllerTest extends TestCase
                 'custom_fields' => [
                     $fieldId => 'Yeezus',
                 ],
-            ])->assertJsonFragment(["field_1" => ["The selected favorite_album is invalid."]]);
+        ])->assertJsonFragment(["field_1" => ["The selected favorite_album is invalid."]]);
     }
 
     /** @test */

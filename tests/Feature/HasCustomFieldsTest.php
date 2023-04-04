@@ -27,4 +27,22 @@ class HasCustomFieldsTest extends TestCase
         $this->assertCount(1, $model->fresh()->customFields);
         $this->assertEquals('Lil Wayne', $model->fresh()->customFields->first()->description);
     }
+
+    /** @test */
+    public function test_validating_unowned_custom_field_ids_are_ignored()
+    {
+        $model = Survey::create();
+
+        $customField = CustomField::factory()->make([
+            'model_id' => $model->id,
+            'model_type' => get_class($model),
+            'type' => 'text',
+        ]);
+
+        $validator = $model->validateCustomFields([
+            $customField->id + 1 => 'foo',
+        ]);
+
+        $this->assertTrue($validator->passes());
+    }
 }

@@ -69,7 +69,7 @@ trait HasCustomFields
     protected function validationData(array|null $fields, Collection $customFields): array
     {
         return collect($fields)
-            ->intersectByKeys($customFields->modelKeys())
+            ->intersectByKeys(array_flip($customFields->modelKeys()))
             ->mapWithKeys(fn ($v, $k) => ["field_$k" => $v])
             ->toArray();
     }
