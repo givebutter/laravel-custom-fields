@@ -16,6 +16,10 @@
         {
             "name": "Liran Cohen",
             "email": "liran@givebutter.com"
+        },
+        {
+            "name": "Reno Looijmans",
+            "email": "info@renolooijmans.nl"
         }
     ],
     "require": {
