@@ -25,7 +25,8 @@
     "require-dev": {
         "orchestra/testbench": "^7.6|^8.0",
         "phpunit/phpunit": "^9.0",
-        "friendsofphp/php-cs-fixer": "^3.6"
+        "friendsofphp/php-cs-fixer": "^3.6",
+        "laravel/pint": "^1.13"
     },
     "autoload": {
         "psr-4": {
