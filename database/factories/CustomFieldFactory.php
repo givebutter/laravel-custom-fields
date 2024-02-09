@@ -7,6 +7,7 @@ use Faker\Provider\Lorem;
 use Givebutter\LaravelCustomFields\Enums\CustomFieldType;
 use Givebutter\LaravelCustomFields\Models\CustomField;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use RuntimeException;
 
 class CustomFieldFactory extends Factory
 {
@@ -130,6 +131,6 @@ class CustomFieldFactory extends Factory
             return $this;
         }
 
-        throw new Exception("withAnswers only accepts a number or an array");
+        throw new RuntimeException("withAnswers only accepts a number or an array");
     }
 }
