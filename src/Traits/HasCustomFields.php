@@ -43,7 +43,6 @@ trait HasCustomFields
     /**
      * Handle a request to order the fields.
      *
-     * @param $fields
      * @throws FieldDoesNotBelongToModelException
      * @throws WrongNumberOfFieldsForOrderingException
      */
@@ -66,7 +65,7 @@ trait HasCustomFields
         });
     }
 
-    protected function validationData(array|null $fields, Collection $customFields): array
+    protected function validationData(?array $fields, Collection $customFields): array
     {
         return collect($fields)
             ->intersectByKeys(array_flip($customFields->modelKeys()))
@@ -86,15 +85,15 @@ trait HasCustomFields
             ->toArray();
     }
 
-     protected function validationAttributes(Collection $fields): array
-     {
-         return $fields
-             ->map(function ($field): array {
-                 $field->field_type->setValidationPrefix('field_');
+    protected function validationAttributes(Collection $fields): array
+    {
+        return $fields
+            ->map(function ($field): array {
+                $field->field_type->setValidationPrefix('field_');
 
-                 return $field->validation_attributes;
-             })
-             ->flatMap(fn (array $rules): array => $rules)
-             ->toArray();
-     }
+                return $field->validation_attributes;
+            })
+            ->flatMap(fn (array $rules): array => $rules)
+            ->toArray();
+    }
 }

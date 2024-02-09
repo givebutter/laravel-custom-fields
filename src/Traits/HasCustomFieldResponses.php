@@ -18,8 +18,6 @@ trait HasCustomFieldResponses
 
     /**
      * Save the given custom fields to the model.
-     *
-     * @param $fields
      */
     public function saveCustomFields($fields)
     {
@@ -52,10 +50,6 @@ trait HasCustomFieldResponses
 
     /**
      * Add a scope to return only models which match the given field and value.
-     *
-     * @param $query
-     * @param Model $field
-     * @param mixed $value
      */
     public function scopeWhereField($query, Model $field, mixed $value)
     {

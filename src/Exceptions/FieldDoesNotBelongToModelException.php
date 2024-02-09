@@ -8,9 +8,6 @@ class FieldDoesNotBelongToModelException extends Exception
 {
     /**
      * FieldDoesNotBelongToModelException constructor.
-     *
-     * @param $field
-     * @param $model
      */
     public function __construct($field, $model)
     {

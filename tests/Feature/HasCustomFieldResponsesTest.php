@@ -75,7 +75,6 @@ class HasCustomFieldResponsesTest extends TestCase
         $this->assertEquals($secondResponse->id, SurveyResponse::whereField($firstField, 'Best Rapper Alive')->first()->id);
     }
 
-
     /** @test */
     public function value_getter_and_setter_work_fine()
     {

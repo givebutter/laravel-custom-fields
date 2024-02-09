@@ -45,7 +45,7 @@ class CustomFieldTest extends TestCase
         $rules = $cfs->toValidationRules();
 
         $this->assertSame(
-            $cfs->map(fn (CustomField $field) => 'custom_fields.field_' . $field->id)->toArray(),
+            $cfs->map(fn (CustomField $field) => 'custom_fields.field_'.$field->id)->toArray(),
             array_keys($rules),
         );
     }

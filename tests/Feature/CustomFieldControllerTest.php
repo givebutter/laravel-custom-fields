@@ -89,7 +89,6 @@ class CustomFieldControllerTest extends TestCase
         $this->assertSame('clint@givebutter.com', $field->responses()->first()->value);
     }
 
-
     /** @test */
     public function invalid_data_throws_validation_exception()
     {
@@ -121,7 +120,7 @@ class CustomFieldControllerTest extends TestCase
                     $fieldId => 'Yeezus',
                 ],
             ])
-            ->assertJsonFragment(["field_1" => ["The selected favorite_album is invalid."]]);
+            ->assertJsonFragment(['field_1' => ['The selected favorite_album is invalid.']]);
     }
 
     /** @test */
@@ -159,6 +158,7 @@ class CustomFieldControllerTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider checkboxChoices
      */
     public function checkbox_can_pass_validation(mixed $value, callable $assert)
@@ -206,7 +206,7 @@ class CustomFieldControllerTest extends TestCase
         ];
 
         yield '"true"' => [
-            "true",
+            'true',
             function (TestCase $test, SurveyResponse $surveyResponse) {
                 $test->assertTrue($surveyResponse->customFieldResponses()->first()->value);
             },
@@ -220,7 +220,7 @@ class CustomFieldControllerTest extends TestCase
         ];
 
         yield '"false"' => [
-            "false",
+            'false',
             function (TestCase $test, SurveyResponse $surveyResponse) {
                 $test->assertFalse($surveyResponse->customFieldResponses()->first()->value);
             },
@@ -234,7 +234,7 @@ class CustomFieldControllerTest extends TestCase
         ];
 
         yield '"1"' => [
-            "1",
+            '1',
             function (TestCase $test, SurveyResponse $surveyResponse) {
                 $test->assertTrue($surveyResponse->customFieldResponses()->first()->value);
             },
@@ -248,35 +248,35 @@ class CustomFieldControllerTest extends TestCase
         ];
 
         yield '"0"' => [
-            "0",
+            '0',
             function (TestCase $test, SurveyResponse $surveyResponse) {
                 $test->assertFalse($surveyResponse->customFieldResponses()->first()->value);
             },
         ];
 
         yield '"on"' => [
-            "on",
+            'on',
             function (TestCase $test, SurveyResponse $surveyResponse) {
                 $test->assertTrue($surveyResponse->customFieldResponses()->first()->value);
             },
         ];
 
         yield '"off"' => [
-            "off",
+            'off',
             function (TestCase $test, SurveyResponse $surveyResponse) {
                 $test->assertFalse($surveyResponse->customFieldResponses()->first()->value);
             },
         ];
 
         yield '"yes"' => [
-            "yes",
+            'yes',
             function (TestCase $test, SurveyResponse $surveyResponse) {
                 $test->assertTrue($surveyResponse->customFieldResponses()->first()->value);
             },
         ];
 
         yield '"no"' => [
-            "no",
+            'no',
             function (TestCase $test, SurveyResponse $surveyResponse) {
                 $test->assertFalse($surveyResponse->customFieldResponses()->first()->value);
             },
@@ -369,7 +369,7 @@ class CustomFieldControllerTest extends TestCase
 
             $this->fail('ValidationException was not thrown');
         } catch (ValidationException $e) {
-           $this->assertArrayHasKey('field_'. $fieldId, $e->errors());
+            $this->assertArrayHasKey('field_'.$fieldId, $e->errors());
         }
     }
 }

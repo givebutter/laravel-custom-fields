@@ -8,9 +8,6 @@ class WrongNumberOfFieldsForOrderingException extends Exception
 {
     /**
      * WrongNumberOfFieldsForOrderingException constructor.
-     *
-     * @param $given
-     * @param $expected
      */
     public function __construct($given, $expected)
     {

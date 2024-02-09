@@ -38,9 +38,9 @@ class TestCase extends OrchestraTestCase
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
     }
 
@@ -57,13 +57,13 @@ class TestCase extends OrchestraTestCase
 
     protected function runMigrationStub()
     {
-        (include __DIR__ . '/../database/migrations/create_custom_fields_tables.php.stub')
+        (include __DIR__.'/../database/migrations/create_custom_fields_tables.php.stub')
             ->up();
     }
 
     protected function prepareDatabaseForHasCustomFieldsModel()
     {
-        (include __DIR__ . '/../tests/support/migrations/create_surveys_and_survey_responses_tables.php')
+        (include __DIR__.'/../tests/support/migrations/create_surveys_and_survey_responses_tables.php')
             ->up();
     }
 

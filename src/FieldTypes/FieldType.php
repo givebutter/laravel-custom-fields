@@ -24,14 +24,14 @@ abstract class FieldType
     public function validationRules(array $attributes): array
     {
         return [
-            $this->validationPrefix . $this->field->id => ['required'],
+            $this->validationPrefix.$this->field->id => ['required'],
         ];
     }
 
     public function validationAttributes(): array
     {
         return [
-            $this->validationPrefix . $this->field->id => $this->field->title,
+            $this->validationPrefix.$this->field->id => $this->field->title,
         ];
     }
 

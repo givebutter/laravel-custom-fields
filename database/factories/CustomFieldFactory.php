@@ -58,8 +58,9 @@ class CustomFieldFactory extends Factory
     }
 
     /**
-     * @param mixed $answerCount
+     * @param  mixed  $answerCount
      * @return $this
+     *
      * @throws Exception
      */
     public function withTypeRadio($answerCount = 3)
@@ -70,8 +71,9 @@ class CustomFieldFactory extends Factory
     }
 
     /**
-     * @param mixed $optionCount
+     * @param  mixed  $optionCount
      * @return $this
+     *
      * @throws Exception
      */
     public function withTypeSelect($optionCount = 3)
@@ -102,7 +104,6 @@ class CustomFieldFactory extends Factory
     }
 
     /**
-     * @param $defaultValue
      * @return $this
      */
     public function withDefaultValue($defaultValue)
@@ -113,8 +114,9 @@ class CustomFieldFactory extends Factory
     }
 
     /**
-     * @param mixed $answers
+     * @param  mixed  $answers
      * @return $this
+     *
      * @throws Exception
      */
     public function withAnswers($answers = 3)
@@ -131,6 +133,6 @@ class CustomFieldFactory extends Factory
             return $this;
         }
 
-        throw new RuntimeException("withAnswers only accepts a number or an array");
+        throw new RuntimeException('withAnswers only accepts a number or an array');
     }
 }
