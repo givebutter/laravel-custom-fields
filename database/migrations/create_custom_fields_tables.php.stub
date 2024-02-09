@@ -14,9 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create(config('custom-fields.tables.fields', 'custom_fields'), function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('model_id');
-            $table->string('model_type');
+            $table->id();
+            $table->morphs('model');
             $table->string('group')->nullable();
             $table->string('type');
             $table->boolean('required')->default(false);
@@ -31,11 +30,10 @@ return new class extends Migration
         });
 
         Schema::create(config('custom-fields.tables.field_responses', 'custom_field_responses'), function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->unsignedInteger('field_id');
-            $table->foreign('field_id')->references('id')->on(config('custom-fields.tables.fields', 'custom_fields'));
-            $table->unsignedInteger('model_id');
-            $table->string('model_type');
+            $table->foreignId('field_id')->constrained(config('custom-fields.tables.fields', 'custom_fields'));
+            $table->morphs('model');
             $table->string('value_str')->nullable();
             $table->text('value_text')->nullable();
             $table->integer('value_int')->nullable();
