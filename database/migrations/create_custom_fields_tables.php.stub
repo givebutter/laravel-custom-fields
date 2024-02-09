@@ -31,7 +31,6 @@ return new class extends Migration
 
         Schema::create(config('custom-fields.tables.field_responses', 'custom_field_responses'), function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('field_id');
             $table->foreignId('field_id')->constrained(config('custom-fields.tables.fields', 'custom_fields'));
             $table->morphs('model');
             $table->string('value_str')->nullable();
