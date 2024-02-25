@@ -196,6 +196,99 @@ class CustomFieldControllerTest extends TestCase
         $assert($this, $surveyResponse);
     }
 
+    /**
+     * @test
+     */
+    public function multi_checkbox_can_pass_validation()
+    {
+        $survey = Survey::create();
+        $survey->customfields()->save(
+            CustomField::factory()->make([
+                'title' => 'Favorite Album',
+                'type' => 'multicheckbox',
+                'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],
+            ])
+        );
+
+        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
+            $validator = $survey->validateCustomFields($request);
+
+            if ($validator->fails()) {
+                return ['errors' => $validator->errors()];
+            }
+
+            return response('All good', 200);
+        });
+
+        $fieldId = CustomField::where('title', 'Favorite Album')->value('id');
+
+        $this
+            ->post("/surveys/{$survey->id}/responses", [
+                'custom_fields' => [
+                    $fieldId => [
+                        'Tha Carter',
+                        'Tha Carter III'
+                    ],
+                ],
+            ])->assertSee('All good');
+    }
+
+    /**
+     * @test
+     */
+    public function multi_checkbox_can_overwrite_values()
+    {
+        $survey = Survey::create();
+        $surveyResponse = SurveyResponse::create();
+        $field = $survey->customfields()->save(
+            CustomField::factory()->make([
+                'title' => 'Favorite Album',
+                'type' => 'multicheckbox',
+                'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],
+            ])
+        );
+
+        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey, $surveyResponse) {
+            $survey->validateCustomFields($request);
+
+            $surveyResponse->saveCustomFields($request->custom_fields);
+
+            return response('All good', 200);
+        });
+
+        // first time
+        $this
+            ->post("/surveys/{$survey->id}/responses", [
+                'custom_fields' => [
+                    $field->id => [
+                        'Tha Carter II',
+                        'Tha Carter III'
+                    ],
+                ],
+            ])->assertOk();
+
+        $this->assertSame(1, $field->responses()->count());
+        $this->assertSame([
+            'Tha Carter II',
+            'Tha Carter III'
+        ], $field->responses()->first()->value);
+
+        // second time
+        $this
+            ->post("/surveys/{$survey->id}/responses", [
+                'custom_fields' => [
+                    $field->id => [
+                        'Tha Carter I'
+                    ],
+                ],
+            ])->assertOk();
+
+        $this->assertSame(1, $field->responses()->count());
+        $this->assertSame([
+            'Tha Carter I'
+        ], $field->responses()->first()->value);
+    }
+
     public function checkboxChoices(): iterable
     {
         yield 'true' => [

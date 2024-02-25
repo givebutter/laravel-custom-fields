@@ -31,10 +31,14 @@ class CustomFieldTest extends TestCase
     {
         $survey = Survey::create();
 
-        $cfs = CustomField::factory()->count(3)->sequence(
-            ['title' => 'My Text Field', 'type' => 'text'],
-            ['title' => 'My Select Field', 'type' => 'select', 'answers' => ['foo', 'bar']],
+        $cfs = CustomField::factory()->count(6)->sequence(
             ['title' => 'My Checkbox Field', 'type' => 'checkbox'],
+            ['title' => 'My Integer Field', 'type' => 'number'],
+            ['title' => 'My Radio Field', 'type' => 'radio'],
+            ['title' => 'My Select Field', 'type' => 'select', 'answers' => ['foo', 'bar']],
+            ['title' => 'My Text Field', 'type' => 'text'],
+            ['title' => 'My Textarea Field', 'type' => 'textarea'],
+            ['title' => 'My Multi Checkbox Field', 'type' => 'multicheckbox'],
         )->create([
             'model_id' => $survey->id,
             'model_type' => $survey->getMorphClass(),

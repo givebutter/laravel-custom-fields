@@ -10,12 +10,14 @@ enum CustomFieldType: string
     case SELECT = 'select';
     case TEXT = 'text';
     case TEXTAREA = 'textarea';
+    case MULTICHECKBOX = 'multicheckbox';
 
     public function requiresAnswers(): bool
     {
         return in_array($this, [
             self::RADIO,
             self::SELECT,
+            self::MULTICHECKBOX,
         ]);
     }
 }
