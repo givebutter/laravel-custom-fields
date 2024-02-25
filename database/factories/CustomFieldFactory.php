@@ -104,6 +104,16 @@ class CustomFieldFactory extends Factory
      * @param $defaultValue
      * @return $this
      */
+    public function withTypeMultiCheckbox()
+    {
+        $this->model->type = CustomFieldType::MULTICHECKBOX;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
     public function withDefaultValue($defaultValue)
     {
         $this->model->default_value = $defaultValue;
