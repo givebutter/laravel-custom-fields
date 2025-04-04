@@ -2,6 +2,4 @@
 
 namespace Givebutter\LaravelCustomFields\ResponseTypes;
 
-class TextResponseType extends ResponseType
-{
-}
+class TextResponseType extends ResponseType {}

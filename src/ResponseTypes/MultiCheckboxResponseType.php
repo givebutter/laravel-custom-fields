@@ -28,7 +28,7 @@ class MultiCheckboxResponseType extends ResponseType
         $values = $this->response->value;
         $list = [];
 
-        if(! is_array($values)) {
+        if (! is_array($values)) {
             $values = [$values];
         }
 

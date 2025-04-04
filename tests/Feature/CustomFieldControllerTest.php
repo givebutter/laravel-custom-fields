@@ -227,7 +227,7 @@ class CustomFieldControllerTest extends TestCase
                 'custom_fields' => [
                     $fieldId => [
                         'Tha Carter',
-                        'Tha Carter III'
+                        'Tha Carter III',
                     ],
                 ],
             ])->assertSee('All good');
@@ -262,7 +262,7 @@ class CustomFieldControllerTest extends TestCase
                 'custom_fields' => [
                     $field->id => [
                         'Tha Carter II',
-                        'Tha Carter III'
+                        'Tha Carter III',
                     ],
                 ],
             ])->assertOk();
@@ -270,7 +270,7 @@ class CustomFieldControllerTest extends TestCase
         $this->assertSame(1, $field->responses()->count());
         $this->assertSame([
             'Tha Carter II',
-            'Tha Carter III'
+            'Tha Carter III',
         ], $field->responses()->first()->value);
 
         // second time
@@ -278,14 +278,14 @@ class CustomFieldControllerTest extends TestCase
             ->post("/surveys/{$survey->id}/responses", [
                 'custom_fields' => [
                     $field->id => [
-                        'Tha Carter I'
+                        'Tha Carter I',
                     ],
                 ],
             ])->assertOk();
 
         $this->assertSame(1, $field->responses()->count());
         $this->assertSame([
-            'Tha Carter I'
+            'Tha Carter I',
         ], $field->responses()->first()->value);
     }
 

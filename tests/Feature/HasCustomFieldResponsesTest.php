@@ -40,7 +40,7 @@ class HasCustomFieldResponsesTest extends TestCase
     }
 
     /** @test */
-    public function whereField_method_allows_filtering_responses()
+    public function where_field_method_allows_filtering_responses()
     {
         $customFieldModel = Survey::create();
         $firstResponseModel = SurveyResponse::create();
