@@ -8,10 +8,11 @@ abstract class FieldType
 {
     protected string $validationPrefix = 'custom_fields.field_';
 
-    public function __construct(
-        protected CustomField $field,
-    ) {
-        //
+    protected CustomField $field;
+
+    public function __construct(CustomField $field)
+    {
+        $this->field = $field;
     }
 
     public function setValidationPrefix(string $prefix): self

@@ -16,6 +16,6 @@ class FieldDoesNotBelongToModelException extends Exception
     {
         $class = get_class($model);
 
-        parent::__construct("Field {$field} does not belong to {$class} with id {$model->id}.");
+        parent::__construct("Field $field does not belong to $class with id $model->id.");
     }
 }

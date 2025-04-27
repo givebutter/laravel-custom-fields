@@ -69,6 +69,12 @@ class TestCase extends OrchestraTestCase
 
     protected function resetDatabase()
     {
+        // Drop all tables manually.
+        $schema = $this->app['db']->connection()->getSchemaBuilder();
+        foreach ($schema->getTables() as $table) {
+            $schema->drop($table['name']);
+        }
+
         $this->artisan('migrate:fresh');
         $this->runMigrationStub();
     }

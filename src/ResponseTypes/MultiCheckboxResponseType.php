@@ -4,9 +4,9 @@ namespace Givebutter\LaravelCustomFields\ResponseTypes;
 
 class MultiCheckboxResponseType extends ResponseType
 {
-    const VALUE_FIELD = 'value_json';
+    const string VALUE_FIELD = 'value_json';
 
-    public function formatValue(mixed $value): mixed
+    public function formatValue(mixed $value): array
     {
         if (! is_array($value)) {
             return [$value];
@@ -15,14 +15,14 @@ class MultiCheckboxResponseType extends ResponseType
         return $value;
     }
 
-    public function getValue(): mixed
+    public function getValue(): array
     {
         return $this->formatValue(
             $this->response->getAttribute($this::VALUE_FIELD)
         );
     }
 
-    public function getValueFriendly(): mixed
+    public function getValueFriendly(): string
     {
         $answers = $this->response->field->answers;
         $values = $this->response->value;

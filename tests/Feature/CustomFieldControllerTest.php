@@ -16,7 +16,7 @@ class CustomFieldControllerTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function valid_data_passes_controller_validation()
+    public function valid_data_passes_controller_validation(): void
     {
         $survey = Survey::create();
         $survey->customfields()->save(
@@ -28,14 +28,14 @@ class CustomFieldControllerTest extends TestCase
 
         $field = $survey->customFields()->first();
 
-        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
+        Route::post("/surveys/$survey->id/responses", static function (Request $request) use ($survey) {
             $survey->validateCustomFields($request)->validate();
 
             return response('All good', 200);
         });
 
         $this
-            ->post("/surveys/{$survey->id}/responses", [
+            ->post("/surveys/$survey->id/responses", [
                 'custom_fields' => [
                     $field->id => 'daniel@tighten.co',
                 ],
@@ -43,7 +43,7 @@ class CustomFieldControllerTest extends TestCase
     }
 
     /** @test */
-    public function can_overwrite_response_values()
+    public function can_overwrite_response_values(): void
     {
         /** @var Survey $survey */
         $survey = Survey::create();
@@ -58,7 +58,7 @@ class CustomFieldControllerTest extends TestCase
             ])
         );
 
-        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey, $surveyResponse) {
+        Route::post("/surveys/$survey->id/responses", static function (Request $request) use ($survey, $surveyResponse) {
             $survey->validateCustomFields($request)->validate();
 
             $surveyResponse->saveCustomFields($request->custom_fields);
@@ -68,7 +68,7 @@ class CustomFieldControllerTest extends TestCase
 
         // first time
         $this
-            ->post("/surveys/{$survey->id}/responses", [
+            ->post("/surveys/$survey->id/responses", [
                 'custom_fields' => [
                     $field->id => 'daniel@tighten.co',
                 ],
@@ -79,7 +79,7 @@ class CustomFieldControllerTest extends TestCase
 
         // second time
         $this
-            ->post("/surveys/{$survey->id}/responses", [
+            ->post("/surveys/$survey->id/responses", [
                 'custom_fields' => [
                     $field->id => 'clint@givebutter.com',
                 ],
@@ -91,7 +91,7 @@ class CustomFieldControllerTest extends TestCase
 
 
     /** @test */
-    public function invalid_data_throws_validation_exception()
+    public function invalid_data_throws_validation_exception(): void
     {
         /** @var Survey $survey */
         $survey = Survey::create();
@@ -103,7 +103,7 @@ class CustomFieldControllerTest extends TestCase
             ])
         );
 
-        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
+        Route::post("/surveys/$survey->id/responses", static function (Request $request) use ($survey) {
             $validator = $survey->validateCustomFields($request->custom_fields);
 
             if ($validator->fails()) {
@@ -116,7 +116,7 @@ class CustomFieldControllerTest extends TestCase
         $fieldId = CustomField::where('title', 'favorite_album')->first()->id;
 
         $this
-            ->post("/surveys/{$survey->id}/responses", [
+            ->post("/surveys/$survey->id/responses", [
                 'custom_fields' => [
                     $fieldId => 'Yeezus',
                 ],
@@ -125,7 +125,7 @@ class CustomFieldControllerTest extends TestCase
     }
 
     /** @test */
-    public function non_required_fields_can_be_left_null_for_validation()
+    public function non_required_fields_can_be_left_null_for_validation(): void
     {
         $survey = Survey::create();
         $survey->customfields()->save(
@@ -137,7 +137,7 @@ class CustomFieldControllerTest extends TestCase
             ])
         );
 
-        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
+        Route::post("/surveys/$survey->id/responses", static function (Request $request) use ($survey) {
             $validator = $survey->validateCustomFields($request);
 
             if ($validator->fails()) {
@@ -150,7 +150,7 @@ class CustomFieldControllerTest extends TestCase
         $fieldId = CustomField::where('title', 'favorite_album')->first()->id;
 
         $this
-            ->post("/surveys/{$survey->id}/responses", [
+            ->post("/surveys/$survey->id/responses", [
                 'custom_fields' => [
                     $fieldId => null,
                 ],
@@ -161,7 +161,7 @@ class CustomFieldControllerTest extends TestCase
      * @test
      * @dataProvider checkboxChoices
      */
-    public function checkbox_can_pass_validation(mixed $value, callable $assert)
+    public function checkbox_can_pass_validation(mixed $value, callable $assert): void
     {
         $survey = Survey::create();
         $surveyResponse = SurveyResponse::create();
@@ -172,7 +172,7 @@ class CustomFieldControllerTest extends TestCase
             ])
         );
 
-        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey, $surveyResponse) {
+        Route::post("/surveys/$survey->id/responses", static function (Request $request) use ($survey, $surveyResponse) {
             $validator = $survey->validateCustomFields($request);
 
             if ($validator->fails()) {
@@ -187,7 +187,7 @@ class CustomFieldControllerTest extends TestCase
         $fieldId = CustomField::where('title', 'Favorite Album')->value('id');
 
         $this
-            ->post("/surveys/{$survey->id}/responses", [
+            ->post("/surveys/$survey->id/responses", [
                 'custom_fields' => [
                     $fieldId => $value,
                 ],
@@ -199,7 +199,7 @@ class CustomFieldControllerTest extends TestCase
     /**
      * @test
      */
-    public function multi_checkbox_can_pass_validation()
+    public function multi_checkbox_can_pass_validation(): void
     {
         $survey = Survey::create();
         $survey->customfields()->save(
@@ -210,7 +210,7 @@ class CustomFieldControllerTest extends TestCase
             ])
         );
 
-        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
+        Route::post("/surveys/$survey->id/responses", static function (Request $request) use ($survey) {
             $validator = $survey->validateCustomFields($request);
 
             if ($validator->fails()) {
@@ -223,7 +223,7 @@ class CustomFieldControllerTest extends TestCase
         $fieldId = CustomField::where('title', 'Favorite Album')->value('id');
 
         $this
-            ->post("/surveys/{$survey->id}/responses", [
+            ->post("/surveys/$survey->id/responses", [
                 'custom_fields' => [
                     $fieldId => [
                         'Tha Carter',
@@ -236,7 +236,7 @@ class CustomFieldControllerTest extends TestCase
     /**
      * @test
      */
-    public function multi_checkbox_can_overwrite_values()
+    public function multi_checkbox_can_overwrite_values(): void
     {
         $survey = Survey::create();
         $surveyResponse = SurveyResponse::create();
@@ -248,7 +248,7 @@ class CustomFieldControllerTest extends TestCase
             ])
         );
 
-        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey, $surveyResponse) {
+        Route::post("/surveys/$survey->id/responses", static function (Request $request) use ($survey, $surveyResponse) {
             $survey->validateCustomFields($request);
 
             $surveyResponse->saveCustomFields($request->custom_fields);
@@ -258,7 +258,7 @@ class CustomFieldControllerTest extends TestCase
 
         // first time
         $this
-            ->post("/surveys/{$survey->id}/responses", [
+            ->post("/surveys/$survey->id/responses", [
                 'custom_fields' => [
                     $field->id => [
                         'Tha Carter II',
@@ -275,7 +275,7 @@ class CustomFieldControllerTest extends TestCase
 
         // second time
         $this
-            ->post("/surveys/{$survey->id}/responses", [
+            ->post("/surveys/$survey->id/responses", [
                 'custom_fields' => [
                     $field->id => [
                         'Tha Carter I'
@@ -289,7 +289,7 @@ class CustomFieldControllerTest extends TestCase
         ], $field->responses()->first()->value);
     }
 
-    public function checkboxChoices(): iterable
+    public static function checkboxChoices(): iterable
     {
         yield 'true' => [
             true,
@@ -384,7 +384,7 @@ class CustomFieldControllerTest extends TestCase
     }
 
     /** @test */
-    public function fields_can_be_saved_from_request_with_convenience_method()
+    public function fields_can_be_saved_from_request_with_convenience_method(): void
     {
         $survey = Survey::create();
         $surveyResponse = SurveyResponse::create();
@@ -396,7 +396,7 @@ class CustomFieldControllerTest extends TestCase
             ])
         );
 
-        Route::post("/surveys/{$survey->id}/responses", function () use ($surveyResponse) {
+        Route::post("/surveys/$survey->id/responses", static function () use ($surveyResponse) {
             $surveyResponse->saveCustomFields(request('custom_fields'));
 
             return response('All good', 200);
@@ -405,7 +405,7 @@ class CustomFieldControllerTest extends TestCase
         $fieldId = CustomField::where('title', 'favorite_album')->first()->id;
 
         $this
-            ->post("/surveys/{$survey->id}/responses", [
+            ->post("/surveys/$survey->id/responses", [
                 'custom_fields' => [
                     $fieldId => 'Tha Carter',
                 ],
@@ -415,7 +415,7 @@ class CustomFieldControllerTest extends TestCase
     }
 
     /** @test */
-    public function can_validate_request_with_no_custom_fields()
+    public function can_validate_request_with_no_custom_fields(): void
     {
         $survey = Survey::create();
         $survey->customfields()->save(
@@ -426,18 +426,18 @@ class CustomFieldControllerTest extends TestCase
             ])
         );
 
-        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
+        Route::post("/surveys/$survey->id/responses", static function (Request $request) use ($survey) {
             $survey->validateCustomFields($request)->validate();
 
             return response('All good', 200);
         });
 
-        $this->post("/surveys/{$survey->id}/responses")
+        $this->post("/surveys/$survey->id/responses")
             ->assertOk();
     }
 
     /** @test */
-    public function fails_validation_on_request_with_no_custom_fields_but_is_required()
+    public function fails_validation_on_request_with_no_custom_fields_but_is_required(): void
     {
         $survey = Survey::create();
         $survey->customfields()->save(
@@ -449,8 +449,8 @@ class CustomFieldControllerTest extends TestCase
             ])
         );
 
-        Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
-            $validator = $survey->validateCustomFields($request)->validate();
+        Route::post("/surveys/$survey->id/responses", static function (Request $request) use ($survey) {
+            $survey->validateCustomFields($request)->validate();
 
             return response('All good', 200);
         });
@@ -458,7 +458,7 @@ class CustomFieldControllerTest extends TestCase
         $fieldId = $survey->customFields()->value('id');
 
         try {
-            $response = $this->post("/surveys/{$survey->id}/responses");
+            $this->post("/surveys/$survey->id/responses");
 
             $this->fail('ValidationException was not thrown');
         } catch (ValidationException $e) {

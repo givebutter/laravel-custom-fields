@@ -8,17 +8,15 @@ use Illuminate\Support\ServiceProvider;
 
 class LaravelCustomFieldsServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/custom-fields.php', 'custom-fields');
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->publishes([
             __DIR__ . '/../config/custom-fields.php' => config_path('custom-fields.php'),

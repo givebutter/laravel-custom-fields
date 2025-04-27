@@ -6,12 +6,13 @@ use Givebutter\LaravelCustomFields\Models\CustomFieldResponse;
 
 abstract class ResponseType
 {
-    const VALUE_FIELD = 'value_str';
+    public const VALUE_FIELD = 'value_str';
 
-    public function __construct(
-        protected CustomFieldResponse $response,
-    ) {
-        //
+    protected CustomFieldResponse $response;
+
+    public function __construct(CustomFieldResponse $response)
+    {
+        $this->response = $response;
     }
 
     public function formatValue(mixed $value): mixed

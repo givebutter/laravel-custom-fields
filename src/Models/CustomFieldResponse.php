@@ -10,10 +10,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\App;
 
+/**
+ * @property int $id
+ * @property string $value_str
+ * @property string $value_text
+ * @property int $value_int
+ * @property string $value_json
+ */
 class CustomFieldResponse extends Model
 {
     /**
-     * The attributes that aren't mass assignable.
+     * The attributes that aren't mass-assignable.
      *
      * @var string[]|bool
      */
@@ -22,7 +29,7 @@ class CustomFieldResponse extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are mass-assignable.
      *
      * @var string[]
      */
@@ -68,7 +75,7 @@ class CustomFieldResponse extends Model
     {
         return $query->where(function (Builder $query) use ($value) {
             array_map(
-                fn (string $field) => $query->orWhere($field, $value),
+                static fn (string $field) => $query->orWhere($field, $value),
                 config('custom-fields.value-fields'),
             );
         });

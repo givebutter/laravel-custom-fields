@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\App;
 
 class CustomField extends Model
 {
-    use SoftDeletes, HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that aren't mass assignable.
@@ -53,8 +53,6 @@ class CustomField extends Model
 
     /**
      * CustomField constructor.
-     *
-     * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
@@ -144,9 +142,6 @@ class CustomField extends Model
 
     /**
      * Create a new Eloquent Collection instance.
-     *
-     * @param  array  $models
-     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function newCollection(array $models = [])
     {
