@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\App;
 
 class CustomField extends Model
 {
-    use SoftDeletes, HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
-     * The attributes that aren't mass assignable.
+     * The attributes that aren't mass-assignable.
      *
      * @var string[]|bool
      */
@@ -26,7 +26,7 @@ class CustomField extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are mass-assignable.
      *
      * @var string[]
      */
@@ -53,8 +53,6 @@ class CustomField extends Model
 
     /**
      * CustomField constructor.
-     *
-     * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
@@ -65,14 +63,12 @@ class CustomField extends Model
 
     /**
      * Bootstrap the model and its traits.
-     *
-     * @return void
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
-        self::creating(function ($field) {
+        self::creating(static function ($field) {
             $lastFieldOnCurrentModel = $field->model
                 ->customFields()
                 ->reorder()
@@ -144,11 +140,8 @@ class CustomField extends Model
 
     /**
      * Create a new Eloquent Collection instance.
-     *
-     * @param  array  $models
-     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function newCollection(array $models = [])
+    public function newCollection(array $models = []): CustomFieldCollection
     {
         return new CustomFieldCollection($models);
     }

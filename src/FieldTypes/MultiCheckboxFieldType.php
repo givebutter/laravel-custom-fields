@@ -12,7 +12,7 @@ class MultiCheckboxFieldType extends FieldType
             $this->validationPrefix.$this->field->id => array_filter([
                 $this->requiredRule($attributes['required']),
                 'array',
-                $attributes['required'] ? 'min:1' : null
+                $attributes['required'] ? 'min:1' : null,
             ]),
             $this->validationPrefix.$this->field->id.'.*' => [
                 'required',

@@ -3,18 +3,15 @@
 namespace Givebutter\Tests\Feature;
 
 use Givebutter\Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 
 class ScaffoldingTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
-    public function both_tables_are_created_by_migrations()
+    public function both_tables_are_created_by_migrations(): void
     {
         $tables = array_map(
-            function ($table) {
+            static function ($table) {
                 return $table->name;
             },
             DB::select("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;") // sqlite only for now
@@ -25,7 +22,7 @@ class ScaffoldingTest extends TestCase
     }
 
     /** @test */
-    public function table_names_are_customizable_by_config()
+    public function table_names_are_customizable_by_config(): void
     {
         config([
             'custom-fields' => [
@@ -39,7 +36,7 @@ class ScaffoldingTest extends TestCase
         $this->resetDatabase();
 
         $tables = array_map(
-            function ($table) {
+            static function ($table) {
                 return $table->name;
             },
             DB::select("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;") // sqlite only for now
@@ -50,7 +47,7 @@ class ScaffoldingTest extends TestCase
     }
 
     /** @test */
-    public function default_table_names_are_not_used_if_there_is_custom_config()
+    public function default_table_names_are_not_used_if_there_is_custom_config(): void
     {
         config([
             'custom-fields' => [
@@ -64,7 +61,7 @@ class ScaffoldingTest extends TestCase
         $this->resetDatabase();
 
         $tables = array_map(
-            function ($table) {
+            static function ($table) {
                 return $table->name;
             },
             DB::select("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;") // sqlite only for now

@@ -40,7 +40,7 @@ class HasCustomFieldResponsesTest extends TestCase
     }
 
     /** @test */
-    public function whereField_method_allows_filtering_responses()
+    public function where_field_method_allows_filtering_responses(): void
     {
         $customFieldModel = Survey::create();
         $firstResponseModel = SurveyResponse::create();
@@ -75,9 +75,8 @@ class HasCustomFieldResponsesTest extends TestCase
         $this->assertEquals($secondResponse->id, SurveyResponse::whereField($firstField, 'Best Rapper Alive')->first()->id);
     }
 
-
     /** @test */
-    public function value_getter_and_setter_work_fine()
+    public function value_getter_and_setter_work_fine(): void
     {
         $customFieldModel = Survey::create();
         $customFieldResponseModel = SurveyResponse::create();

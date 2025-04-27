@@ -12,7 +12,7 @@ class HasCustomFieldsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function custom_fields_can_be_created_and_accessed_on_models_with_trait()
+    public function custom_fields_can_be_created_and_accessed_on_models_with_trait(): void
     {
         $model = Survey::create();
 
@@ -29,7 +29,7 @@ class HasCustomFieldsTest extends TestCase
     }
 
     /** @test */
-    public function test_validating_unowned_custom_field_ids_are_ignored()
+    public function test_validating_unowned_custom_field_ids_are_ignored(): void
     {
         $model = Survey::create();
 
