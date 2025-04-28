@@ -90,6 +90,7 @@ class CustomFieldFactory extends Factory
         return $this;
     }
 
+
     public function withDefaultValue($defaultValue): static
     {
         $this->model->default_value = $defaultValue;
