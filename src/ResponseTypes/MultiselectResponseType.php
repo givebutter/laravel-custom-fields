@@ -2,7 +2,7 @@
 
 namespace Givebutter\LaravelCustomFields\ResponseTypes;
 
-class MultiCheckboxResponseType extends ResponseType
+class MultiselectResponseType extends ResponseType
 {
     const string VALUE_FIELD = 'value_json';
 

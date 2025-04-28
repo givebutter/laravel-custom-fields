@@ -29,7 +29,7 @@ return [
         'select' => \Givebutter\LaravelCustomFields\FieldTypes\SelectFieldType::class,
         'textarea' => \Givebutter\LaravelCustomFields\FieldTypes\TextareaFieldType::class,
         'text' => \Givebutter\LaravelCustomFields\FieldTypes\TextFieldType::class,
-        'multicheckbox' => \Givebutter\LaravelCustomFields\FieldTypes\MultiCheckboxFieldType::class,
+        'multiselect' => \Givebutter\LaravelCustomFields\FieldTypes\MultiselectFieldType::class,
     ],
 
     /*
@@ -48,7 +48,7 @@ return [
         'select' => \Givebutter\LaravelCustomFields\ResponseTypes\SelectResponseType::class,
         'textarea' => \Givebutter\LaravelCustomFields\ResponseTypes\TextareaResponseType::class,
         'text' => \Givebutter\LaravelCustomFields\ResponseTypes\TextResponseType::class,
-        'multicheckbox' => \Givebutter\LaravelCustomFields\ResponseTypes\MultiCheckboxResponseType::class,
+        'multiselect' => \Givebutter\LaravelCustomFields\ResponseTypes\MultiselectResponseType::class,
     ],
 
     /*

@@ -38,7 +38,7 @@ class CustomFieldTest extends TestCase
             ['title' => 'My Select Field', 'type' => 'select', 'answers' => ['foo', 'bar']],
             ['title' => 'My Text Field', 'type' => 'text'],
             ['title' => 'My Textarea Field', 'type' => 'textarea'],
-            ['title' => 'My Multi Checkbox Field', 'type' => 'multicheckbox'],
+            ['title' => 'My Multiselect Field', 'type' => 'multiselect'],
         )->create([
             'model_id' => $survey->id,
             'model_type' => $survey->getMorphClass(),

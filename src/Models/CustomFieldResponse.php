@@ -42,10 +42,7 @@ class CustomFieldResponse extends Model
 
         $this->attributes = $attributes;
 
-        $this->bootIfNotBooted();
-        $this->initializeTraits();
-        $this->syncOriginal();
-        $this->fill($attributes);
+        parent::__construct($attributes);
 
         $this->table = config('custom-fields.tables.field-responses', 'custom_field_responses');
     }

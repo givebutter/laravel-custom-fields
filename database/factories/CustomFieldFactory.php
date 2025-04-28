@@ -83,9 +83,9 @@ class CustomFieldFactory extends Factory
         return $this;
     }
 
-    public function withTypeMultiCheckbox(): static
+    public function withTypeMultiselect(): static
     {
-        $this->model->type = CustomFieldType::MULTICHECKBOX;
+        $this->model->type = CustomFieldType::MULTISELECT;
 
         return $this;
     }

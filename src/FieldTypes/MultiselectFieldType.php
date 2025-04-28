@@ -4,7 +4,7 @@ namespace Givebutter\LaravelCustomFields\FieldTypes;
 
 use Illuminate\Validation\Rule;
 
-class MultiCheckboxFieldType extends FieldType
+class MultiselectFieldType extends FieldType
 {
     public function validationRules(array $attributes): array
     {

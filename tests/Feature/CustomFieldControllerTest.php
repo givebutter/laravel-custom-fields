@@ -199,13 +199,13 @@ class CustomFieldControllerTest extends TestCase
     /**
      * @test
      */
-    public function multi_checkbox_can_pass_validation(): void
+    public function multiselect_can_pass_validation(): void
     {
         $survey = Survey::create();
         $survey->customfields()->save(
             CustomField::factory()->make([
                 'title' => 'Favorite Album',
-                'type' => 'multicheckbox',
+                'type' => 'multiselect',
                 'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],
             ])
         );
@@ -236,14 +236,14 @@ class CustomFieldControllerTest extends TestCase
     /**
      * @test
      */
-    public function multi_checkbox_can_overwrite_values(): void
+    public function multiselect_can_overwrite_values(): void
     {
         $survey = Survey::create();
         $surveyResponse = SurveyResponse::create();
         $field = $survey->customfields()->save(
             CustomField::factory()->make([
                 'title' => 'Favorite Album',
-                'type' => 'multicheckbox',
+                'type' => 'multiselect',
                 'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],
             ])
         );
