@@ -18,8 +18,6 @@ class CustomField extends Model
 
     /**
      * The attributes that aren't mass-assignable.
-     *
-     * @var string[]|bool
      */
     protected $guarded = [
         'id',
@@ -27,8 +25,6 @@ class CustomField extends Model
 
     /**
      * The attributes that are mass-assignable.
-     *
-     * @var string[]
      */
     protected $fillable = [
         'group',
@@ -43,8 +39,6 @@ class CustomField extends Model
 
     /**
      * The attributes that should be cast.
-     *
-     * @var array
      */
     protected $casts = [
         'answers' => 'array',
