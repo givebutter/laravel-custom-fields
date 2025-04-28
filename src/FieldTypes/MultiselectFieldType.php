@@ -9,13 +9,13 @@ class MultiselectFieldType extends FieldType
     public function validationRules(array $attributes): array
     {
         return [
-            $this->validationPrefix.$this->field->id => array_filter([
+            $this->validationPrefix.$this->field->id => [
                 $this->requiredRule($attributes['required']),
                 'array',
-                $attributes['required'] ? 'min:1' : null,
-            ]),
+            ],
             $this->validationPrefix.$this->field->id.'.*' => [
                 'required',
+                'distinct',
                 'string',
                 'max:255',
                 Rule::in($this->field->answers),
