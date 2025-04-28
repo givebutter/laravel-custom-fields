@@ -13,18 +13,14 @@ use Illuminate\Support\Facades\App;
 class CustomFieldResponse extends Model
 {
     /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var string[]|bool
+     * The attributes that aren't mass-assignable.
      */
     protected $guarded = [
         'id',
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
+     * The attributes that are mass-assignable.
      */
     protected $fillable = [
         'value',
@@ -46,10 +42,7 @@ class CustomFieldResponse extends Model
 
         $this->attributes = $attributes;
 
-        $this->bootIfNotBooted();
-        $this->initializeTraits();
-        $this->syncOriginal();
-        $this->fill($attributes);
+        parent::__construct($attributes);
 
         $this->table = config('custom-fields.tables.field-responses', 'custom_field_responses');
     }
@@ -68,7 +61,7 @@ class CustomFieldResponse extends Model
     {
         return $query->where(function (Builder $query) use ($value) {
             array_map(
-                fn (string $field) => $query->orWhere($field, $value),
+                static fn (string $field) => $query->orWhere($field, $value),
                 config('custom-fields.value-fields'),
             );
         });
@@ -89,10 +82,10 @@ class CustomFieldResponse extends Model
         $this->response_type->setValue($value);
     }
 
-     public function getValueFriendlyAttribute(): mixed
-     {
-         return $this->response_type->getValueFriendly();
-     }
+    public function getValueFriendlyAttribute(): mixed
+    {
+        return $this->response_type->getValueFriendly();
+    }
 
     public function responseType(): Attribute
     {

@@ -29,6 +29,7 @@ return [
         'select' => \Givebutter\LaravelCustomFields\FieldTypes\SelectFieldType::class,
         'textarea' => \Givebutter\LaravelCustomFields\FieldTypes\TextareaFieldType::class,
         'text' => \Givebutter\LaravelCustomFields\FieldTypes\TextFieldType::class,
+        'multiselect' => \Givebutter\LaravelCustomFields\FieldTypes\MultiselectFieldType::class,
     ],
 
     /*
@@ -47,6 +48,7 @@ return [
         'select' => \Givebutter\LaravelCustomFields\ResponseTypes\SelectResponseType::class,
         'textarea' => \Givebutter\LaravelCustomFields\ResponseTypes\TextareaResponseType::class,
         'text' => \Givebutter\LaravelCustomFields\ResponseTypes\TextResponseType::class,
+        'multiselect' => \Givebutter\LaravelCustomFields\ResponseTypes\MultiselectResponseType::class,
     ],
 
     /*

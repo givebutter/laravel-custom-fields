@@ -3,25 +3,22 @@
 namespace Givebutter\LaravelCustomFields\Traits;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait HasCustomFieldResponses
 {
     /**
      * Get the custom field responses for the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function customFieldResponses()
+    public function customFieldResponses(): MorphMany
     {
         return $this->morphMany(config('custom-fields.models.custom-field-response'), 'model');
     }
 
     /**
      * Save the given custom fields to the model.
-     *
-     * @param $fields
      */
-    public function saveCustomFields($fields)
+    public function saveCustomFields($fields): void
     {
         $customFieldClass = config('custom-fields.models.custom-field');
         $customFieldResponseClass = config('custom-fields.models.custom-field-response');
@@ -52,12 +49,8 @@ trait HasCustomFieldResponses
 
     /**
      * Add a scope to return only models which match the given field and value.
-     *
-     * @param $query
-     * @param Model $field
-     * @param mixed $value
      */
-    public function scopeWhereField($query, Model $field, mixed $value)
+    public function scopeWhereField($query, Model $field, mixed $value): void
     {
         $query->whereHas('customFieldResponses', function ($query) use ($field, $value) {
             $query

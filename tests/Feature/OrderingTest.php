@@ -14,7 +14,7 @@ class OrderingTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function new_fields_are_ordered_by_default()
+    public function new_fields_are_ordered_by_default(): void
     {
         $survey = Survey::create();
         $survey->customfields()->saveMany([
@@ -33,7 +33,7 @@ class OrderingTest extends TestCase
     }
 
     /** @test */
-    public function order_function_replaces_field_orders()
+    public function order_function_replaces_field_orders(): void
     {
         $survey = Survey::create();
         $survey->customfields()->saveMany([
@@ -54,7 +54,7 @@ class OrderingTest extends TestCase
     }
 
     /** @test */
-    public function order_function_throws_exception_for_wrong_number_of_ids()
+    public function order_function_throws_exception_for_wrong_number_of_ids(): void
     {
         $survey = Survey::create();
         $survey->customfields()->saveMany([
@@ -75,7 +75,7 @@ class OrderingTest extends TestCase
     }
 
     /** @test */
-    public function order_function_throws_exception_if_passed_fields_not_belonging_to_model()
+    public function order_function_throws_exception_if_passed_fields_not_belonging_to_model(): void
     {
         $survey1 = Survey::create();
         $survey1->customfields()->saveMany([

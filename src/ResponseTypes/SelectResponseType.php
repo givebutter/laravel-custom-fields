@@ -4,5 +4,5 @@ namespace Givebutter\LaravelCustomFields\ResponseTypes;
 
 class SelectResponseType extends ResponseType
 {
-    const VALUE_FIELD = 'value_str';
+    const string VALUE_FIELD = 'value_str';
 }

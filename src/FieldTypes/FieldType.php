@@ -8,10 +8,11 @@ abstract class FieldType
 {
     protected string $validationPrefix = 'custom_fields.field_';
 
-    public function __construct(
-        protected CustomField $field,
-    ) {
-        //
+    protected CustomField $field;
+
+    public function __construct(CustomField $field)
+    {
+        $this->field = $field;
     }
 
     public function setValidationPrefix(string $prefix): self
@@ -24,14 +25,14 @@ abstract class FieldType
     public function validationRules(array $attributes): array
     {
         return [
-            $this->validationPrefix . $this->field->id => ['required'],
+            $this->validationPrefix.$this->field->id => ['required'],
         ];
     }
 
     public function validationAttributes(): array
     {
         return [
-            $this->validationPrefix . $this->field->id => $this->field->title,
+            $this->validationPrefix.$this->field->id => $this->field->title,
         ];
     }
 

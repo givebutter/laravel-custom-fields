@@ -7,6 +7,7 @@ use Faker\Provider\Lorem;
 use Givebutter\LaravelCustomFields\Enums\CustomFieldType;
 use Givebutter\LaravelCustomFields\Models\CustomField;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use RuntimeException;
 
 class CustomFieldFactory extends Factory
 {
@@ -19,10 +20,8 @@ class CustomFieldFactory extends Factory
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         /** @var CustomFieldType $type */
         $type = $this->faker->randomElement(CustomFieldType::cases());
@@ -36,20 +35,14 @@ class CustomFieldFactory extends Factory
         ];
     }
 
-    /**
-     * @return $this
-     */
-    public function withTypeCheckbox()
+    public function withTypeCheckbox(): static
     {
         $this->model->type = CustomFieldType::CHECKBOX;
 
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function withTypeNumber()
+    public function withTypeNumber(): static
     {
         $this->model->type = CustomFieldType::NUMBER;
 
@@ -57,11 +50,9 @@ class CustomFieldFactory extends Factory
     }
 
     /**
-     * @param mixed $answerCount
-     * @return $this
      * @throws Exception
      */
-    public function withTypeRadio($answerCount = 3)
+    public function withTypeRadio(mixed $answerCount = 3): static
     {
         $this->model->type = CustomFieldType::RADIO;
 
@@ -69,42 +60,38 @@ class CustomFieldFactory extends Factory
     }
 
     /**
-     * @param mixed $optionCount
-     * @return $this
      * @throws Exception
      */
-    public function withTypeSelect($optionCount = 3)
+    public function withTypeSelect(mixed $optionCount = 3): static
     {
         $this->model->type = CustomFieldType::SELECT;
 
         return $this->withAnswers($optionCount);
     }
 
-    /**
-     * @return $this
-     */
-    public function withTypeText()
+    public function withTypeText(): static
     {
         $this->model->type = CustomFieldType::TEXT;
 
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function withTypeTextArea()
+    public function withTypeTextArea(): static
     {
         $this->model->type = CustomFieldType::TEXTAREA;
 
         return $this;
     }
 
-    /**
-     * @param $defaultValue
-     * @return $this
-     */
-    public function withDefaultValue($defaultValue)
+    public function withTypeMultiselect(): static
+    {
+        $this->model->type = CustomFieldType::MULTISELECT;
+
+        return $this;
+    }
+
+
+    public function withDefaultValue($defaultValue): static
     {
         $this->model->default_value = $defaultValue;
 
@@ -112,11 +99,9 @@ class CustomFieldFactory extends Factory
     }
 
     /**
-     * @param mixed $answers
-     * @return $this
      * @throws Exception
      */
-    public function withAnswers($answers = 3)
+    public function withAnswers(mixed $answers = 3): static
     {
         if (is_numeric($answers)) {
             $this->model->answers = Lorem::words($answers);
@@ -130,6 +115,6 @@ class CustomFieldFactory extends Factory
             return $this;
         }
 
-        throw new Exception("withAnswers only accepts a number or an array");
+        throw new RuntimeException('withAnswers only accepts a number or an array');
     }
 }
