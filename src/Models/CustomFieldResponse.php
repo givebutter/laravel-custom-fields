@@ -89,10 +89,10 @@ class CustomFieldResponse extends Model
         $this->response_type->setValue($value);
     }
 
-     public function getValueFriendlyAttribute(): mixed
-     {
-         return $this->response_type->getValueFriendly();
-     }
+    public function getValueFriendlyAttribute(): mixed
+    {
+        return $this->response_type->getValueFriendly();
+    }
 
     public function responseType(): Attribute
     {
