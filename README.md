@@ -275,7 +275,7 @@ $survey->customFields()->get(); // Returned in ascending order.
 
 To publish the configuration file, run the following command:
 ```bash
-php artisan vendor:publish --provider="Givebutter\LaravelCustomFields\LaravelCustomFieldsServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Givebutter\LaravelCustomFields\LaravelCustomFieldsServiceProvider" --tag="custom-fields-config"
 ```
 
 The configuration file should now be published in `config/custom-fields.php`. The available options and their usage are explained inside the published file.
