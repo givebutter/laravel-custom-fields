@@ -4,3 +4,4 @@ composer.lock
 /.idea
 .DS_Store
 .php_cs.cache
+.php-cs-fixer.cache

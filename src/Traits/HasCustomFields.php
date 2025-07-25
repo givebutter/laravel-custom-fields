@@ -86,15 +86,15 @@ trait HasCustomFields
             ->toArray();
     }
 
-     protected function validationAttributes(Collection $fields): array
-     {
-         return $fields
-             ->map(function ($field): array {
-                 $field->field_type->setValidationPrefix('field_');
+    protected function validationAttributes(Collection $fields): array
+    {
+        return $fields
+            ->map(function ($field): array {
+                $field->field_type->setValidationPrefix('field_');
 
-                 return $field->validation_attributes;
-             })
-             ->flatMap(fn (array $rules): array => $rules)
-             ->toArray();
-     }
+                return $field->validation_attributes;
+            })
+            ->flatMap(fn (array $rules): array => $rules)
+            ->toArray();
+    }
 }

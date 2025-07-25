@@ -17,5 +17,4 @@ class SelectFieldType extends FieldType
             ],
         ];
     }
-//
 }

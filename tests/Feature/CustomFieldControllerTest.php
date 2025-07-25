@@ -23,7 +23,7 @@ class CustomFieldControllerTest extends TestCase
             CustomField::factory()->make([
                 'title' => 'email',
                 'type' => 'text',
-            ])
+            ]),
         );
 
         $field = $survey->customFields()->first();
@@ -55,7 +55,7 @@ class CustomFieldControllerTest extends TestCase
             CustomField::factory()->make([
                 'title' => 'email',
                 'type' => 'text',
-            ])
+            ]),
         );
 
         Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey, $surveyResponse) {
@@ -100,7 +100,7 @@ class CustomFieldControllerTest extends TestCase
                 'title' => 'favorite_album',
                 'type' => 'select',
                 'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],
-            ])
+            ]),
         );
 
         Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
@@ -134,7 +134,7 @@ class CustomFieldControllerTest extends TestCase
                 'type' => 'select',
                 'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],
                 'required' => false,
-            ])
+            ]),
         );
 
         Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
@@ -169,7 +169,7 @@ class CustomFieldControllerTest extends TestCase
             CustomField::factory()->make([
                 'title' => 'Favorite Album',
                 'type' => 'checkbox',
-            ])
+            ]),
         );
 
         Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey, $surveyResponse) {
@@ -300,7 +300,7 @@ class CustomFieldControllerTest extends TestCase
                 'title' => 'favorite_album',
                 'type' => 'select',
                 'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],
-            ])
+            ]),
         );
 
         Route::post("/surveys/{$survey->id}/responses", function () use ($surveyResponse) {
@@ -330,7 +330,7 @@ class CustomFieldControllerTest extends TestCase
                 'title' => 'favorite_album',
                 'type' => 'select',
                 'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],
-            ])
+            ]),
         );
 
         Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
@@ -353,7 +353,7 @@ class CustomFieldControllerTest extends TestCase
                 'type' => 'select',
                 'answers' => ['Tha Carter', 'Tha Carter II', 'Tha Carter III'],
                 'required' => true,
-            ])
+            ]),
         );
 
         Route::post("/surveys/{$survey->id}/responses", function (Request $request) use ($survey) {
@@ -369,7 +369,7 @@ class CustomFieldControllerTest extends TestCase
 
             $this->fail('ValidationException was not thrown');
         } catch (ValidationException $e) {
-           $this->assertArrayHasKey('field_'. $fieldId, $e->errors());
+            $this->assertArrayHasKey('field_'. $fieldId, $e->errors());
         }
     }
 }
